@@ -2,6 +2,8 @@
    MmE Agency Workspace — Global Design System
    ============================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* Reset & Base */
 *,
 *::before,
@@ -50,8 +52,6 @@
   --fs-xl: 28px;
   --fs-xxl: 32px;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body {
   font-family: var(--font);

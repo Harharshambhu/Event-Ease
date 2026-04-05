@@ -1,0 +1,8 @@
+{
+  "name": "figma-workspace",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

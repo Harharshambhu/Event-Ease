@@ -1,0 +1,126 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#E6F1FB;color:#0C447C"><div class="dot" style="background:#185FA5"></div>Module: Payments — order processing, billing & vendor billback</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Payment infrastructure setup (admin, one-time)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Stripe account connection</span><span class="sub">Payment gateway integration</span></td>
+<td>Link the event organization's Stripe account to Lennd. Configure payout settings, currency (USD, CAD, AUD), and business details</td>
+<td>Enable secure, PCI Level 1 compliant payment processing without building custom payment infrastructure</td>
+</tr>
+<tr>
+<td><span class="el">Paid item configuration</span><span class="sub">Prices on credentials, assets, tickets</span></td>
+<td>Assign prices to specific items across modules: credential types (e.g., VIP pass = $150), asset rentals (golf cart = $200/day), ticket types. Set per-item or per-block pricing</td>
+<td>Establish a clear pricing structure so stakeholders see costs at the point of request — no hidden charges, no post-event invoice surprises</td>
+</tr>
+<tr>
+<td><span class="el">Billback rules</span><span class="sub">Vendor/group charging policy</span></td>
+<td>Define which items are billable to which group types. Vendors may be charged for asset rentals, sponsors may get complimentary passes, volunteers get free credentials. Configure per group type or per individual group</td>
+<td>Turn operational costs (equipment, extra passes) into recoverable revenue by charging vendors for what they use</td>
+</tr>
+<tr>
+<td><span class="el">Donation / comp ticket settings</span><span class="sub">Charitable and complimentary flows</span></td>
+<td>Enable donation collection for comp tickets. Set up donation tiers, suggested amounts, and tax-receipt language</td>
+<td>Handle the "free tickets with suggested donation" model common in charity galas and benefit concerts</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Order creation & invoicing (triggered by module activity)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Auto-generated orders</span><span class="sub">From credential/asset/ticket requests</span></td>
+<td>When a stakeholder requests priced items through their portal (paid passes, rental equipment, premium tickets), the system auto-creates an order with line items, quantities, and total</td>
+<td>Eliminate manual invoice creation — every priced request in any module automatically becomes a billable order</td>
+</tr>
+<tr>
+<td><span class="el">Admin-created orders</span><span class="sub">Manual order entry</span></td>
+<td>Admin manually creates orders for walk-ins, phone orders, special arrangements, or retroactive charges. Add custom line items, adjust quantities and pricing</td>
+<td>Handle exceptions and non-portal transactions without leaving the platform — all payments tracked in one system</td>
+</tr>
+<tr>
+<td><span class="el">Order approval gate</span><span class="sub">Approve before payment required</span></td>
+<td>Many back-of-house payments require approval before processing. Admin reviews order, approves or modifies, then triggers payment request to the stakeholder</td>
+<td>Prevent unauthorized charges — the stakeholder can't pay for something the admin hasn't approved (e.g., 20 all-access passes for a vendor who should get 5)</td>
+</tr>
+<tr>
+<td><span class="el">Invoice generation</span><span class="sub">Per-order billing documents</span></td>
+<td>System generates invoices per order with itemized line items, quantities, unit prices, totals. Invoices sent via email with payment link</td>
+<td>Provide stakeholders a clear, professional billing document that can be forwarded to their own accounting departments</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Payment collection (stakeholder-facing)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Online payment via portal</span><span class="sub">Card + digital wallet</span></td>
+<td>Stakeholder receives invoice in their portal and via email. Pays online with credit/debit card or digital wallet (Apple Pay, Google Pay via Stripe). Mobile-optimized payment page</td>
+<td>Get paid fast — stakeholder pays from any device without mailing checks or wiring funds</td>
+</tr>
+<tr>
+<td><span class="el">Payment confirmation</span><span class="sub">Receipt + status update</span></td>
+<td>On successful payment, system sends receipt to stakeholder, updates order status to "Paid," and reflects in admin dashboard. Payment timestamp and transaction ID stored</td>
+<td>Close the loop — both parties have proof of payment, no ambiguity about "did we pay for that?"</td>
+</tr>
+<tr>
+<td><span class="el">Partial payment / outstanding balance</span><span class="sub">Installment or split payments</span></td>
+<td>Track partial payments against order total. System shows remaining balance. Follow-up reminders for outstanding amounts</td>
+<td>Handle large vendor orders where payment happens in stages — deposit now, balance on event day</td>
+</tr>
+<tr>
+<td><span class="el">Portal payment visibility</span><span class="sub">Self-service transaction history</span></td>
+<td>Stakeholder views all their orders, payment status (paid / pending / overdue), receipts, and transaction history within their portal</td>
+<td>Eliminate "where's my receipt?" and "what do I owe?" emails — self-service financial transparency</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Reporting & reconciliation (admin, post-event)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Revenue dashboard</span><span class="sub">Total collected across all groups</span></td>
+<td>View total revenue by category (credential sales, asset rentals, ticket sales, donations), by group, by date. Real-time during event, comprehensive post-event</td>
+<td>Answer "how much did we collect?" instantly — no manual spreadsheet reconciliation</td>
+</tr>
+<tr>
+<td><span class="el">Outstanding balance report</span><span class="sub">Unpaid invoices across groups</span></td>
+<td>List all groups with unpaid or partially paid orders. Filter by overdue date, amount, group type. Export for collections follow-up</td>
+<td>Don't let money slip through — identify and chase unpaid vendor billback before the relationship goes cold</td>
+</tr>
+<tr>
+<td><span class="el">Transaction export</span><span class="sub">CSV/Excel for accounting</span></td>
+<td>Export full transaction log with order ID, group name, items, amounts, payment method, timestamp, Stripe transaction ID. Formatted for import into accounting software</td>
+<td>Bridge the gap between Lennd and the organization's accounting system (QuickBooks, Xero, Tally) without manual data entry</td>
+</tr>
+<tr>
+<td><span class="el">Refund processing</span><span class="sub">Stripe-powered reversals</span></td>
+<td>Issue full or partial refunds against specific orders. Refund flows back through Stripe to the original payment method. Refund reason logged</td>
+<td>Handle cancellations, overcharges, and disputes cleanly — auditable refund trail with reason documented</td>
+</tr>
+<tr>
+<td><span class="el">Year-over-year revenue tracking</span><span class="sub">Cross-event financial data</span></td>
+<td>Compare payment data across events in the cross-event CRM. Track vendor spend patterns, credential revenue trends, asset rental growth</td>
+<td>Make pricing decisions for next year based on actual data — "we undercharged for golf carts" becomes an actionable insight</td>
+</tr>
+</table>
+</div>

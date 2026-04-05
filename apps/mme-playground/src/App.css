@@ -1,0 +1,84 @@
+/* ============================================================
+   MmE Playground — Dashboard Shell
+   Design system: shadcn/ui (Geist font, HSL tokens)
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+/* ── Dashboard wrapper ─────────────────────────────────────── */
+.pg-dashboard {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-6);
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.pg-dashboard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.pg-dashboard__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pg-dashboard__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: var(--text-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.pg-dashboard__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.01em;
+}
+
+.pg-dashboard__sub {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  margin-top: 1px;
+}
+
+/* ── Widget grid ────────────────────────────────────────────── */
+.pg-dashboard__widgets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.pg-widget-wrap {
+  width: 100%;
+}
+
+/* Assets + Forms row */
+.pg-widget-row {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.pg-widget-row__assets {
+  flex: 0 0 280px;
+}
+
+.pg-widget-row__forms {
+  flex: 1;
+  min-width: 0;
+}

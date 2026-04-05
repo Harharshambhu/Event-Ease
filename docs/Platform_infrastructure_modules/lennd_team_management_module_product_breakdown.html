@@ -1,0 +1,110 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#EEEDFE;color:#3C3489"><div class="dot" style="background:#534AB7"></div>Module: Team management — internal user access & permissions</div>
+
+<div class="note" style="background:var(--color-background-warning);color:var(--color-text-warning)">
+Team management controls who on the <strong>event organizer's internal staff</strong> can access what in Lennd. This is separate from the portal system (which controls external stakeholders). Think of it as: portals manage outward-facing access, team management manages inward-facing access. A credential manager shouldn't be able to change billing settings. A catering check-in operator doesn't need CRM access.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">User invitation & onboarding</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Invite via email</span><span class="sub">Primary onboarding method</span></td>
+<td>Navigate to Team section. Click "Invite User." Enter first name, last name, and email. Assign a permission profile. System sends invitation email from noreply@lennd.com with subject "[inviter name] has invited you to join Lennd." User clicks "View My Events," creates a password, and is onboarded</td>
+<td>Get internal team members into the platform quickly with a guided onboarding path — they receive an email, set a password, and they're in</td>
+</tr>
+<tr>
+<td><span class="el">Invitation URL fallback</span><span class="sub">For email delivery issues</span></td>
+<td>If invitation email doesn't arrive (spam filters, blocked domains), admin can copy the unique invitation URL from the Team panel and send it manually via any channel. Each URL is unique per user per event</td>
+<td>Guarantee onboarding even when email delivery fails — never blocked by IT email filters or spam quarantine</td>
+</tr>
+<tr>
+<td><span class="el">Resend invitation</span><span class="sub">For users who missed the email</span></td>
+<td>From Team panel, click the actions menu (three dots) on a pending user and select "Resend Invite." Triggers a fresh invitation email</td>
+<td>Handle the common "I didn't get the email" scenario without recreating the user — one-click retry</td>
+</tr>
+<tr>
+<td><span class="el">User types</span><span class="sub">Team members vs. external contacts</span></td>
+<td>Users are internal team members who access the admin platform. They are distinct from CRM contacts (groups/people) who access portals. Typical users: artist liaisons, credential managers, media relations staff, volunteer coordinators, vendor managers, sponsorship managers, catering operators</td>
+<td>Maintain a clear separation between "people who run the event" (users) and "people who participate in the event" (contacts) — different access models for fundamentally different relationships</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Permission profiles — module-level access control</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Permission profile creation</span><span class="sub">Named access templates</span></td>
+<td>Create named profiles: "Full Admin," "Credential Manager," "Catering Operator," "Read-Only Reporter," "Volunteer Coordinator." Each profile is a set of module-level access toggles. Profiles are reusable across multiple users</td>
+<td>Define access once, apply to many — when 3 new credential reviewers join the team, assign the same profile to all 3 instead of configuring each individually</td>
+</tr>
+<tr>
+<td><span class="el">Module access toggles</span><span class="sub">Which modules a profile can see</span></td>
+<td>For each permission profile, toggle access to: CRM, Credentials, Catering, Assets, Guest Lists, Forms, Portals, Schedules, Payments, Reports, Dashboards, Team, Settings. Each can be on or off. A "Credential Manager" profile might only have CRM + Credentials + Reports enabled</td>
+<td>Principle of least privilege — a catering check-in operator doesn't need to see vendor payment records or credential approval queues. Show only what's relevant to their job function</td>
+</tr>
+<tr>
+<td><span class="el">Approver privileges</span><span class="sub">Per-module approval authority</span></td>
+<td>Within each enabled module, toggle whether the user can approve/deny requests or only view them. A user with Credentials access but no approver privilege can see pending requests and generate reports, but cannot approve or deny</td>
+<td>Separate "visibility" from "authority" — the intern can monitor the credential dashboard and flag issues, but only the credential manager can approve passes</td>
+</tr>
+<tr>
+<td><span class="el">Admin auto-approval</span><span class="sub">Admins bypass approval queues</span></td>
+<td>Users with full admin + approver privileges have their own orders auto-approved (e.g., when an admin creates a catering order, it's immediately approved). Non-admin users' requests go into the pending queue</td>
+<td>Speed up internal operations — the admin shouldn't have to approve their own actions. But non-admin staff submissions still go through review</td>
+</tr>
+<tr>
+<td><span class="el">Profile assignment</span><span class="sub">One profile per user per event</span></td>
+<td>Each invited user is assigned one permission profile. Profile can be changed at any time from the Team panel by clicking the actions menu and selecting a different profile</td>
+<td>Flexible role changes — when the volunteer coordinator is promoted to operations manager, swap their profile instead of rebuilding their access from scratch</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">User lifecycle management</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">User search & filtering</span><span class="sub">Find team members quickly</span></td>
+<td>Search team members by name or email in the Team panel. View their assigned permission profile, invitation status (pending / active), and last activity</td>
+<td>Quick access to user management — find the person, verify their access level, and adjust if needed</td>
+</tr>
+<tr>
+<td><span class="el">Deactivation / removal</span><span class="sub">Revoking access</span></td>
+<td>Remove a user from the event team. Their access is immediately revoked. They can no longer log in to the event's admin dashboard. Historical actions (approvals they made, changes they logged) are preserved in audit records</td>
+<td>Clean offboarding — when a contractor's engagement ends or a staff member leaves, revoke access instantly without losing the record of what they did while active</td>
+</tr>
+<tr>
+<td><span class="el">Multi-event user management</span><span class="sub">Same person, different events</span></td>
+<td>A user can be invited to multiple events within the same organization, potentially with different permission profiles per event. The credential manager for Summit 2026 might only be a viewer on Festival 2026</td>
+<td>Match access to responsibility — the same person may have different roles on different events. Their access should reflect the specific event, not a blanket organizational role</td>
+</tr>
+<tr>
+<td><span class="el">Scan station user accounts</span><span class="sub">For onsite check-in devices</span></td>
+<td>Create dedicated user accounts for each scan station (one per gate, one per catering tent). These accounts have only check-in app access. Recommend one user per station so scan data is attributed to the correct physical location</td>
+<td>Track which physical station processed which scan — essential for post-event analysis of gate throughput, catering station utilization, and operational troubleshooting</td>
+</tr>
+<tr>
+<td><span class="el">Unlimited admin users</span><span class="sub">No per-user seat limit on admin platform</span></td>
+<td>Lennd does not charge per admin user. Add as many team members as needed — credential manager, 3 catering operators, 5 gate scan stations, volunteer coordinator, production manager — all at no extra seat cost</td>
+<td>Remove the economic friction of "should we give this person access?" — if they need it for the event, add them. No seat-count anxiety like Monday.com or Jira</td>
+</tr>
+</table>
+</div>

@@ -1,0 +1,146 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5;border-radius:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#EAF3DE;color:#27500A"><div class="dot" style="background:#639922"></div>Module: Check-in app — onsite credential & catering verification</div>
+
+<div class="note" style="background:var(--color-background-info);color:var(--color-text-info)">
+The check-in app is a <strong>mobile application</strong> used by onsite staff — not by stakeholders. It's the physical enforcement layer that validates the digital records from the Credentials and Catering modules against real people at real entry points.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Pre-event setup (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Scan station accounts</span><span class="sub">One user per entry point</span></td>
+<td>Create individual user accounts for each scanning station (Gate A, Gate B, VIP entrance, catering tent, backstage). Assign each station user to a permission profile that includes check-in access</td>
+<td>Track which station processed which scan — critical for post-event analysis ("Gate B was 3x slower than Gate A") and accountability</td>
+</tr>
+<tr>
+<td><span class="el">Barcode/RFID sync</span><span class="sub">Credential-to-scan mapping</span></td>
+<td>Ensure all approved credentials have assigned barcodes/RFID tags. Verify ticketing partner integration is live (Eventbrite, Intellitix). Test scan-to-lookup response time</td>
+<td>Guarantee that every approved person in the system has a scannable identifier — no orphaned credentials that can't be verified</td>
+</tr>
+<tr>
+<td><span class="el">Check-in rules</span><span class="sub">Access control logic</span></td>
+<td>Configure what happens when a credential is scanned: which access zones it permits, whether re-entry is allowed, whether time restrictions apply (e.g., load-in passes only valid before noon)</td>
+<td>Encode the access policy into the scan logic — the app enforces rules that gate staff don't need to memorize</td>
+</tr>
+<tr>
+<td><span class="el">Catering check-in config</span><span class="sub">Meal scanning rules</span></td>
+<td>Configure which meals can be scanned at which stations. Set manager override code for exceptions. Define whether one meal at a time or bulk meal claims are allowed</td>
+<td>Prevent double-scanning (person claims lunch twice) and unauthorized meal access while allowing manager overrides for exceptions</td>
+</tr>
+<tr>
+<td><span class="el">Device preparation</span><span class="sub">App installation + testing</span></td>
+<td>Install Lennd check-in app on designated devices (tablets, phones). Log in with station account. Test scan speed, connectivity, and data sync. Verify fallback for offline scenarios</td>
+<td>Ensure every scanning station works flawlessly before the first person arrives — tech failures at gates cause cascading delays</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Credential check-in (onsite, entry points)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Barcode / QR scanning</span><span class="sub">Camera or external scanner</span></td>
+<td>Staff scans person's credential barcode or QR code using device camera or connected hardware scanner (Socket Mobile, Linea Pro). App looks up the person record in real time</td>
+<td>Validate identity and access level in under 3 seconds — fast enough to keep entry lines moving at high volume</td>
+</tr>
+<tr>
+<td><span class="el">RFID wristband scanning</span><span class="sub">Contactless tap verification</span></td>
+<td>For RFID-enabled events, person taps wristband against reader. App matches wristband ID to person record and credential order. No visual scan needed — tap and go</td>
+<td>Enable the fastest possible check-in for high-throughput entry points (festival gates, arena entrances with thousands arriving simultaneously)</td>
+</tr>
+<tr>
+<td><span class="el">Name search fallback</span><span class="sub">For unreadable or missing credentials</span></td>
+<td>If barcode won't scan or person forgot their badge, staff searches by name in the app. Pulls up person record with photo (if uploaded), credential type, and access level</td>
+<td>Never block entry due to a tech failure — always have a manual verification path so no one is stranded at the gate</td>
+</tr>
+<tr>
+<td><span class="el">Check-in confirmation</span><span class="sub">Visual feedback on scan</span></td>
+<td>On successful scan: green confirmation with person's name, credential type, and access zone. On denied scan: red alert with denial reason (expired, wrong zone, already checked in, not approved)</td>
+<td>Give gate staff an instant, unambiguous go/no-go signal — no interpretation needed, no judgment calls at the barrier</td>
+</tr>
+<tr>
+<td><span class="el">Duplicate scan detection</span><span class="sub">Anti-fraud safeguard</span></td>
+<td>If a credential has already been checked in, the app flags it: "Already checked in at [Gate A] at [2:15 PM]." Staff can override with reason or deny entry</td>
+<td>Prevent credential sharing (one person lends badge to another after entry) and catch cloned/forged barcodes</td>
+</tr>
+<tr>
+<td><span class="el">Check-in timestamp log</span><span class="sub">Per-person arrival record</span></td>
+<td>Every scan records: person name, credential type, station ID, timestamp, scan result (admitted / denied / override). Stored in real time to admin dashboard</td>
+<td>Build a complete arrival record — know who is onsite, when they arrived, and through which gate. Essential for emergency headcounts</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Catering check-in (onsite, meal stations)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Meal scan via wristband</span><span class="sub">Person's pass → meal lookup</span></td>
+<td>Person scans their wristband/badge at catering station. App finds their person record, locates approved meals for the current meal period, and claims one meal</td>
+<td>Only people with approved meals eat — eliminate unauthorized meals that inflate catering costs by 15-30% at typical events</td>
+</tr>
+<tr>
+<td><span class="el">Group-level meal claim</span><span class="sub">Search by group name</span></td>
+<td>If person doesn't have individual meal assignment, staff searches their group name. App shows available group meal pool and claims one against the group's allocation</td>
+<td>Handle the common case where meals are allocated to "Acme AV Co. — 12 lunches" rather than to individual names</td>
+</tr>
+<tr>
+<td><span class="el">Manager override</span><span class="sub">Password-protected exception</span></td>
+<td>When a person has no approved meal (new arrival, last-minute addition, admin oversight), catering manager enters override code. Meal is granted, logged against the wristband ID, and flagged as override</td>
+<td>Never turn someone away hungry due to a data gap — but track every exception so the admin knows where the system leaked</td>
+</tr>
+<tr>
+<td><span class="el">One-meal-at-a-time enforcement</span><span class="sub">Per-scan claim limit</span></td>
+<td>App claims one meal per scan. Person cannot scan again for the same meal period. Prevents double-dipping. Separate claim for breakfast vs. lunch vs. dinner</td>
+<td>Strict 1:1 meal tracking — the single biggest lever for controlling catering spend at large events</td>
+</tr>
+<tr>
+<td><span class="el">Dietary flag display</span><span class="sub">Person's restrictions on scan</span></td>
+<td>When person scans in, app shows their dietary restrictions (vegetarian, nut allergy, etc.) to catering staff alongside the meal claim confirmation</td>
+<td>Catering staff can direct people to the correct food line immediately — no asking, no guessing, no allergen accidents</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Real-time monitoring & post-event (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Live attendance dashboard</span><span class="sub">Real-time onsite headcount</span></td>
+<td>Admin dashboard shows live count of checked-in people by credential type, gate, and time. Updates with every scan across all stations</td>
+<td>Answer "how many people are onsite right now?" at any moment — critical for security, fire marshal compliance, and capacity management</td>
+</tr>
+<tr>
+<td><span class="el">Live catering usage</span><span class="sub">Meals claimed vs. remaining</span></td>
+<td>Dashboard shows meals claimed vs. approved vs. unused for current meal period. Alerts if usage approaches capacity or if a catering station is unusually slow</td>
+<td>Adjust catering operations in real time — open an additional station, extend a meal period, or reduce tomorrow's order based on today's actual usage</td>
+</tr>
+<tr>
+<td><span class="el">Check-in log export</span><span class="sub">Complete scan history</span></td>
+<td>Export full scan log: every check-in and meal scan with person, credential, station, timestamp, result. CSV/Excel format for post-event analysis</td>
+<td>Post-event audit trail — "Vendor X says their team was there by 6 AM" can be verified against scan timestamps</td>
+</tr>
+<tr>
+<td><span class="el">No-show identification</span><span class="sub">Approved but never checked in</span></td>
+<td>Cross-reference approved credentials against check-in logs to identify people who were credentialed but never arrived</td>
+<td>Optimize next year's credential allocation — if 20% of a vendor's credentials go unused, reduce their allocation and free passes for others</td>
+</tr>
+</table>
+</div>

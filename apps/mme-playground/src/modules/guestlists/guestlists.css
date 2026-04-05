@@ -1,0 +1,758 @@
+/* ============================================================
+   Guest Lists Module — guestlists.css
+   Design system: shadcn/ui (Geist, HSL tokens, radius 0.5rem)
+   All class names preserved — visual redesign only
+   ============================================================ */
+
+/* ── Module Shell ────────────────────────────────────────────── */
+.gl-module {
+  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: hsl(var(--foreground));
+  padding: var(--space-6);
+  background: hsl(var(--page-bg));
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Navigation Tabs ──────────────────────────────────────────── */
+.gl-nav {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 0;
+}
+
+.gl-nav__tab {
+  background: transparent;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.gl-nav__tab:hover {
+  color: hsl(var(--foreground));
+}
+
+.gl-nav__tab--active {
+  color: hsl(var(--foreground));
+  border-bottom-color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+/* ── Layout Grids ─────────────────────────────────────────────── */
+.gl-layout--2col {
+  display: grid;
+  grid-template-columns: 840px 320px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.gl-layout--split {
+  display: grid;
+  grid-template-columns: 3fr 1px 2fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.gl-layout__divider {
+  background: hsl(var(--border));
+  width: 1px;
+  height: 100%;
+}
+
+.gl-layout--full {
+  display: block;
+  width: 100%;
+}
+
+/* ── Module Header ────────────────────────────────────────────── */
+.gl-module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.gl-module-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: hsl(var(--foreground));
+}
+
+/* ── Cards & Panels ───────────────────────────────────────────── */
+.gl-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.gl-card--hoverable:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.gl-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.4);
+}
+
+.gl-card__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.01em;
+}
+
+.gl-card__body {
+  padding: var(--space-4);
+}
+
+.gl-sidebar-panel {
+  background: hsl(var(--card));
+  border-radius: var(--radius-lg);
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.gl-sidebar-panel .gl-card__header {
+  background: hsl(var(--muted) / 0.6);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* ── Stat Cards ───────────────────────────────────────────────── */
+.gl-stat-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.gl-stat-card__label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: var(--space-1);
+}
+
+.gl-stat-card__val {
+  font-size: 26px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.02em;
+}
+
+.gl-stat-card__sub {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  margin-top: 2px;
+}
+
+.gl-stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+/* ── Pills & Badges ───────────────────────────────────────────── */
+.gl-pill {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.gl-pill--tier {
+  min-width: 32px;
+  text-align: center;
+}
+
+.gl-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.gl-status-pill--red {
+  background: hsl(var(--danger-bg));
+  color: hsl(var(--danger-fg));
+  border-color: hsl(var(--danger-border));
+}
+
+.gl-status-pill--green {
+  background: hsl(var(--success-bg));
+  color: hsl(var(--success-fg));
+  border-color: hsl(var(--success-border));
+}
+
+.gl-status-pill--amber {
+  background: hsl(var(--warning-bg));
+  color: hsl(var(--warning-fg));
+  border-color: hsl(var(--warning-border));
+}
+
+.gl-status-pill--navy {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.gl-status-pill--gray {
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  border-color: hsl(var(--border));
+}
+
+/* ── Utilisation Bar ──────────────────────────────────────────── */
+.gl-util-bar { width: 100%; }
+
+.gl-util-bar__segments {
+  display: flex;
+  gap: 1px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: hsl(var(--muted));
+}
+
+.gl-util-bar__seg { height: 100%; }
+
+/* ── Capacity Bar ─────────────────────────────────────────────── */
+.gl-cap-bar {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: var(--space-2) 0;
+}
+
+.gl-cap-bar__seg {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ── Circle Icons ─────────────────────────────────────────────── */
+.gl-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: hsl(var(--primary-foreground));
+  font-size: var(--text-xs);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.gl-icon-circle--green { background: hsl(var(--success-fg)); }
+.gl-icon-circle--amber { background: hsl(var(--warning-fg)); }
+.gl-icon-circle--red   { background: hsl(var(--danger-fg)); }
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+.gl-btn {
+  padding: 6px var(--space-3);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: inherit;
+}
+
+.gl-btn--primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+.gl-btn--primary:hover { background: hsl(var(--primary) / 0.88); }
+
+.gl-btn--secondary {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+.gl-btn--secondary:hover { background: hsl(var(--accent)); }
+
+.gl-btn--danger-text {
+  background: transparent;
+  color: hsl(var(--danger-fg));
+  padding: 4px var(--space-2);
+  border: 1px solid transparent;
+}
+.gl-btn--danger-text:hover {
+  background: hsl(var(--danger-bg));
+  border-color: hsl(var(--danger-border));
+}
+
+.gl-btn--danger-fill {
+  background: hsl(var(--danger-fg));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--danger-fg));
+}
+.gl-btn--danger-fill:hover { opacity: 0.88; }
+
+.gl-btn--gold {
+  background: hsl(45 93% 47%);
+  color: hsl(var(--foreground));
+}
+.gl-btn--gold:hover { background: hsl(45 93% 40%); }
+
+.gl-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Modal ────────────────────────────────────────────────────── */
+.gl-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgb(0 0 0 / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+
+.gl-modal {
+  background: hsl(var(--card));
+  border-radius: var(--radius-xl);
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-md), 0 20px 60px rgb(0 0 0 / 0.15);
+  border: 1px solid hsl(var(--border));
+}
+
+.gl-modal__header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid hsl(var(--border));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: hsl(var(--foreground));
+}
+
+.gl-modal__close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: hsl(var(--muted-foreground));
+  line-height: 1;
+  transition: color 0.12s;
+}
+.gl-modal__close:hover { color: hsl(var(--foreground)); }
+
+.gl-modal__body { padding: var(--space-5); }
+
+.gl-modal__footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid hsl(var(--border));
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  background: hsl(var(--muted) / 0.4);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+/* ── Forms ────────────────────────────────────────────────────── */
+.gl-form-group { margin-bottom: var(--space-4); }
+
+.gl-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: var(--space-2);
+}
+
+.gl-input, .gl-select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  box-sizing: border-box;
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.gl-input:focus, .gl-select:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.12);
+}
+
+.gl-search-bar {
+  border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
+  padding: 6px var(--space-3);
+  font-size: var(--text-sm);
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+
+.gl-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: hsl(var(--foreground));
+  font-weight: 500;
+}
+
+/* ── Tables ───────────────────────────────────────────────────── */
+.gl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.gl-table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  font-size: var(--text-xs);
+  background: hsl(var(--muted) / 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.gl-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid hsl(var(--border) / 0.7);
+  color: hsl(var(--foreground));
+  vertical-align: middle;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.gl-table tr:last-child td { border-bottom: none; }
+.gl-table tr:hover td { background: hsl(var(--accent) / 0.5); }
+
+.gl-table tr { position: relative; }
+
+.gl-table td.tier-border { padding-left: var(--space-4); }
+.gl-table td.tier-border::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background-color: var(--row-color, transparent);
+}
+
+/* ── Pagination ───────────────────────────────────────────────── */
+.gl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.3);
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+}
+
+.gl-pagination-controls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ── Link Block ───────────────────────────────────────────────── */
+.gl-link-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: hsl(var(--muted) / 0.4);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.gl-link-text {
+  font-family: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+}
+
+.gl-divider {
+  height: 1px;
+  background: hsl(var(--border));
+  margin: var(--space-4) 0;
+}
+
+/* ── Dietary Rows ─────────────────────────────────────────────── */
+.gl-dietary-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.gl-dietary-label {
+  width: 120px;
+  color: hsl(var(--muted-foreground));
+  text-align: right;
+  padding-right: var(--space-3);
+}
+
+.gl-dietary-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: hsl(var(--muted));
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.gl-dietary-bar-fill {
+  height: 100%;
+  background: hsl(var(--primary));
+  border-radius: var(--radius-full);
+}
+
+.gl-dietary-count {
+  width: 32px;
+  text-align: right;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+/* ── Module Topbar ────────────────────────────────────────────── */
+.gl-module-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.gl-module-back { flex-shrink: 0; }
+
+.gl-module-event-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.gl-module-event-icon {
+  font-size: 20px;
+  color: hsl(var(--muted-foreground));
+}
+
+.gl-module-event-name {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.gl-module-event-sub {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  margin-top: 1px;
+}
+
+/* ── Back Button ──────────────────────────────────────────────── */
+.gl-module-back-btn, .gl-btn-back {
+  padding: 5px var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  font-size: var(--text-xs);
+  font-weight: 500;
+  cursor: pointer;
+  color: hsl(var(--muted-foreground));
+  transition: all 0.12s;
+  font-family: inherit;
+}
+
+.gl-module-back-btn:hover, .gl-btn-back:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
+}
+
+/* ============================================================
+   Guest Lists Dashboard Widget
+   ============================================================ */
+.gl-dw {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.gl-dw__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.4);
+}
+
+.gl-dw__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.gl-dw__icon {
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+}
+
+.gl-dw__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.01em;
+}
+
+.gl-dw__count {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+.gl-dw__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.gl-dw__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid hsl(var(--border) / 0.6);
+  cursor: pointer;
+  transition: background 0.12s;
+  gap: var(--space-3);
+}
+
+.gl-dw__row:last-child { border-bottom: none; }
+.gl-dw__row:hover { background: hsl(var(--accent) / 0.6); }
+
+.gl-dw__row-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.gl-dw__row-arrow {
+  font-size: var(--text-lg);
+  color: hsl(var(--border));
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.12s;
+}
+
+.gl-dw__row:hover .gl-dw__row-arrow { color: hsl(var(--foreground)); }
+
+.gl-dw__row-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gl-dw__row-date {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  margin-top: 1px;
+}
+
+.gl-dw__row-right {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.gl-dw__row-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.gl-dw__row-stat {
+  font-size: var(--text-xs);
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+.gl-dw__badge {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.gl-dw__badge--warn {
+  background: hsl(var(--warning-bg));
+  color: hsl(var(--warning-fg));
+  border-color: hsl(var(--warning-border));
+}
+
+.gl-dw__badge--amber {
+  background: hsl(var(--warning-bg));
+  color: hsl(var(--warning-fg));
+  border-color: hsl(var(--warning-border));
+}

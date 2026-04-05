@@ -1,0 +1,105 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:10px 14px;font-size:11px;line-height:1.6;border-radius:var(--border-radius-md);margin:8px 10px 10px}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAECE7;color:#712B13"><div class="dot" style="background:#D85A30"></div>Module 3: Documents & files — two-way file exchange</div>
+
+<div class="note" style="background:#FAECE7;color:#712B13">
+Unlike Forms (structured data input), Documents is about <strong>file exchange</strong> — both requesting files FROM stakeholders (COIs, contracts, riders) and sharing files TO them (maps, production guides, training videos). It's the "Dropbox replacement" layer.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Request configuration (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Document request types</span><span class="sub">Named categories of files needed</span></td>
+<td>Create document request types: Certificate of Insurance (COI), W-9, signed contract, tech rider, stage plot, logo files, vehicle registration, liquor license — any named document category</td>
+<td>Name each document clearly so stakeholders know exactly what file you need — "COI" not "please send us your paperwork"</td>
+</tr>
+<tr>
+<td><span class="el">Sample file attachments</span><span class="sub">Reference examples for stakeholders</span></td>
+<td>Attach a sample or template file to each document request: "Here's a sample COI format we accept" or "Use this contract template." Stakeholder downloads the reference before uploading their version</td>
+<td>Reduce back-and-forth — stakeholders submit correctly formatted documents on the first attempt because they saw the example</td>
+</tr>
+<tr>
+<td><span class="el">Assignment to group types</span><span class="sub">Which types need which docs</span></td>
+<td>Assign document requests to portals per group type: vendors need COI + W-9 + contract; artists need tech rider + stage plot; volunteers need signed waiver. Different requirements per type</td>
+<td>Each group type sees only their relevant document requests — volunteers aren't confused by a COI request meant for vendors</td>
+</tr>
+<tr>
+<td><span class="el">Individual group assignments</span><span class="sub">Override for specific groups</span></td>
+<td>Add document requests to a specific group beyond the type-level defaults: one vendor needs a special permit, one artist needs a licensing agreement. Per-group customization</td>
+<td>Handle edge cases without creating new group types — add a one-off document request to a single vendor's portal</td>
+</tr>
+<tr>
+<td><span class="el">Due dates per document</span><span class="sub">Staggered deadlines</span></td>
+<td>Set different due dates per document type: COI due 30 days before event, tech rider due 14 days before, contract due 60 days before. Overdue items flagged automatically</td>
+<td>Stagger collection to match the event's operational timeline — insurance needed for contracts, riders needed for production planning</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Stakeholder file submission & access</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Document upload via portal</span><span class="sub">Drag-and-drop file submission</span></td>
+<td>Stakeholder sees their required documents in the portal: document name, description, sample file, due date, upload button. Upload their file to fulfill the request</td>
+<td>Clear, guided file submission — the stakeholder knows what to upload, has a reference example, and sees the deadline in the same view</td>
+</tr>
+<tr>
+<td><span class="el">Submission status visibility</span><span class="sub">Uploaded vs. pending vs. overdue</span></td>
+<td>Portal shows each document's status: not submitted, uploaded (awaiting review), accepted, or rejected with admin notes. Stakeholder tracks their own compliance</td>
+<td>Self-service status checking — stakeholder doesn't need to email "did you get our COI?" — they see it's been accepted in the portal</td>
+</tr>
+<tr>
+<td><span class="el">Re-upload / versioning</span><span class="sub">Replace rejected documents</span></td>
+<td>If admin rejects a document (wrong format, expired, missing information), stakeholder can re-upload a corrected version. Previous version remains for reference</td>
+<td>Handle the review-reject-resubmit cycle within the portal instead of an email thread with 5 attachments</td>
+</tr>
+<tr>
+<td><span class="el">Admin-shared files (inbound)</span><span class="sub">Files shared TO stakeholders</span></td>
+<td>Admin uploads files to the portal's Files/Event Info section: venue maps, parking guides, production schedules, safety protocols, training videos. Stakeholders view and download</td>
+<td>Two-way exchange in one place — the stakeholder sends you their COI and finds your venue map in the same portal</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Review, tracking & management (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Document tracking dashboard</span><span class="sub">Cross-group submission status</span></td>
+<td>View all groups by document type: how many have submitted COIs, how many are overdue, how many need re-submission. Filter by document type, group type, status</td>
+<td>One screen answers "do we have all the insurance certificates?" — don't wait until contract signing to discover 12 vendors haven't sent COIs</td>
+</tr>
+<tr>
+<td><span class="el">Document review</span><span class="sub">Accept or reject per file</span></td>
+<td>Open submitted documents, verify contents, mark as accepted or rejected. Rejection includes a note explaining what needs to change. Accepted documents are locked</td>
+<td>Quality gate on every document — prevent an expired COI or an unsigned contract from slipping through</td>
+</tr>
+<tr>
+<td><span class="el">Automated reminders</span><span class="sub">System nudges for missing docs</span></td>
+<td>Automatic email reminders to groups with overdue or unsubmitted documents. Configurable timing and message per document type</td>
+<td>Persistent, consistent follow-up without admin effort — the system reminds weekly until the document is submitted</td>
+</tr>
+<tr>
+<td><span class="el">Bulk export</span><span class="sub">Download all files per type</span></td>
+<td>Export all submitted documents of a given type (e.g., download all 47 vendor COIs as a zip). Export metadata as CSV for compliance records</td>
+<td>Hand off complete document packages to legal, insurance, or compliance departments — not a folder of 200 emails with attachments</td>
+</tr>
+</table>
+</div>

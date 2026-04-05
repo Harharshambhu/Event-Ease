@@ -1,0 +1,14 @@
+# IDE
+.idea/
+.claude/
+
+# Node
+node_modules/
+dist/
+
+# Env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

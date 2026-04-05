@@ -1,0 +1,152 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.src{display:inline-block;font-size:8px;padding:1px 4px;border-radius:3px;font-weight:500;margin-left:2px;vertical-align:middle}
+.s-lennd{background:#E1F5EE;color:#085041}
+.s-zoho{background:#FAEEDA;color:#633806}
+.s-cvent{background:#EEEDFE;color:#3C3489}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend{display:flex;gap:10px;padding:6px 14px;font-size:10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);flex-wrap:wrap}
+.note{padding:8px 14px;font-size:11px;line-height:1.5}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAECE7;color:#712B13"><div class="dot" style="background:#D85A30"></div>Module: Speakers (call for speakers) — submission, review, onboarding & management</div>
+<div class="legend"><span class="src s-lennd">Lennd</span> Portal-based: bios, docs, schedules via group portal <span class="src s-zoho">Zoho</span> Website-integrated: speaker profiles, session delivery, analytics <span class="src s-cvent">Cvent</span> Enterprise-grade: abstract management, peer review, Speaker Resource Center</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Call for speakers / abstracts (collecting proposals)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Call for papers / proposals page</span><span class="sub">Public submission portal</span></td>
+<td>Create a branded submission page where prospective speakers submit proposals. <span class="src s-cvent">Cvent</span> Abstract Management offers fully customizable submission forms with tailored fields, file upload support, and mobile-responsive design. <span class="src s-zoho">Zoho</span> is building abstract management for 2026 (currently uses forms + manual workflow). <span class="src s-lennd">Lennd</span> uses its form builder to create call-for-speaker forms assigned to a "Speaker" group type portal</td>
+<td>Cast a wide net — attract the best speakers by making submission easy, professional, and accessible from any device</td>
+</tr>
+<tr>
+<td><span class="el">Submission form fields</span><span class="sub">What you collect from each proposal</span></td>
+<td>Configure required fields: session title, abstract/description, topic track, session format (keynote/panel/workshop/lightning talk), speaker bio, headshot, social links, AV requirements, co-presenters, presentation file upload. <span class="src s-cvent">Cvent</span> supports custom field types and conditional logic per track. <span class="src s-lennd">Lennd</span> supports custom fields via the form builder with file uploads. <span class="src s-zoho">Zoho</span> uses registration forms with custom fields</td>
+<td>Collect everything the review committee needs to evaluate proposals — title, abstract, speaker credentials, and topic fit — in a structured, comparable format</td>
+</tr>
+<tr>
+<td><span class="el">Multiple submission tracks</span><span class="sub">Separate calls for different content types</span></td>
+<td>Run parallel calls: "Call for keynotes," "Call for workshops," "Call for posters," "Call for panels" — each with different form fields, deadlines, and review criteria. <span class="src s-cvent">Cvent</span> supports multiple submission types within one Abstract Management instance. <span class="src s-zoho">Zoho</span> supports multi-session types. <span class="src s-lennd">Lennd</span> can create separate forms per submission category</td>
+<td>A keynote proposal needs different information than a poster submission — separate tracks with tailored forms ensure you collect the right data for each content type</td>
+</tr>
+<tr>
+<td><span class="el">Submission deadline management</span><span class="sub">Open/close dates, extensions</span></td>
+<td>Set open and close dates for submissions. Configure automated reminder emails as deadlines approach. Optionally extend deadlines for specific tracks or late submissions. <span class="src s-cvent">Cvent</span> has automated email workflows for deadline reminders. <span class="src s-lennd">Lennd</span> portals have configurable close dates with automated reminders. <span class="src s-zoho">Zoho</span> supports deadline-driven email campaigns</td>
+<td>Create urgency while maintaining flexibility — deadlines drive submissions, but extensions handle the reality that the best speakers are often the busiest and submit late</td>
+</tr>
+<tr>
+<td><span class="el">Submission confirmation & tracking</span><span class="sub">Submitter sees their status</span></td>
+<td>After submission, speaker receives confirmation email and can log in to check status: submitted, under review, accepted, rejected, revision requested. <span class="src s-cvent">Cvent</span> sends automated status notifications at each stage. <span class="src s-lennd">Lennd</span> shows application status in the speaker's portal. <span class="src s-zoho">Zoho</span> sends registration confirmation emails</td>
+<td>Reduce "did you get my submission?" emails to zero — speakers self-check status, freeing the content team from inbox management</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Review & selection (content team / review committee)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Reviewer assignment</span><span class="sub">Who evaluates which proposals</span></td>
+<td>Assign internal team members or external advisory board to review submissions. <span class="src s-cvent">Cvent</span> allows assigning reviewers by topic/track, granting portal access to rate and comment. Supports conflict-of-interest flagging. <span class="src s-lennd">Lennd</span> uses the applications module with admin grading/scoring. <span class="src s-zoho">Zoho</span> uses internal team collaboration for session curation (no formal review portal yet)</td>
+<td>Distribute the review workload fairly — the AI track chair reviews AI submissions, the leadership track chair reviews leadership submissions. No one reviews their own company's proposal</td>
+</tr>
+<tr>
+<td><span class="el">Scoring / rating rubric</span><span class="sub">Structured evaluation criteria</span></td>
+<td>Define scoring criteria: topic relevance (1-5), speaker expertise (1-5), audience fit (1-5), originality (1-5). Reviewers rate each submission against the rubric. <span class="src s-cvent">Cvent</span> supports custom scoring criteria with weighted averages, real-time score tracking, votes, and comments per submission. <span class="src s-lennd">Lennd</span> applications module supports grading of submissions by admin team</td>
+<td>Replace subjective "I liked that one" decisions with structured, comparable scoring — when 200 proposals compete for 40 slots, data-driven selection is the only fair and efficient path</td>
+</tr>
+<tr>
+<td><span class="el">Reviewer portal / dashboard</span><span class="sub">Where reviewers do their work</span></td>
+<td>Reviewers log in to a dedicated portal showing their assigned submissions, scoring interface, and progress tracker. <span class="src s-cvent">Cvent</span> has a full reviewer portal with sort/filter by score, vote, comment, and track. Can view submissions in list or detail mode. <span class="src s-lennd">Lennd</span> uses the admin dashboard with application review filters. <span class="src s-zoho">Zoho</span> uses team collaboration features within the platform (less structured)</td>
+<td>Give reviewers a focused workspace — not buried in a shared spreadsheet or email chain, but a purpose-built interface where they score, comment, and move to the next submission</td>
+</tr>
+<tr>
+<td><span class="el">Accept / reject / revise decisions</span><span class="sub">Final selection workflow</span></td>
+<td>Based on aggregate scores, content team makes final decisions: accept, reject, request revision, waitlist. <span class="src s-cvent">Cvent</span> supports bulk accept/reject with automated notification emails to submitters at each decision stage. <span class="src s-lennd">Lennd</span> application status flows back to the applicant's portal. <span class="src s-zoho">Zoho</span> manages speakers individually with manual status updates</td>
+<td>Close the selection loop cleanly — every submitter knows their outcome, accepted speakers move into the onboarding pipeline, and rejected proposals get a professional notification</td>
+</tr>
+<tr>
+<td><span class="el">Waitlist management</span><span class="sub">Backup speakers for cancellations</span></td>
+<td>Maintain a ranked waitlist of near-accepted proposals. When a confirmed speaker cancels, promote the next waitlisted proposal. <span class="src s-cvent">Cvent</span> supports waitlisting within the abstract workflow. <span class="src s-lennd">Lennd</span> and <span class="src s-zoho">Zoho</span> handle this via manual status management</td>
+<td>Never scramble when a speaker drops out — the backup plan is already ranked, reviewed, and ready to slot in</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Speaker onboarding & content collection (accepted speakers)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Speaker Resource Center / portal</span><span class="sub">Self-service hub for confirmed speakers</span></td>
+<td>Accepted speakers get access to a dedicated portal where they manage their profile, upload materials, and view their schedule. <span class="src s-cvent">Cvent</span> has a dedicated Speaker Resource Center (SRC) — a branded self-service portal for speakers to manage bio, headshot, presentations, and session details. <span class="src s-lennd">Lennd</span> uses its portal system — speakers (as a group type) get a portal with forms, files, schedule, and messages. <span class="src s-zoho">Zoho</span> provides a speaker console where speakers upload presentations and manage their session</td>
+<td>Speakers manage themselves — upload their own bio update, swap their headshot, submit their presentation deck — without emailing the event team for every change</td>
+</tr>
+<tr>
+<td><span class="el">Profile & bio collection</span><span class="sub">Speaker page content</span></td>
+<td>Collect / update: full bio, short bio, headshot (high-res), job title, organization, social links (LinkedIn, Twitter), topic tags. <span class="src s-zoho">Zoho</span> speaker profiles auto-publish to the event website with sessions linked. <span class="src s-cvent">Cvent</span> SRC collects all profile data and pushes to the Attendee Hub. <span class="src s-lennd">Lennd</span> collects via CRM fields and portal forms</td>
+<td>Build the "speaker lineup" page for marketing — every speaker's photo, bio, and session appears on the event website, driving registrations and establishing event credibility</td>
+</tr>
+<tr>
+<td><span class="el">Presentation / materials upload</span><span class="sub">Slides, handouts, supporting docs</span></td>
+<td>Speakers upload their presentation files, handouts, and supplementary materials to their portal. <span class="src s-zoho">Zoho</span> speakers upload presentations directly to Backstage — enabling projector-less session delivery (presentations served from the platform). <span class="src s-cvent">Cvent</span> SRC supports file uploads with version tracking. <span class="src s-lennd">Lennd</span> uses document/file request and collection via the portal</td>
+<td>Centralize all presentation materials — no more "can you email me your slides?" on event morning. Everything is uploaded, reviewed, and ready before the speaker arrives</td>
+</tr>
+<tr>
+<td><span class="el">Logistics data collection</span><span class="sub">Travel, AV, dietary, accommodation</span></td>
+<td>Collect speaker logistics: travel details (arrival/departure), AV requirements (microphone type, screen setup, demo needs), dietary restrictions, accommodation preferences, ground transport needs. <span class="src s-lennd">Lennd</span> handles this comprehensively via portal forms — speakers submit the same credential, catering, and asset requests as other group types. <span class="src s-cvent">Cvent</span> SRC collects logistics data alongside content. <span class="src s-zoho">Zoho</span> uses custom registration fields</td>
+<td>The speaker's operational needs (hotel, airport pickup, vegan lunch, lapel mic) are captured alongside their content needs — one portal, one submission, both the content team and operations team get what they need</td>
+</tr>
+<tr>
+<td><span class="el">Credential & access issuance</span><span class="sub">Passes for speaker + their entourage</span></td>
+<td>Issue speaker credentials (all-access, greenroom, VIP) and manage their guest list allocation (e.g., 2 guest passes per speaker). <span class="src s-lennd">Lennd</span> excels here — speakers' credential and guest list requests flow through the same modules as vendors, with portal-based self-service. <span class="src s-cvent">Cvent</span> handles speaker passes via event registration. <span class="src s-zoho">Zoho</span> manages speaker badges via the badge printing system</td>
+<td>Speakers are VIP stakeholders who also need credentials, meals, and access — treating them through the same operational pipeline as vendors (but with elevated access levels) ensures nothing falls through the cracks</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Event-day delivery & post-event (live + analytics)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Session delivery tools</span><span class="sub">Live presentation support</span></td>
+<td>Support speakers during their live session with in-platform tools. <span class="src s-zoho">Zoho</span> Backstage OnAir enables projector-less delivery — speakers present directly from the platform with live streaming, screen sharing, whiteboard, polls, and Q&A built in. <span class="src s-cvent">Cvent</span> Attendee Hub supports live and on-demand sessions with engagement tools. <span class="src s-lennd">Lennd</span> does not include live session delivery tools (operations-focused, not content-delivery-focused)</td>
+<td>For hybrid and virtual events: speakers present without needing separate Zoom/Teams — one platform handles the presentation, the audience engagement, and the recording</td>
+</tr>
+<tr>
+<td><span class="el">Live audience engagement</span><span class="sub">Polls, Q&A, chat during sessions</span></td>
+<td>During a session, attendees interact via live polls, Q&A queues, chat, and reactions. <span class="src s-zoho">Zoho</span> supports polls, Q&A, and chat within sessions with real-time results displayed. <span class="src s-cvent">Cvent</span> Attendee Hub has live Q&A, polling, and chat. <span class="src s-lennd">Lennd</span> does not include audience engagement tools</td>
+<td>Transform passive listening into active participation — engagement data also tells organizers which sessions generated the most interaction and which fell flat</td>
+</tr>
+<tr>
+<td><span class="el">Session recording & on-demand</span><span class="sub">Content capture for post-event access</span></td>
+<td>Record sessions for on-demand viewing after the event. <span class="src s-zoho">Zoho</span> OnAir records sessions for replay. <span class="src s-cvent">Cvent</span> supports on-demand content libraries in the Attendee Hub. <span class="src s-lennd">Lennd</span> does not include recording capabilities</td>
+<td>Extend event ROI beyond the live dates — recorded sessions become content assets for marketing, member libraries, continuing education credits, and sponsor value</td>
+</tr>
+<tr>
+<td><span class="el">Speaker performance analytics</span><span class="sub">Ratings, attendance, engagement data</span></td>
+<td>Post-event, speakers receive their performance data. <span class="src s-zoho">Zoho</span> provides session analytics with attendee feedback visible to speakers so they can improve. <span class="src s-cvent">Cvent</span> pushes survey results back to the Speaker Resource Center — speakers see how attendees rated them. <span class="src s-lennd">Lennd</span> does not include speaker performance analytics</td>
+<td>Close the feedback loop for speakers — they see their ratings, read attendee comments, and understand what worked. Better-informed speakers deliver better sessions next year</td>
+</tr>
+<tr>
+<td><span class="el">Speaker CRM / reuse across events</span><span class="sub">Building a speaker database</span></td>
+<td>Maintain a database of past, current, and prospective speakers across events. Track speaking history, ratings, topic expertise, and availability. <span class="src s-cvent">Cvent</span> + Sessionboard integration maintains a speaker CRM that reuses speaker data across events without re-entry. <span class="src s-lennd">Lennd</span> cross-event CRM persists speaker records across years. <span class="src s-zoho">Zoho</span> integrates with Zoho CRM for contact persistence</td>
+<td>Build organizational memory — "who spoke at our 2024 conference and was rated 4.8/5 on AI topics?" becomes a searchable query, not a question that requires emailing five people who might remember</td>
+</tr>
+</table>
+</div>
+
+<div style="padding:10px 14px;border-radius:var(--border-radius-md);font-size:12px;line-height:1.6;background:var(--color-background-secondary);color:var(--color-text-secondary);margin-top:4px">
+<strong style="color:var(--color-text-primary)">Cross-platform positioning summary:</strong> <span class="src s-cvent">Cvent</span> has the deepest speaker/abstract workflow — full peer review, scoring rubrics, automated notifications, Speaker Resource Center, and session analytics. It's built for enterprise conferences with 200+ submissions and multi-reviewer committees. <span class="src s-zoho">Zoho</span> is strongest on attendee-facing delivery — the agenda builder, speaker profiles on the event website, live session tools via OnAir, and audience engagement. Abstract management is coming in 2026. <span class="src s-lennd">Lennd</span> treats speakers as another stakeholder type flowing through its portal system — weaker on content curation but strongest on operational logistics (credentials, catering, asset requests for speakers and their crew). A comprehensive platform would need Cvent's review engine + Zoho's delivery/engagement tools + Lennd's operational portal.
+</div>

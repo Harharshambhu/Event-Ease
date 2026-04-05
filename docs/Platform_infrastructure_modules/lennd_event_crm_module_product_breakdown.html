@@ -1,0 +1,136 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#F1EFE8;color:#2C2C2A"><div class="dot" style="background:#5F5E5A"></div>Module: Event CRM — the central contact & data backbone</div>
+
+<div class="note" style="background:var(--color-background-info);color:var(--color-text-info)">
+The CRM is not a standalone module users interact with directly — it's the <strong>data layer beneath every other module</strong>. Credentials, catering, assets, guest lists, portals, forms, payments — all read from and write to the CRM. When a vendor submits a credential request through their portal, the data lands in the CRM. When an admin approves it, the CRM record updates. Every module is a view into this database.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Data architecture — the two-entity model</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Groups</span><span class="sub">Organizations / companies / teams</span></td>
+<td>Each group is an entity participating in the event: "Acme AV Co." (vendor), "RedBull" (sponsor), "Gate A Volunteers" (volunteer team). Groups have a primary contact, a type, and contain people. Groups hold aggregate data: total credential count, asset orders, catering allocation, payment balance</td>
+<td>Model the real-world structure — agencies deal with organizations, not loose individuals. The group is the contracting entity, the billing target, and the accountability unit</td>
+</tr>
+<tr>
+<td><span class="el">People</span><span class="sub">Individuals within groups</span></td>
+<td>Each person belongs to one or more groups. Stores: name, email, phone, photo, title, dietary restrictions, emergency contact, and any custom fields. Each person has individual credential orders, catering assignments, and check-in records</td>
+<td>Track individuals for badge printing, meal scanning, and access verification — the group gets 12 passes, but each of the 12 people needs a name on a badge and a barcode to scan</td>
+</tr>
+<tr>
+<td><span class="el">Group types</span><span class="sub">Vendor, Artist, Sponsor, Volunteer, etc.</span></td>
+<td>Define types during event setup. Use preset types (Vendor, Artist, Sponsor, Media, Volunteer, Speaker, Exhibitor, Staff, Athlete) or create custom types. Each type determines portal configuration, form assignments, and module access. A "Default" catch-all type can be created for unsorted contacts during import</td>
+<td>Enable batch configuration — assign one portal template to all vendors at once, instead of configuring 47 individually. Types are the segmentation layer that makes modular portals possible</td>
+</tr>
+<tr>
+<td><span class="el">People types</span><span class="sub">Mirror or extend group types</span></td>
+<td>People types can mirror group types (a person in a vendor group = vendor person) or be independent (a "VIP" person type across multiple group types). Used for filtering, reporting, and credential differentiation</td>
+<td>Enable person-level segmentation beyond their group — a person can be tagged as "Day-of Hire" or "Returning Staff" regardless of which group they belong to</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Field management — the custom data schema</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Pre-populated fields</span><span class="sub">Common contact fields out-of-box</span></td>
+<td>Lennd ships with standard fields for groups (company name, address, phone, website, primary contact) and people (first name, last name, email, phone, title, photo, dietary restrictions). Ready to use without configuration</td>
+<td>Eliminate setup time for common data — the 80% of fields every event needs are already there</td>
+</tr>
+<tr>
+<td><span class="el">Custom fields</span><span class="sub">Event-specific data capture</span></td>
+<td>Create custom fields of any type: text, number, dropdown, checkbox, date, file upload, photo upload, multi-select, URL. Add descriptions to guide data entry (e.g., "Upload a photo of a recent booth you have hosted"). Fields are reusable across forms and portals</td>
+<td>Capture any event-specific data the admin needs — T-shirt sizes, arrival times, vehicle license plates, insurance policy numbers, social media handles — without workarounds</td>
+</tr>
+<tr>
+<td><span class="el">Field groups</span><span class="sub">Organized categories of fields</span></td>
+<td>Organize fields into logical groups: "Contact Information," "Compliance Documents," "Year-Specific Questions," "Group-Type-Specific Questions." Especially useful when field count grows large across years</td>
+<td>Keep the CRM schema manageable as events grow complex — separate 2025-specific questions from 2026-specific questions, vendor questions from artist questions</td>
+</tr>
+<tr>
+<td><span class="el">Lookup fields (form-to-CRM link)</span><span class="sub">Bidirectional data binding</span></td>
+<td>When a CRM field is added to a form as a question, it functions as a lookup — form responses are linked to the contact's CRM profile. New form submissions or profile changes update the data across the entire platform automatically</td>
+<td>Single source of truth — a dietary restriction updated via portal form instantly reflects in catering reports, badge printing, and the person's CRM record. No manual sync</td>
+</tr>
+<tr>
+<td><span class="el">Record layout per type</span><span class="sub">Custom profile view per group/people type</span></td>
+<td>Configure which fields display when viewing a contact profile, per type. Vendor profile shows: COI status, asset orders, load-in time. Artist profile shows: rider status, performance schedule, guest list. Different layouts for different roles</td>
+<td>When an admin clicks on a vendor vs. an artist, they see immediately relevant information — not every field from every type dumped into one page</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Contact management — adding, importing, maintaining</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Manual contact creation</span><span class="sub">Add one group or person at a time</span></td>
+<td>Click "Add Group" or "Add Person" in CRM. Fill in required fields (name, type, primary contact email). Optionally grant portal login access during creation. Assign person to one or more groups</td>
+<td>Quick entry for one-off additions — a new vendor confirmed yesterday, a VIP guest added last minute</td>
+</tr>
+<tr>
+<td><span class="el">CSV/Excel import</span><span class="sub">Bulk contact loading</span></td>
+<td>Upload CSV/XLS file with contact data. Map Lennd fields to column headers (mandatory fields auto-selected). Set default values for unmapped columns. Import into Groups or People. Pro tip: import people into Groups view to auto-associate Group Name</td>
+<td>Handle the "200 vendor contacts from last year's spreadsheet" scenario — go from spreadsheet to fully populated CRM in minutes instead of hours of manual entry</td>
+</tr>
+<tr>
+<td><span class="el">Intake form auto-creation</span><span class="sub">Contacts created from form submissions</span></td>
+<td>When an external party fills out an onboarding form or application, a new group/person record auto-creates in the CRM. Form responses populate the corresponding CRM fields. No admin intervention needed</td>
+<td>Self-service contact creation — the vendor onboards themselves, and the CRM populates automatically. The admin never manually types a vendor's company name</td>
+</tr>
+<tr>
+<td><span class="el">Bulk edit</span><span class="sub">Mass update across selected contacts</span></td>
+<td>Select multiple groups or people in the CRM view. Apply bulk changes: update type, change a field value, assign to a portal, add a tag. Filters + bulk edit = targeted mass operations</td>
+<td>Handle year-over-year housekeeping efficiently — "move all 2025 vendors to 2026 vendor type" or "update all volunteer T-shirt sizes to this year's options"</td>
+</tr>
+<tr>
+<td><span class="el">Export</span><span class="sub">CSV/Excel data extraction</span></td>
+<td>Export group or people data with selected fields. Filter before export to extract targeted subsets (all vendors with pending credentials, all artists with incomplete forms)</td>
+<td>Feed data into external systems — print vendor email list for bulk communication, export credential names for security briefing, share artist contacts with production manager</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Cross-event persistence — the organizational memory</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Organization-level CRM</span><span class="sub">Contacts persist beyond single events</span></td>
+<td>Groups and people exist at the organization level, not just the event level. When you create "Summit 2027," returning vendors from "Summit 2026" are already in the CRM with their company info, contacts, and historical data</td>
+<td>Never start from scratch — the database gets richer every year. Year 3 of using Lennd, the CRM is a comprehensive vendor/artist/sponsor directory with multi-year history</td>
+</tr>
+<tr>
+<td><span class="el">Cross-event contact database</span><span class="sub">Every credentialed person, every event</span></td>
+<td>View all groups and people across all events in one unified database. Filter by event, type, status, or any field. See which contacts participated in which events</td>
+<td>Answer "which vendors have we worked with across all 12 events this year?" without opening 12 separate spreadsheets</td>
+</tr>
+<tr>
+<td><span class="el">Historical request data</span><span class="sub">Past orders, approvals, usage</span></td>
+<td>Each contact's profile shows their history: credential orders from past events, asset requests, catering usage, payment history. Admin can reference last year's data when planning this year</td>
+<td>Data-driven vendor management — "Acme AV used 3 golf carts and 12 credentials last year" informs this year's allocation without asking them. Reduce back-and-forth, speed up planning</td>
+</tr>
+<tr>
+<td><span class="el">Organization dashboard stats</span><span class="sub">High-level metrics across events</span></td>
+<td>Organization dashboard shows aggregate stats: total events, total contacts, total revenue across all events. High-level health check on the organization's event portfolio</td>
+<td>Give organizational leadership a bird's-eye view — how many events, how many stakeholders, how much revenue, all in one glance without drilling into individual events</td>
+</tr>
+</table>
+</div>

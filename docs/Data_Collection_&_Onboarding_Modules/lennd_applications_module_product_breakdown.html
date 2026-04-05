@@ -1,0 +1,126 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:10px 14px;font-size:11px;line-height:1.6;border-radius:var(--border-radius-md);margin:8px 10px 10px}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAEEDA;color:#633806"><div class="dot" style="background:#BA7517"></div>Module 4: Applications — intake, evaluation & selection pipeline</div>
+
+<div class="note" style="background:#FAEEDA;color:#633806">
+Applications differ from Forms in a critical way: Forms collect data from <strong>already-known</strong> stakeholders (a vendor you've invited). Applications are the <strong>intake gate</strong> for unknown parties trying to get in — speaker proposals, vendor applications, volunteer sign-ups, media accreditation requests. The flow is: apply → review → score → accept/reject → onboard.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Application design (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Application form builder</span><span class="sub">Public-facing intake form</span></td>
+<td>Build the application form with custom fields: company info, description, portfolio links, headshot/bio upload, topic proposal, availability, references, pricing. Uses the same field library as Forms module</td>
+<td>Structured intake replaces unstructured email submissions — every applicant provides the same info in the same format for fair comparison</td>
+</tr>
+<tr>
+<td><span class="el">Application types</span><span class="sub">Different pipelines per stakeholder</span></td>
+<td>Create separate applications per use case: Call for Speakers, Vendor Application, Volunteer Sign-up, Media Accreditation, Exhibitor Application. Each with unique fields and criteria</td>
+<td>Different evaluation criteria per role — a speaker is judged on topic relevance, a vendor on pricing and capability, a volunteer on availability</td>
+</tr>
+<tr>
+<td><span class="el">Scoring criteria</span><span class="sub">Evaluation rubric for reviewers</span></td>
+<td>Define grading dimensions: relevance, quality, experience, cost, availability — each with a score range. Reviewers grade against these criteria. Aggregate score ranks applicants</td>
+<td>Objective, consistent evaluation — reduce "who knows who" bias with structured scoring that multiple reviewers can contribute to</td>
+</tr>
+<tr>
+<td><span class="el">Open/close dates</span><span class="sub">Application window management</span></td>
+<td>Set when applications open (publish date) and close (deadline). Application form URL is inaccessible before open date and rejects submissions after close date</td>
+<td>Control the application window to align with event planning timeline — not too early (incomplete info), not too late (no time to onboard)</td>
+</tr>
+<tr>
+<td><span class="el">Public URL</span><span class="sub">Shareable application link</span></td>
+<td>Each application gets a unique public URL that can be shared on the event website, social media, email campaigns, or partner networks. No account needed to apply</td>
+<td>Maximum reach — anyone can apply from anywhere without creating a Lennd account. Lower the barrier to get the best applicant pool</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Submission (applicants)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Application submission</span><span class="sub">Zero-account form fill</span></td>
+<td>Applicant clicks public URL, fills out all required fields, uploads supporting files (bios, portfolio, headshots, certifications), and submits. No login or account creation needed</td>
+<td>Frictionless intake — a potential speaker or vendor submits a complete, structured application in 5-10 minutes from any device</td>
+</tr>
+<tr>
+<td><span class="el">Confirmation receipt</span><span class="sub">Submission acknowledgment</span></td>
+<td>Applicant receives email confirmation of submission with a summary of what they submitted. Includes info on expected review timeline</td>
+<td>Close the loop immediately — applicant knows their submission went through and what to expect next</td>
+</tr>
+<tr>
+<td><span class="el">Status visibility</span><span class="sub">If accepted and granted portal access</span></td>
+<td>Once an applicant is accepted and onboarded as a group, they can see their application status in their portal: submitted, under review, accepted, rejected</td>
+<td>Transparency for accepted applicants — they see their status transition from "applicant" to "confirmed group" within the same system</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Review, scoring & selection (admin team)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Application review queue</span><span class="sub">All submissions in one view</span></td>
+<td>View all received applications in a filterable list. Sort by date submitted, score, status, or custom fields. Open individual applications to see full responses and uploaded files</td>
+<td>Process a high volume of applications efficiently — not buried in an email inbox but in a structured review interface</td>
+</tr>
+<tr>
+<td><span class="el">Multi-reviewer scoring</span><span class="sub">Team-based evaluation</span></td>
+<td>Multiple team members score the same application independently. Each reviewer grades against defined criteria. System aggregates scores to produce a composite ranking</td>
+<td>Collaborative evaluation with accountability — every reviewer's score is recorded, reducing individual bias and increasing fairness</td>
+</tr>
+<tr>
+<td><span class="el">Accept / reject / waitlist</span><span class="sub">Decision per application</span></td>
+<td>Mark applications as accepted, rejected, or waitlisted. Accepted applicants auto-create a group in the event CRM. Rejection can include a reason note</td>
+<td>The accept action is the bridge from "applicant" to "participant" — one click transitions them from the application pipeline into the operational portal system</td>
+</tr>
+<tr>
+<td><span class="el">Status notification emails</span><span class="sub">Automated decision communication</span></td>
+<td>System sends acceptance or rejection emails to applicants when their status changes. Customizable email templates per application type and decision</td>
+<td>Close the communication loop without manual emailing — 200 applicants each get a personalized decision email with one batch action</td>
+</tr>
+<tr>
+<td><span class="el">CRM integration on acceptance</span><span class="sub">Applicant → group → portal</span></td>
+<td>When an applicant is accepted, their submission data creates a group record in the event CRM. Contact info, uploaded files, and responses pre-populate the record. Admin then grants portal access and the onboarding flow begins</td>
+<td>Seamless pipeline — the data an applicant submitted in their application becomes the foundation of their operational record. No re-entry, no data loss</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Reporting & analytics</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Application volume metrics</span><span class="sub">Total received, accepted, rejected</span></td>
+<td>Dashboard showing total applications received, acceptance rate, rejection rate, pending review count, average score distribution</td>
+<td>Understand your applicant funnel — is your call for speakers attracting quality proposals? Are you over-rejecting vendors?</td>
+</tr>
+<tr>
+<td><span class="el">Reviewer activity tracking</span><span class="sub">Who has reviewed what</span></td>
+<td>See which reviewers have completed their scoring assignments and who has pending reviews. Ensure balanced workload across the review team</td>
+<td>Accountability and speed — identify if one reviewer is holding up the pipeline and redistribute work</td>
+</tr>
+<tr>
+<td><span class="el">Export for comparison</span><span class="sub">CSV/Excel of all applications</span></td>
+<td>Export all application data with scores for offline review, committee meetings, or executive decision-making</td>
+<td>Support decision-making outside Lennd — print ranked lists for a selection committee meeting, share with stakeholders who don't use the platform</td>
+</tr>
+</table>
+</div>

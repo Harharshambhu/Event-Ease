@@ -1,0 +1,138 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.src{display:inline-block;font-size:8px;padding:1px 4px;border-radius:3px;font-weight:500;margin-left:2px;vertical-align:middle}
+.s-lennd{background:#E1F5EE;color:#085041}
+.s-zoho{background:#FAEEDA;color:#633806}
+.s-cvent{background:#EEEDFE;color:#3C3489}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5}
+.legend{display:flex;gap:10px;padding:6px 14px;font-size:10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAEEDA;color:#633806"><div class="dot" style="background:#BA7517"></div>Module: Schedules — event timeline, session programming & logistics coordination</div>
+<div class="legend"><span class="src s-lennd">Lennd</span> Operations-first: load-in/out, deliveries, performances <span class="src s-zoho">Zoho</span> Attendee-first: agenda builder, session tracks <span class="src s-cvent">Cvent</span> Enterprise-first: multi-track, room assignments, capacity</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Schedule structure & configuration (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Event day definitions</span><span class="sub">Load-in, show days, load-out, rehearsals</span></td>
+<td>Define the full event timeline including pre-event days (load-in, rehearsal, soundcheck) and post-event (load-out, teardown). Set start/end times per day. <span class="src s-lennd">Lennd</span> includes load-in/out as first-class schedule days. <span class="src s-zoho">Zoho</span> focuses on public-facing event days. <span class="src s-cvent">Cvent</span> supports multi-day with pre/post conference days</td>
+<td>Capture the full lifecycle — not just what attendees see, but the 3 days before and 1 day after that operations teams live through. Load-in scheduling is often more complex than show-day programming</td>
+</tr>
+<tr>
+<td><span class="el">Tracks / parallel streams</span><span class="sub">Concurrent programming lanes</span></td>
+<td>Create parallel tracks for simultaneous activities: Main stage + Breakout A + Breakout B + Workshop room. Each track runs on its own timeline. <span class="src s-zoho">Zoho</span> supports multi-track with filtering by track in the agenda view. <span class="src s-cvent">Cvent</span> supports unlimited tracks with room assignment per session. <span class="src s-lennd">Lennd</span> handles this via schedule categories (performances, deliveries, meetings)</td>
+<td>Model the reality of complex events where 5 things happen at once — the main keynote, a vendor setup in Hall B, a VIP lunch, a soundcheck on the second stage, and a production meeting, all at 2 PM</td>
+</tr>
+<tr>
+<td><span class="el">Venue / room mapping</span><span class="sub">Where each activity happens</span></td>
+<td>Assign physical locations to schedule slots: room names, stage names, outdoor areas, loading docks. <span class="src s-cvent">Cvent</span> integrates with Event Diagramming for floor plans and room capacity tracking. <span class="src s-zoho">Zoho</span> uses smart floor planning with venue maps. <span class="src s-lennd">Lennd</span> uses location fields within schedule items</td>
+<td>Every scheduled item has a "where" — so operations can produce room-by-room run sheets and attendees can navigate to the right place</td>
+</tr>
+<tr>
+<td><span class="el">Session types / categories</span><span class="sub">Keynote, workshop, panel, break, logistics</span></td>
+<td>Define session types with distinct visual treatment: keynote (full-width, highlighted), breakout (standard), workshop (interactive icon), break (greyed), logistics-only (hidden from attendee view). <span class="src s-zoho">Zoho</span> supports session branding with logos and colors per type. <span class="src s-cvent">Cvent</span> supports custom session categories with registration-level visibility</td>
+<td>Differentiate between what attendees see (keynotes, panels, breaks) and what operations teams see (vendor load-in, AV setup, security briefing) — same timeline, different audiences</td>
+</tr>
+<tr>
+<td><span class="el">Time slot templates</span><span class="sub">Recurring schedule patterns</span></td>
+<td>Create reusable time blocks: "morning keynote slot" (9:00-10:30), "breakout block" (11:00-12:00), "lunch break" (12:00-13:00). Apply templates across multiple days to maintain consistent rhythm. <span class="src s-cvent">Cvent</span> supports session templates. <span class="src s-zoho">Zoho</span> agenda builder has drag-and-drop slot creation</td>
+<td>Avoid rebuilding the same schedule structure for each day — template it once, customize content per day</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Session & activity population (admin + content team)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Session creation</span><span class="sub">Individual agenda items</span></td>
+<td>Create sessions with: title, description, start/end time, track assignment, room/location, session type, capacity limit. Assign speakers (linked from speaker module). <span class="src s-zoho">Zoho</span> uses a visual agenda builder with drag-and-drop. <span class="src s-cvent">Cvent</span> allows sessions to be auto-created from accepted abstract submissions. <span class="src s-lennd">Lennd</span> creates schedule activities assignable to groups/people</td>
+<td>Build the programmatic content of the event — every talk, workshop, panel, and performance has a structured record with time, place, and people attached</td>
+</tr>
+<tr>
+<td><span class="el">Speaker-to-session linking</span><span class="sub">Who presents where and when</span></td>
+<td>Assign one or more speakers to each session. Speaker's bio, photo, and social links appear on the session detail. <span class="src s-zoho">Zoho</span> speakers are featured on the event website with their sessions auto-linked. <span class="src s-cvent">Cvent</span> links accepted abstract submitters directly to their session. <span class="src s-lennd">Lennd</span> assigns activities to people records from the CRM — appears on their portal profile</td>
+<td>Single source of truth for "who is speaking where" — no mismatch between the printed program, the website, and what the speaker thinks their slot is</td>
+</tr>
+<tr>
+<td><span class="el">Logistics activities</span><span class="sub">Non-public operational items</span></td>
+<td>Schedule operations-only activities: vendor load-in windows, AV setup, security walkthroughs, catering delivery, rehearsals, equipment pickup/return. These appear on internal/vendor schedules but not on the public attendee agenda. <span class="src s-lennd">Lennd</span> excels here — activities appear on assigned groups' portal views. <span class="src s-cvent">Cvent</span> supports internal-only sessions. <span class="src s-zoho">Zoho</span> is weaker on operational scheduling</td>
+<td>The attendee sees "Keynote at 9 AM." The AV vendor sees "Stage setup 6-8 AM, soundcheck 8-8:45 AM, keynote starts 9 AM." Same timeline, role-filtered views</td>
+</tr>
+<tr>
+<td><span class="el">Conflict detection</span><span class="sub">Overlapping assignments</span></td>
+<td>Flag when a speaker is double-booked, a room is over-capacity, or a vendor has overlapping load-in times. <span class="src s-cvent">Cvent</span> has room conflict detection built into session scheduling. <span class="src s-zoho">Zoho</span> shows time conflicts in the agenda builder. <span class="src s-lennd">Lennd</span> relies on manual review via schedule view — no automated conflict detection</td>
+<td>Catch scheduling errors before they become onsite emergencies — a speaker can't present in two rooms at the same time, a room can't host two sessions simultaneously</td>
+</tr>
+<tr>
+<td><span class="el">Accepted-to-scheduled pipeline</span><span class="sub">From speaker acceptance to agenda slot</span></td>
+<td>Accepted speaker proposals automatically populate as schedulable sessions. Admin drags them into time slots. <span class="src s-cvent">Cvent</span> has the strongest pipeline here: Abstract Management → accepted → session created → slot assigned → published to agenda. <span class="src s-zoho">Zoho</span> is building abstract management (coming 2026). <span class="src s-lennd">Lennd</span> handles this via manual activity creation linked to speaker groups</td>
+<td>Eliminate re-keying — speaker's proposal title, description, bio, and topic become the session record without anyone retyping it</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Publishing & distribution (multi-audience)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Public agenda / event website</span><span class="sub">Attendee-facing schedule</span></td>
+<td>Publish the finalized schedule to the event website and mobile app. Attendees browse by day, track, topic, or speaker. Bookmark/favorite sessions for a personal agenda. <span class="src s-zoho">Zoho</span> auto-publishes to the event website with filter-by-track and bookmark functionality in the mobile app. <span class="src s-cvent">Cvent</span> publishes to the Attendee Hub with session registration and personalized agenda. <span class="src s-lennd">Lennd</span> does not have a public-facing agenda website — schedule is portal-internal</td>
+<td>Give attendees a polished, filterable, bookmarkable agenda that sells the event and helps them plan their day</td>
+</tr>
+<tr>
+<td><span class="el">Stakeholder portal schedules</span><span class="sub">Role-filtered views per group</span></td>
+<td>Each stakeholder sees only their assigned activities in their portal. Vendor sees their load-in time and operational slots. Artist sees their soundcheck and performance. Volunteer sees their shift schedule. <span class="src s-lennd">Lennd</span> is strongest here — activities assigned to groups/people appear on their portal profile. <span class="src s-cvent">Cvent</span> uses the Speaker Resource Center for speakers' personal schedule. <span class="src s-zoho">Zoho</span> shows speakers their session details from their speaker console</td>
+<td>Every stakeholder answers "when am I needed and where?" by checking one portal — not by searching a 200-session public agenda for their 3 appearances</td>
+</tr>
+<tr>
+<td><span class="el">Internal operations run sheet</span><span class="sub">Minute-by-minute for stage/production team</span></td>
+<td>Generate a detailed run-of-show view: every activity across all tracks, minute-by-minute, with assigned personnel, AV requirements, and transition notes. Export as PDF/Excel for print. <span class="src s-cvent">Cvent</span> supports detailed session exports. <span class="src s-lennd">Lennd</span> exports schedule data via CSV. <span class="src s-zoho">Zoho</span> provides agenda export for offline use</td>
+<td>The production manager's bible — a printed or tablet-displayed document showing exactly what happens at every minute across every stage, with who's responsible for each transition</td>
+</tr>
+<tr>
+<td><span class="el">Real-time schedule updates</span><span class="sub">Last-minute changes pushed live</span></td>
+<td>When a session time changes or a speaker cancels, update the schedule in one place and it propagates everywhere: website, mobile app, portal views, speaker notifications. <span class="src s-zoho">Zoho</span> web updates automatically flow to the mobile app. <span class="src s-cvent">Cvent</span> pushes updates to the Attendee Hub. <span class="src s-lennd">Lennd</span> updates portal views in real time</td>
+<td>One change, everywhere updated — no more "the printed program says 2 PM but the app says 3 PM" contradictions that confuse attendees and embarrass organizers</td>
+</tr>
+<tr>
+<td><span class="el">Session registration / RSVP</span><span class="sub">Attendee capacity management</span></td>
+<td>Allow attendees to register for specific sessions to manage room capacity. Waitlists when sessions fill up. <span class="src s-cvent">Cvent</span> has full session-level registration with capacity enforcement and waitlists. <span class="src s-zoho">Zoho</span> supports session RSVPs via the mobile app with ticket-type gating. <span class="src s-lennd">Lennd</span> does not support attendee-facing session registration (operations-focused, not attendee-focused)</td>
+<td>Prevent the "200 people show up for a 50-seat workshop" problem — capacity-managed sessions with waitlists ensure no one arrives to a locked door</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Live execution & post-event analytics</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Session analytics</span><span class="sub">Attendance, engagement, feedback</span></td>
+<td>Track who attended which session, engagement metrics (poll responses, Q&A participation), and post-session feedback ratings. <span class="src s-zoho">Zoho</span> provides detailed session analytics with speaker performance metrics. <span class="src s-cvent">Cvent</span> tracks session attendance via badge scanning and LeadCapture. <span class="src s-lennd">Lennd</span> does not track session-level attendance (focuses on credential/catering check-in)</td>
+<td>Data-driven programming for next year — "the AI workshop had 3x the engagement of the compliance panel" informs which topics to expand and which to cut</td>
+</tr>
+<tr>
+<td><span class="el">Speaker feedback / surveys</span><span class="sub">Per-session attendee ratings</span></td>
+<td>Push post-session surveys to attendees who attended. Rate speaker quality, content relevance, and session format. <span class="src s-zoho">Zoho</span> supports feedback forms with session-level analytics. <span class="src s-cvent">Cvent</span> has integrated survey tools with results pushed back to speakers via the Speaker Resource Center. <span class="src s-lennd">Lennd</span> does not include session feedback tools</td>
+<td>Close the feedback loop — speakers see how they were rated, organizers see which sessions drove satisfaction, sponsors see which topics their audience cared about</td>
+</tr>
+<tr>
+<td><span class="el">Schedule performance report</span><span class="sub">What worked, what didn't</span></td>
+<td>Post-event report showing: session attendance vs. capacity, top-rated sessions, time-slot utilization, no-show rates per session, track popularity comparison. <span class="src s-cvent">Cvent</span> has the most comprehensive reporting here. <span class="src s-zoho">Zoho</span> provides event success metrics including turnout ratio and speaker feedback. <span class="src s-lennd">Lennd</span> provides schedule data exports but no built-in schedule analytics</td>
+<td>Transform the schedule from a planning artifact into a strategic asset — "the 4 PM slot had 40% drop-off, let's move the marquee session there next year to retain audience"</td>
+</tr>
+</table>
+</div>

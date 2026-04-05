@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Architecture Analysis — MME Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1916;
+    --ink2: #3d3c38;
+    --ink3: #6b6a65;
+    --rule: #d4d2c9;
+    --rule2: #e8e6e0;
+    --paper: #faf9f6;
+    --paper2: #f2f0ea;
+    --paper3: #e9e7e0;
+    --accent: #2d4a8a;
+    --accent2: #e8f0ff;
+
+    --form: #1a5c8a;
+    --form-bg: #e8f4fc;
+    --table: #1a7a5c;
+    --table-bg: #e8f8f2;
+    --config: #6b3fa0;
+    --config-bg: #f2eafc;
+    --queue: #8a5a1a;
+    --queue-bg: #fcf4e8;
+    --dash: #1a6a1a;
+    --dash-bg: #edf8ed;
+    --report: #6b1a1a;
+    --report-bg: #fceaea;
+    --scan: #1a4a6b;
+    --scan-bg: #e8f0f8;
+    --ops: #6b4a1a;
+    --ops-bg: #f8f2e8;
+    --auto: #3d3c38;
+    --auto-bg: #eeecea;
+  }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    display: flex; align-items: center; gap: 0;
+    border-bottom: 1px solid #333;
+  }
+  .nav-logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: #888; padding: 0 20px;
+    letter-spacing: 0.08em;
+    border-right: 1px solid #333;
+    height: 44px; display: flex; align-items: center;
+    white-space: nowrap;
+  }
+  .nav-tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 400;
+    color: #666; padding: 0 18px;
+    height: 44px; display: flex; align-items: center;
+    cursor: pointer; border: none; background: none;
+    letter-spacing: 0.04em; white-space: nowrap;
+    border-right: 1px solid #222;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-tab:hover { color: #bbb; background: #1a1a1a; }
+  .nav-tab.active { color: #fff; background: #2a2a2a; border-bottom: 2px solid #fff; }
+
+  /* SECTIONS */
+  .section { display: none; max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px; }
+  .section.active { display: block; }
+
+  /* TYPOGRAPHY */
+  h1 { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 400; letter-spacing: -0.01em; margin: 40px 0 16px; padding-top: 40px; border-top: 1px solid var(--rule); }
+  h2:first-of-type { margin-top: 32px; padding-top: 0; border-top: none; }
+  h3 { font-size: 15px; font-weight: 500; margin: 24px 0 10px; }
+  p { color: var(--ink2); line-height: 1.7; margin-bottom: 12px; }
+  .lead { font-size: 16px; font-weight: 300; color: var(--ink2); line-height: 1.7; max-width: 680px; }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+
+  /* STAT ROW */
+  .stat-row { display: flex; gap: 1px; margin: 24px 0; background: var(--rule); }
+  .stat {
+    flex: 1; background: var(--paper);
+    padding: 20px 24px;
+  }
+  .stat-num { font-size: 36px; font-weight: 300; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.08em; margin-top: 6px; }
+
+  /* PHASE TAGS */
+  .tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .tag-form    { background: var(--form-bg);   color: var(--form); }
+  .tag-table   { background: var(--table-bg);  color: var(--table); }
+  .tag-config  { background: var(--config-bg); color: var(--config); }
+  .tag-queue   { background: var(--queue-bg);  color: var(--queue); }
+  .tag-dash    { background: var(--dash-bg);   color: var(--dash); }
+  .tag-report  { background: var(--report-bg); color: var(--report); }
+  .tag-scan    { background: var(--scan-bg);   color: var(--scan); }
+  .tag-ops     { background: var(--ops-bg);    color: var(--ops); }
+  .tag-auto    { background: var(--auto-bg);   color: var(--auto); }
+  .tag-portal  { background: #fce8f4;   color: #6b1a5c; }
+  .tag-rule    { background: #f8ece8;   color: #8a3a1a; }
+  .tag-unique  { background: #fff8e0;   color: #6b5a00; border: 1px solid #e8d870; }
+
+  /* TABLES */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12px; }
+  .data-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper2);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--rule2);
+    vertical-align: top;
+    color: var(--ink2);
+  }
+  .data-table tr:hover td { background: var(--paper2); }
+  .data-table .tool-name { font-weight: 500; color: var(--ink); }
+  .data-table .phase-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--ink3);
+    background: var(--paper3);
+    padding: 1px 5px; border-radius: 2px;
+  }
+
+  /* PATTERN CARDS */
+  .pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); margin: 20px 0; }
+  .pattern-card {
+    background: var(--paper);
+    padding: 20px;
+  }
+  .pattern-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+  .pattern-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .pattern-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px; font-weight: 300;
+    color: var(--ink3); line-height: 1;
+  }
+  .pattern-tools { margin: 10px 0 0; }
+  .pattern-tools li { font-size: 11px; color: var(--ink3); margin-bottom: 2px; list-style: none; padding-left: 10px; position: relative; }
+  .pattern-tools li::before { content: '—'; position: absolute; left: 0; color: var(--rule); }
+  .pattern-industry { font-size: 11px; color: var(--ink2); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule2); font-style: italic; }
+
+  /* INDUSTRY SECTION */
+  .industry-block {
+    border-left: 3px solid var(--rule);
+    padding: 16px 20px;
+    margin: 16px 0;
+    background: var(--paper2);
+  }
+  .industry-block h4 { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .industry-block p { font-size: 12px; margin-bottom: 6px; }
+  .industry-block ul { padding-left: 16px; }
+  .industry-block li { font-size: 12px; color: var(--ink2); margin-bottom: 3px; }
+  .ref-chip {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--ink3);
+    background: var(--paper3);
+    padding: 2px 7px; border-radius: 10px;
+    margin: 2px;
+  }
+
+  /* CONSOLIDATION */
+  .consolidation-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: start; gap: 0;
+    margin: 0; border-bottom: 1px solid var(--rule2);
+  }
+  .consolidation-row:last-child { border-bottom: none; }
+  .col-before { padding: 14px 16px; background: var(--paper2); }
+  .col-arrow { display: flex; align-items: center; justify-content: center; background: var(--paper); color: var(--ink3); font-size: 16px; }
+  .col-after { padding: 14px 16px; background: var(--paper); }
+  .col-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.06em; margin-bottom: 6px; }
+  .col-items li { font-size: 11px; color: var(--ink2); margin: 2px 0; list-style: none; }
+  .col-items li::before { content: ''; margin-right: 4px; }
+  .new-tool-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .saving-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; padding: 2px 8px;
+    background: #e8fce8; color: #1a6a1a;
+    border-radius: 2px; display: inline-block; margin-top: 4px;
+  }
+
+  /* ARCHITECTURE */
+  .arch-layer { margin: 20px 0; }
+  .arch-layer-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    background: var(--ink); color: #fff;
+    cursor: pointer;
+  }
+  .arch-layer-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: #666; letter-spacing: 0.1em;
+  }
+  .arch-layer-name { font-size: 15px; font-weight: 400; flex: 1; }
+  .arch-layer-desc { font-size: 11px; color: #888; }
+  .arch-tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--rule); }
+  .arch-tool {
+    background: var(--paper);
+    padding: 18px 20px;
+    border-left: 4px solid transparent;
+  }
+  .arch-tool.foundation { border-left-color: #2d4a8a; }
+  .arch-tool.workflow { border-left-color: #6b3fa0; }
+  .arch-tool.operational { border-left-color: #8a5a1a; }
+  .arch-tool.output { border-left-color: #1a6a1a; }
+  .arch-tool.auto { border-left-color: #3d3c38; }
+  .arch-tool-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+  .arch-tool-desc { font-size: 11px; color: var(--ink3); margin-bottom: 8px; line-height: 1.5; }
+  .arch-tool-replaces { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); }
+  .arch-tool-replaces span { color: var(--ink2); }
+  .arch-tool-patterns { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .arch-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; padding: 2px 7px;
+    background: var(--paper2); color: var(--ink3);
+    border-radius: 2px;
+  }
+
+  /* PRIORITY TABLE */
+  .priority-row { display: grid; grid-template-columns: 40px 1fr 80px 80px; align-items: center; border-bottom: 1px solid var(--rule2); }
+  .priority-row.header { background: var(--paper2); border-bottom: 1px solid var(--ink); }
+  .priority-cell { padding: 10px 14px; font-size: 12px; }
+  .priority-cell.num { font-family: 'IBM Plex Mono', monospace; color: var(--ink3); text-align: center; }
+  .priority-cell.hdr { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.06em; }
+  .dep-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin: 2px; }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--accent2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px; margin: 20px 0;
+    font-size: 13px; color: var(--ink2);
+  }
+  .callout strong { color: var(--accent); }
+
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* SCROLLABLE TABLE WRAPPER */
+  .table-scroll { overflow-x: auto; margin: 16px 0; }
+
+  @media (max-width: 900px) {
+    .section { padding: 24px 20px 60px; }
+    .pattern-grid { grid-template-columns: 1fr; }
+    .arch-tools-grid { grid-template-columns: 1fr; }
+    .stat-row { flex-direction: column; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <div class="nav-logo">MME / TOOL ANALYSIS</div>
+  <button class="nav-tab active" onclick="showSection('overview')">01 Overview</button>
+  <button class="nav-tab" onclick="showSection('decomp')">02 Decomposition</button>
+  <button class="nav-tab" onclick="showSection('patterns')">03 Patterns</button>
+  <button class="nav-tab" onclick="showSection('consolidation')">04 Consolidation</button>
+  <button class="nav-tab" onclick="showSection('architecture')">05 Architecture</button>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1: OVERVIEW
+═══════════════════════════════════════════════ -->
+<div id="overview" class="section active">
+
+  <h1>Cross-Module Tool Analysis</h1>
+  <p class="lead">63 named tools across 4 modules and 4 phases. This document breaks them down by interaction pattern, required actions, outputs, and industry-standard approaches — then proposes a consolidated architecture that covers the same functional surface with far fewer discrete implementations.</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num">63</div>
+      <div class="stat-label">Named tools in matrix</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Distinct interaction patterns</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">22</div>
+      <div class="stat-label">Proposed implementations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">65%</div>
+      <div class="stat-label">Build effort reduction</div>
+    </div>
+  </div>
+
+  <h2>The core insight</h2>
+  <p>The 63 tools aren't 63 different problems. They're the same ~12 interaction patterns applied to different data objects and contexts. The matrix inflated the count because it named each instance separately — "Credential Type Manager," "Meal Type Manager," "Dietary Restriction Builder" are all one pattern: a settings page for managing entity types.</p>
+
+  <div class="callout">
+    <strong>The architectural opportunity:</strong> Build 7 Foundation primitives, configure them per module and context. This isn't abstraction for its own sake — it's how every mature B2B SaaS platform (Jira, Salesforce, Hubspot, Eventbrite) is actually built. The "tool" the user sees is a configured instance of a generic primitive, not a bespoke implementation.
+  </div>
+
+  <h2>Framework: Objectives → Tasks → Tools</h2>
+  <p>Before rationalizing tools, it helps to clearly separate what the platform is trying to accomplish at each phase. Every tool exists to serve a task; every task serves an objective.</p>
+
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin: 16px 0;">
+    <div style="background: var(--paper2); padding: 20px;">
+      <div class="mono" style="color: var(--ink3); margin-bottom: 8px;">PHASE 01</div>
+      <div style="font-size: 16px; font-weight: 500; margin-bottom: 10px;">Configure</div>
+      <p style="font-size: 12px; color: var(--ink3); margin-bottom: 12px;">Define the rules of the event before it begins. Admins set types, limits, templates, workflows, and permissions.</p>
+      <div style="font-size: 11px; color: var(--ink3);">Tasks: Define entity types · Set capacity limits · Design templates · Assign approvers · Build item blocks</div>
+    </div>
+    <div style="background: var(--paper2); padding: 20px;">
+      <div class="mono" style="color: var(--ink3); margin-bottom: 8px;">PHASE 02</div>
+      <div style="font-size: 16px; font-weight: 500; margin-bottom: 10px;">Collect</div>
+      <p style="font-size: 12px; color: var(--ink3); margin-bottom: 12px;">Gather requests, rosters, and data from stakeholders. The system accepts input through multiple channels.</p>
+      <div style="font-size: 11px; color: var(--ink3);">Tasks: Submit requests · Enter rosters · Import bulk data · Track deadlines · View allocations</div>
+    </div>
+    <div style="background: var(--paper2); padding: 20px;">
+      <div class="mono" style="color: var(--ink3); margin-bottom: 8px;">PHASE 03</div>
+      <div style="font-size: 16px; font-weight: 500; margin-bottom: 10px;">Process</div>
+      <p style="font-size: 12px; color: var(--ink3); margin-bottom: 12px;">Review, approve, and manage incoming data. Admins action requests; the system generates forecasts and assigns codes.</p>
+      <div style="font-size: 11px; color: var(--ink3);">Tasks: Approve/reject · Monitor status · Forecast demand · Track budget · Generate assignments</div>
+    </div>
+    <div style="background: var(--paper2); padding: 20px;">
+      <div class="mono" style="color: var(--ink3); margin-bottom: 8px;">PHASE 04</div>
+      <div style="font-size: 16px; font-weight: 500; margin-bottom: 10px;">Operate</div>
+      <p style="font-size: 12px; color: var(--ink3); margin-bottom: 12px;">Execute at the event. Real-time scanning, check-in, pickup fulfillment, overrides, and post-event reporting.</p>
+      <div style="font-size: 11px; color: var(--ink3);">Tasks: Scan credentials · Print badges · Fulfill pickups · Resolve disputes · Export reports</div>
+    </div>
+  </div>
+
+  <h2>Pattern distribution across phases</h2>
+  <p>Mapped by how many tool instances each pattern generates across all phases.</p>
+
+  <div style="background: var(--paper2); padding: 20px; margin: 16px 0;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">ENTITY CONFIG</div>
+        <div style="height: 24px; width: calc(11 * 38px); background: var(--config-bg); border-left: 3px solid var(--config); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--config);">11 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">DASHBOARD</div>
+        <div style="height: 24px; width: calc(8 * 38px); background: var(--dash-bg); border-left: 3px solid var(--dash); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--dash);">8 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">FORM</div>
+        <div style="height: 24px; width: calc(7 * 38px); background: var(--form-bg); border-left: 3px solid var(--form); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--form);">7 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">EDITABLE TABLE</div>
+        <div style="height: 24px; width: calc(6 * 38px); background: var(--table-bg); border-left: 3px solid var(--table); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--table);">6 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">OPS / TRACKER</div>
+        <div style="height: 24px; width: calc(6 * 38px); background: var(--ops-bg); border-left: 3px solid var(--ops); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ops);">6 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">APPROVAL QUEUE</div>
+        <div style="height: 24px; width: calc(3 * 38px); background: var(--queue-bg); border-left: 3px solid var(--queue); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--queue);">3 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">SCAN TERMINAL</div>
+        <div style="height: 24px; width: calc(3 * 38px); background: var(--scan-bg); border-left: 3px solid var(--scan); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--scan);">3 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">RULE BUILDER</div>
+        <div style="height: 24px; width: calc(3 * 38px); background: var(--form-bg); border-left: 3px solid #d07030; display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #d07030;">3 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">REPORT / EXPORT</div>
+        <div style="height: 24px; width: calc(4 * 38px); background: var(--report-bg); border-left: 3px solid var(--report); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--report);">4 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">PORTAL VIEW</div>
+        <div style="height: 24px; width: calc(4 * 38px); background: #fce8f4; border-left: 3px solid #6b1a5c; display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b1a5c;">4 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3);">BACKGROUND AUTO</div>
+        <div style="height: 24px; width: calc(3 * 38px); background: var(--auto-bg); border-left: 3px solid var(--auto); display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--auto);">3 instances</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); color: #7a6000;">UNIQUE / DISTINCT</div>
+        <div style="height: 24px; width: calc(4 * 38px); background: #fff8e0; border-left: 3px solid #c8a800; display: flex; align-items: center; padding-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a6a00;">4 instances</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2: DECOMPOSITION
+═══════════════════════════════════════════════ -->
+<div id="decomp" class="section">
+
+  <h1>Full Tool Decomposition</h1>
+  <p class="lead">Every tool mapped to its interaction pattern, core action type, primary data object, output format, and recommended pattern category. Use this to identify what each tool actually does, independent of what it's called.</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background: var(--form);"></div>Form / Input</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--table);"></div>Editable Table</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--config);"></div>Entity Config</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--queue);"></div>Approval Queue</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--dash);"></div>Dashboard</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--report);"></div>Report / Export</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--scan);"></div>Scan Terminal</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--ops);"></div>Ops / Tracker</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--auto);"></div>Background Auto</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #6b1a5c;"></div>Portal View</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #d07030;"></div>Rule Builder</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #c8a800;"></div>Unique</div>
+  </div>
+
+  <div class="table-scroll">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tool name</th>
+        <th>Phase / Module</th>
+        <th>Pattern</th>
+        <th>Core action</th>
+        <th>Primary object</th>
+        <th>Output format</th>
+        <th>User role</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- PHASE 1 -->
+      <tr><td colspan="8" style="background: var(--paper3); font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; padding: 8px 12px;">PHASE 1 — CONFIGURATION</td></tr>
+
+      <tr><td class="mono" style="color: var(--ink3);">01</td><td class="tool-name">Credential Type Manager</td><td><span class="phase-badge">P1 / Cred</span></td><td><span class="tag tag-config">Entity Config</span></td><td>CRUD entity types</td><td>Credential types</td><td>Config record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">02</td><td class="tool-name">Badge Design Template Editor</td><td><span class="phase-badge">P1 / Cred</span></td><td><span class="tag tag-unique">Unique — Canvas</span></td><td>Design layout</td><td>Badge template</td><td>Print template</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">03</td><td class="tool-name">Approval Workflow Builder</td><td><span class="phase-badge">P1 / Cred</span></td><td><span class="tag tag-rule">Rule Builder</span></td><td>Define conditional flow</td><td>Workflow rules</td><td>Rule set</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">04</td><td class="tool-name">Item Block Builder (Credentials)</td><td><span class="phase-badge">P1 / Cred</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Compose block</td><td>Item block</td><td>Reusable block</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">05</td><td class="tool-name">Barcode / RFID Pool Manager</td><td><span class="phase-badge">P1 / Cred</span></td><td><span class="tag tag-unique">Unique — Code Pool</span></td><td>Generate + pool codes</td><td>Code inventory</td><td>Code pool</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">06</td><td class="tool-name">Event Day Planner</td><td><span class="phase-badge">P1 / Cat</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Schedule timings</td><td>Meal day/times</td><td>Day schedule</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">07</td><td class="tool-name">Meal Type Manager</td><td><span class="phase-badge">P1 / Cat</span></td><td><span class="tag tag-config">Entity Config</span></td><td>CRUD entity types</td><td>Meal types</td><td>Config record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">08</td><td class="tool-name">Dietary Restriction Builder</td><td><span class="phase-badge">P1 / Cat</span></td><td><span class="tag tag-config">Entity Config</span></td><td>CRUD tag options</td><td>Dietary tags</td><td>Options list</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">09</td><td class="tool-name">Item Block Builder (Catering)</td><td><span class="phase-badge">P1 / Cat</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Compose block</td><td>Item block</td><td>Reusable block</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">10</td><td class="tool-name">Approver Settings Panel</td><td><span class="phase-badge">P1 / Cat</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Assign roles</td><td>Approver roles</td><td>Permission config</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">11</td><td class="tool-name">Asset Catalog Manager</td><td><span class="phase-badge">P1 / Assets</span></td><td><span class="tag tag-config">Entity Config</span></td><td>CRUD catalog</td><td>Asset catalog</td><td>Asset library</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">12</td><td class="tool-name">Pricing Configuration</td><td><span class="phase-badge">P1 / Assets</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Set price rules</td><td>Price matrix</td><td>Price sheet</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">13</td><td class="tool-name">Item Block Builder (Assets)</td><td><span class="phase-badge">P1 / Assets</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Compose block</td><td>Item block</td><td>Reusable block</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">14</td><td class="tool-name">Inventory Ceiling Config</td><td><span class="phase-badge">P1 / Assets</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Set inventory limits</td><td>Inventory ceilings</td><td>Ceiling config</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">15</td><td class="tool-name">Pass Type Selector</td><td><span class="phase-badge">P1 / Guests</span></td><td><span class="tag tag-config">Entity Config</span></td><td>Select + configure</td><td>Pass types</td><td>Pass config</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">16</td><td class="tool-name">Meal Attachment Config</td><td><span class="phase-badge">P1 / Guests</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Link entities (matrix)</td><td>Meal↔Pass rules</td><td>Attachment rules</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">17</td><td class="tool-name">Group Quota Table</td><td><span class="phase-badge">P1 / Guests</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Set quotas</td><td>Group quotas</td><td>Quota sheet</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">18</td><td class="tool-name">Custom Group Creator</td><td><span class="phase-badge">P1 / Guests</span></td><td><span class="tag tag-form">Form</span></td><td>Create entity</td><td>Group record</td><td>Record</td><td>Admin</td></tr>
+
+      <!-- PHASE 2 -->
+      <tr><td colspan="8" style="background: var(--paper3); font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; padding: 8px 12px;">PHASE 2 — COLLECTION / REQUEST</td></tr>
+
+      <tr><td class="mono" style="color: var(--ink3);">19</td><td class="tool-name">Count Request Form</td><td><span class="phase-badge">P2 / Cred</span></td><td><span class="tag tag-form">Form</span></td><td>Submit request</td><td>Credential count</td><td>Request record</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">20</td><td class="tool-name">Personnel Roster Table</td><td><span class="phase-badge">P2 / Cred</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Enter / import data</td><td>Staff roster</td><td>Roster dataset</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">21</td><td class="tool-name">Portal Request Form</td><td><span class="phase-badge">P2 / Cred</span></td><td><span class="tag tag-form">Form</span></td><td>Submit custom fields</td><td>Credential request</td><td>Request record</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">22</td><td class="tool-name">Standalone Public Form</td><td><span class="phase-badge">P2 / Cred</span></td><td><span class="tag tag-form">Form</span></td><td>Submit (no login)</td><td>Open request</td><td>Request record</td><td>Public</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">23</td><td class="tool-name">Bulk CSV Import Modal</td><td><span class="phase-badge">P2 / Cred</span></td><td><span class="tag tag-unique">Unique — CSV Import</span></td><td>Upload + map columns</td><td>Bulk records</td><td>Imported rows</td><td>Stakeholder/Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">24</td><td class="tool-name">Meal Request Grid</td><td><span class="phase-badge">P2 / Cat</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Enter quantities in matrix</td><td>Day × Meal requests</td><td>Meal request</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">25</td><td class="tool-name">Person-Meal Assignment Table</td><td><span class="phase-badge">P2 / Cat</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Assign per-person meals</td><td>Person→Meal map</td><td>Assignment set</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">26</td><td class="tool-name">Dietary Field (per person)</td><td><span class="phase-badge">P2 / Cat</span></td><td><span class="tag tag-form">Form</span></td><td>Tag dietary flags</td><td>Dietary flags</td><td>Flag record</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">27</td><td class="tool-name">Admin Manual Add Modal</td><td><span class="phase-badge">P2 / Cat</span></td><td><span class="tag tag-form">Form</span></td><td>Create record manually</td><td>Any record</td><td>Record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">28</td><td class="tool-name">Portal Asset Order Page</td><td><span class="phase-badge">P2 / Assets</span></td><td><span class="tag tag-form">Form</span></td><td>Browse + order</td><td>Asset order</td><td>Order record</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">29</td><td class="tool-name">Custom Request Form</td><td><span class="phase-badge">P2 / Assets</span></td><td><span class="tag tag-form">Form</span></td><td>Submit custom fields</td><td>Asset request</td><td>Request record</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">30</td><td class="tool-name">Request Status View (portal)</td><td><span class="phase-badge">P2 / Assets</span></td><td><span class="tag tag-portal">Portal View</span></td><td>View status</td><td>Request status</td><td>Read-only display</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">31</td><td class="tool-name">Portal Allocation Overview</td><td><span class="phase-badge">P2 / Guests</span></td><td><span class="tag tag-portal">Portal View</span></td><td>View allocations</td><td>Quota vs. used</td><td>Read-only display</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">32</td><td class="tool-name">Guest Name Table</td><td><span class="phase-badge">P2 / Guests</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Enter guest names</td><td>Guest roster</td><td>Guest list</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">33</td><td class="tool-name">Deadline Banner + Lock</td><td><span class="phase-badge">P2 / Guests</span></td><td><span class="tag tag-rule">Rule Builder</span></td><td>Enforce deadline state</td><td>Submission window</td><td>UI lock state</td><td>System</td></tr>
+
+      <!-- PHASE 3 -->
+      <tr><td colspan="8" style="background: var(--paper3); font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; padding: 8px 12px;">PHASE 3 — REVIEW, APPROVAL & MANAGEMENT</td></tr>
+
+      <tr><td class="mono" style="color: var(--ink3);">34</td><td class="tool-name">Approval Queue (Credentials)</td><td><span class="phase-badge">P3 / Cred</span></td><td><span class="tag tag-queue">Approval Queue</span></td><td>Review + approve/reject</td><td>Credential requests</td><td>Decision record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">35</td><td class="tool-name">Status Reports Dashboard</td><td><span class="phase-badge">P3 / Cred</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Monitor request status</td><td>Status aggregates</td><td>Exportable report</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">36</td><td class="tool-name">Automated Reminder Rules</td><td><span class="phase-badge">P3 / Cred</span></td><td><span class="tag tag-rule">Rule Builder</span></td><td>Configure automation</td><td>Reminder triggers</td><td>Automation config</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">37</td><td class="tool-name">Barcode Assignment (auto)</td><td><span class="phase-badge">P3 / Cred</span></td><td><span class="tag tag-auto">Background Auto</span></td><td>Auto-assign codes</td><td>Code→Record map</td><td>Assigned codes</td><td>System</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">38</td><td class="tool-name">Approval Queue (Catering)</td><td><span class="phase-badge">P3 / Cat</span></td><td><span class="tag tag-queue">Approval Queue</span></td><td>Review + approve/reject</td><td>Catering requests</td><td>Decision record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">39</td><td class="tool-name">Catering Forecast Dashboard</td><td><span class="phase-badge">P3 / Cat</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Analyze meal volumes</td><td>Day × Meal pivot</td><td>Forecast table</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">40</td><td class="tool-name">Budget Tracking Panel</td><td><span class="phase-badge">P3 / Cat</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Track spend</td><td>Budget vs. actual</td><td>Budget status</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">41</td><td class="tool-name">Approval Queue (Assets + partial qty)</td><td><span class="phase-badge">P3 / Assets</span></td><td><span class="tag tag-queue">Approval Queue</span></td><td>Review + partial approve</td><td>Asset requests</td><td>Decision record</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">42</td><td class="tool-name">Allocation Dashboard</td><td><span class="phase-badge">P3 / Assets</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>View inventory state</td><td>Inventory allocations</td><td>Visual gauge</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">43</td><td class="tool-name">Group Asset Report (delivery manifest)</td><td><span class="phase-badge">P3 / Assets</span></td><td><span class="tag tag-report">Report / Export</span></td><td>Generate manifest</td><td>Asset delivery plan</td><td>PDF / printable</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">44</td><td class="tool-name">Billback / Invoice Panel</td><td><span class="phase-badge">P3 / Assets</span></td><td><span class="tag tag-unique">Unique — Invoice</span></td><td>Calculate + display costs</td><td>Cost breakdown</td><td>Invoice document</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">45</td><td class="tool-name">Completion Tracking Dashboard</td><td><span class="phase-badge">P3 / Guests</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Track completion %</td><td>Submission progress</td><td>Progress display</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">46</td><td class="tool-name">Aggregate Guest Counter</td><td><span class="phase-badge">P3 / Guests</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Count totals</td><td>Guest headcount</td><td>Counter display</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">47</td><td class="tool-name">Box Office Export</td><td><span class="phase-badge">P3 / Guests</span></td><td><span class="tag tag-report">Report / Export</span></td><td>Export guest data</td><td>Guest list</td><td>CSV / PDF</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">48</td><td class="tool-name">Quota Adjustment (inline edit)</td><td><span class="phase-badge">P3 / Guests</span></td><td><span class="tag tag-table">Editable Table</span></td><td>Inline edit quotas</td><td>Group quotas</td><td>Updated record</td><td>Admin</td></tr>
+
+      <!-- PHASE 4 -->
+      <tr><td colspan="8" style="background: var(--paper3); font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; padding: 8px 12px;">PHASE 4 — ONSITE & POST-EVENT</td></tr>
+
+      <tr><td class="mono" style="color: var(--ink3);">49</td><td class="tool-name">Badge Print Queue</td><td><span class="phase-badge">P4 / Cred</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Manage print jobs</td><td>Print queue</td><td>Printed badge</td><td>Admin / Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">50</td><td class="tool-name">Check-in App (mobile scan)</td><td><span class="phase-badge">P4 / Cred</span></td><td><span class="tag tag-scan">Scan Terminal</span></td><td>Scan + check in</td><td>Attendee credentials</td><td>Check-in record</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">51</td><td class="tool-name">Pickup Tracker (will-call)</td><td><span class="phase-badge">P4 / Cred</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Track pickup status</td><td>Pickup requests</td><td>Status log</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">52</td><td class="tool-name">Portal Status Visibility</td><td><span class="phase-badge">P4 / Cred</span></td><td><span class="tag tag-portal">Portal View</span></td><td>View real-time status</td><td>Credential status</td><td>Read-only display</td><td>Stakeholder</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">53</td><td class="tool-name">RFID / Barcode Scan Station</td><td><span class="phase-badge">P4 / Cat</span></td><td><span class="tag tag-scan">Scan Terminal</span></td><td>Scan meal redemptions</td><td>Meal usage records</td><td>Usage log</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">54</td><td class="tool-name">Group-Level Check-in (fallback)</td><td><span class="phase-badge">P4 / Cat</span></td><td><span class="tag tag-scan">Scan Terminal</span></td><td>Search + confirm</td><td>Group check-in</td><td>Check-in record</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">55</td><td class="tool-name">Manager Override Modal</td><td><span class="phase-badge">P4 / Cat</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Override any record</td><td>Any record</td><td>Override log</td><td>Manager</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">56</td><td class="tool-name">Real-Time Usage Dashboard</td><td><span class="phase-badge">P4 / Cat</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Monitor live usage</td><td>Live scan events</td><td>Live display</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">57</td><td class="tool-name">Onsite Dispute Resolution View</td><td><span class="phase-badge">P4 / Assets</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Resolve dispute</td><td>Dispute cases</td><td>Resolution record</td><td>Ops / Manager</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">58</td><td class="tool-name">Return Tracker</td><td><span class="phase-badge">P4 / Assets</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Track returns</td><td>Asset returns</td><td>Return log</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">59</td><td class="tool-name">Year-over-Year Historical Data</td><td><span class="phase-badge">P4 / Assets</span></td><td><span class="tag tag-dash">Dashboard</span></td><td>Analyze trends</td><td>Historical records</td><td>Analytics view</td><td>Admin</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">60</td><td class="tool-name">Credential Generation (→ Credentials)</td><td><span class="phase-badge">P4 / Guests</span></td><td><span class="tag tag-auto">Background Auto</span></td><td>Auto-generate</td><td>Credential records</td><td>Generated creds</td><td>System</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">61</td><td class="tool-name">Catering Sync (→ Catering)</td><td><span class="phase-badge">P4 / Guests</span></td><td><span class="tag tag-auto">Background Auto</span></td><td>Sync across modules</td><td>Cross-module data</td><td>Synced records</td><td>System</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">62</td><td class="tool-name">Will-Call / Pickup (shared w/ Cred)</td><td><span class="phase-badge">P4 / Guests</span></td><td><span class="tag tag-ops">Ops / Tracker</span></td><td>Search + fulfill</td><td>Pickup requests</td><td>Fulfillment record</td><td>Ops</td></tr>
+      <tr><td class="mono" style="color: var(--ink3);">63</td><td class="tool-name">No-Show Report</td><td><span class="phase-badge">P4 / Guests</span></td><td><span class="tag tag-report">Report / Export</span></td><td>Report no-shows</td><td>No-show data</td><td>Report doc</td><td>Admin</td></tr>
+
+    </tbody>
+  </table>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3: PATTERNS
+═══════════════════════════════════════════════ -->
+<div id="patterns" class="section">
+
+  <h1>Interaction Patterns & Industry Reference</h1>
+  <p class="lead">Each of the 12 patterns has a well-established implementation approach in B2B SaaS. Understanding these industry standards tells us which tools map cleanly to a shared primitive and which genuinely require custom work.</p>
+
+  <div class="pattern-grid">
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-config" style="margin-bottom:6px; display:inline-block;">Entity Config</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Manage lists of typed entities with their settings</div>
+        </div>
+        <div class="pattern-count">11</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Credential Type Manager</li>
+        <li>Meal Type Manager</li>
+        <li>Dietary Restriction Builder</li>
+        <li>Approver Settings Panel</li>
+        <li>Asset Catalog Manager</li>
+        <li>Inventory Ceiling Config</li>
+        <li>Pass Type Selector</li>
+        <li>Event Day Planner</li>
+        <li>Item Block Builder ×3</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Stripe product catalog, Salesforce object manager, Shopify product types. All use the same pattern: left nav list + right detail panel with inline CRUD.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-dash" style="margin-bottom:6px; display:inline-block;">Dashboard / Analytics</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Aggregated read-only views of platform data</div>
+        </div>
+        <div class="pattern-count">8</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Status Reports Dashboard</li>
+        <li>Catering Forecast Dashboard</li>
+        <li>Budget Tracking Panel</li>
+        <li>Allocation Dashboard</li>
+        <li>Completion Tracking Dashboard</li>
+        <li>Aggregate Guest Counter</li>
+        <li>Real-Time Usage Dashboard</li>
+        <li>Year-over-Year Historical</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Metabase, Retool, Looker. Widget-based canvas where each panel pulls from a data query. Key distinction: static dashboards vs. live dashboards need separate rendering paths.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-form" style="margin-bottom:6px; display:inline-block;">Form / Input</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Structured data entry across access levels</div>
+        </div>
+        <div class="pattern-count">7</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Count Request Form</li>
+        <li>Portal Request Form</li>
+        <li>Standalone Public Form</li>
+        <li>Custom Request Form</li>
+        <li>Dietary Field (per person)</li>
+        <li>Admin Manual Add Modal</li>
+        <li>Portal Asset Order Page</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Typeform (public), Formstack, Hubspot forms. A single form engine with field library, conditional logic, access control (public / portal / admin), and theming handles all of these.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-table" style="margin-bottom:6px; display:inline-block;">Editable Table / Grid</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Tabular data entry with inline editing</div>
+        </div>
+        <div class="pattern-count">6</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Personnel Roster Table</li>
+        <li>Meal Request Grid (Day × Meal)</li>
+        <li>Person-Meal Assignment Table</li>
+        <li>Guest Name Table</li>
+        <li>Group Quota Table</li>
+        <li>Quota Adjustment (inline)</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Airtable, Notion database, AG Grid. Core primitive: configurable columns + inline cell editing + row actions + CSV export. The Day×Meal grid is just a matrix variant (columns = days, rows = meal types).</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-ops" style="margin-bottom:6px; display:inline-block;">Ops / Tracker</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Day-of operational lists and action surfaces</div>
+        </div>
+        <div class="pattern-count">6</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Badge Print Queue</li>
+        <li>Pickup Tracker (will-call)</li>
+        <li>Manager Override Modal</li>
+        <li>Onsite Dispute Resolution</li>
+        <li>Return Tracker</li>
+        <li>Will-Call / Pickup</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Will-call systems at venues (Ticketmaster), warehouse pick-lists, concierge systems. Shared pattern: searchable list + item detail + action buttons (approve, override, log). All 6 are the same shell.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-queue" style="margin-bottom:6px; display:inline-block;">Approval Queue</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Review workflows with decision actions</div>
+        </div>
+        <div class="pattern-count">3</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Approval Queue (Credentials)</li>
+        <li>Approval Queue (Catering)</li>
+        <li>Approval Queue (Assets + partial)</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Linear, Jira, Freshdesk. Queue list + item detail panel + approve/reject/partial with comment. One configurable queue handles all three. Partial qty approval (Assets) is just an additional input field on the decision form.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-scan" style="margin-bottom:6px; display:inline-block;">Scan Terminal</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Real-time scanning with offline capability</div>
+        </div>
+        <div class="pattern-count">3</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Check-in App (mobile scan)</li>
+        <li>RFID / Barcode Scan Station</li>
+        <li>Group-Level Check-in (fallback)</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Eventbrite Organizer app, ScanApp, Brushfire. Industry standard is a single PWA with mode switch: individual scan → group search fallback → RFID. Must be offline-capable (IndexedDB sync queue for unreliable venue wifi).</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-portal" style="margin-bottom:6px; display:inline-block;">Portal View</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Stakeholder-facing read-only status surfaces</div>
+        </div>
+        <div class="pattern-count">4</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Request Status View</li>
+        <li>Portal Allocation Overview</li>
+        <li>Portal Status Visibility</li>
+        <li>Deadline Banner + Lock</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Vendor/partner portals (Ariba, Coupa), applicant tracking portals. One portal shell with contextual panels: status timeline + allocation counter + deadline state. The "lock" is just a UI state, not a separate tool.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-rule" style="margin-bottom:6px; display:inline-block;">Rule Builder</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Conditional logic and automation configuration</div>
+        </div>
+        <div class="pattern-count">3</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Approval Workflow Builder</li>
+        <li>Automated Reminder Rules</li>
+        <li>Deadline Banner + Lock</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Zapier, Hubspot Workflows, Salesforce Flow. Trigger → Condition → Action pattern. One rule builder UI, different trigger/action options per module. Deadline lock is just a "date passed" trigger with a "lock form" action.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-report" style="margin-bottom:6px; display:inline-block;">Report / Export</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">Structured output generation from platform data</div>
+        </div>
+        <div class="pattern-count">4</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Group Asset Report (manifest)</li>
+        <li>Box Office Export</li>
+        <li>No-Show Report</li>
+        <li>Billback / Invoice Panel *</li>
+      </ul>
+      <div class="pattern-industry">Industry ref: Jasper Reports, Crystal Reports, Retool export. Template-based report generator: select data source + template + format (PDF/CSV/Excel). * Billback is unique because it involves cost calculation logic, not just data output.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-auto" style="margin-bottom:6px; display:inline-block;">Background Automation</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">System-executed jobs — no direct UI needed</div>
+        </div>
+        <div class="pattern-count">3</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Barcode Assignment (auto)</li>
+        <li>Credential Generation</li>
+        <li>Catering Sync</li>
+      </ul>
+      <div class="pattern-industry">These are backend jobs, not UI tools. The UI surface needed is just: job status indicator + manual trigger button. Industry standard: job queue (Sidekiq, Bull) with a status panel. Don't build three separate "tools" for three background jobs.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-card-header">
+        <div>
+          <div class="pattern-name"><span class="tag tag-unique" style="margin-bottom:6px; display:inline-block;">Genuinely Unique</span></div>
+          <div style="font-size: 12px; color: var(--ink3); margin-top: 4px;">No generic pattern applies — custom build required</div>
+        </div>
+        <div class="pattern-count">4</div>
+      </div>
+      <ul class="pattern-tools">
+        <li>Badge Design Template Editor (canvas)</li>
+        <li>Barcode / RFID Pool Manager (code gen)</li>
+        <li>Bulk CSV Import (upload + column map)</li>
+        <li>Billback / Invoice Panel (cost calc)</li>
+      </ul>
+      <div class="pattern-industry">These four can't be solved by configuring a generic primitive. Each requires domain-specific logic: a canvas editor, a code generation engine, a CSV mapping interface, and a cost calculation model. Build them last.</div>
+    </div>
+
+  </div>
+
+  <h2>Key industry principles per task type</h2>
+
+  <div class="industry-block">
+    <h4>Configuration tools — the settings module pattern</h4>
+    <p>Industry standard: a single settings module with a left sidebar listing entity types. Selecting a type opens a detail panel on the right. All 11 entity config tools belong here — not as separate pages, but as items in a unified settings hierarchy.</p>
+    <ul>
+      <li>Sidebar: "Types" section with Credential Types, Meal Types, Dietary Options, Pass Types, Asset Catalog, etc.</li>
+      <li>Detail panel: list of instances + "Add new" button + inline edit on each row</li>
+      <li>Item Block Builder lives here as a sub-section under each relevant type</li>
+      <li>Reference: Shopify's product settings, Salesforce Object Manager, Hubspot deal properties</li>
+    </ul>
+    <div style="margin-top: 8px;"><span class="ref-chip">Shopify</span><span class="ref-chip">Salesforce</span><span class="ref-chip">Hubspot</span><span class="ref-chip">Airtable</span></div>
+  </div>
+
+  <div class="industry-block">
+    <h4>Approval queues — the queue + detail panel pattern</h4>
+    <p>Industry standard: a filterable list on the left, detail panel on the right. Bulk actions on the list (approve all selected), single-item actions in the detail panel (approve / reject / partial / comment). Status filters: Pending / Approved / Rejected / Needs Info.</p>
+    <ul>
+      <li>Partial quantity approval (Assets module) is just an additional input in the decision form — not a new tool</li>
+      <li>Queue items are the same data model across all modules: Requestor, Type, Status, Submitted Date, Assignee</li>
+      <li>Module context changes the item fields and approval actions, not the queue shell itself</li>
+      <li>Reference: Linear issue queue, Freshdesk ticket queue, GitHub PR review queue</li>
+    </ul>
+    <div style="margin-top: 8px;"><span class="ref-chip">Linear</span><span class="ref-chip">Freshdesk</span><span class="ref-chip">Jira</span><span class="ref-chip">Github PRs</span></div>
+  </div>
+
+  <div class="industry-block">
+    <h4>Onsite scan terminals — offline-first PWA pattern</h4>
+    <p>Industry standard: a Progressive Web App (PWA) that stores the full guest/credential list locally on device load. Scan events write to a local queue first, sync to server when connectivity is available. This prevents the #1 failure mode at live events: network drops.</p>
+    <ul>
+      <li>Mode switch: QR/Barcode scan → RFID → Manual name search (fallback order)</li>
+      <li>Audio + visual feedback: green flash + success sound for valid, red + error for invalid</li>
+      <li>Group check-in: name search → select group → confirm all → write bulk check-in</li>
+      <li>All three scan tools (50, 53, 54) run on the same shell with a context prop (Credentials / Meals / Assets)</li>
+      <li>Reference: Eventbrite Organizer, Cvent OnArrival, Brushfire</li>
+    </ul>
+    <div style="margin-top: 8px;"><span class="ref-chip">Eventbrite</span><span class="ref-chip">Brushfire</span><span class="ref-chip">Cvent</span><span class="ref-chip">IndexedDB</span></div>
+  </div>
+
+  <div class="industry-block">
+    <h4>Dashboards — widget canvas vs. pivot table distinction</h4>
+    <p>Not all dashboards are the same interaction type. The matrix has two distinct sub-patterns that need separate implementations:</p>
+    <ul>
+      <li><strong>Widget canvas</strong> (tools 35, 40, 42, 45, 46, 56): Summary cards + bar/donut charts. Works as a configurable canvas where widgets pull from data queries. One implementation, multiple configurations.</li>
+      <li><strong>Pivot / cross-tab</strong> (tool 39 — Catering Forecast): Day × Meal × Group matrix. This is a specific analytical view that requires a pivot table component, not just chart widgets. Industry standard: a spreadsheet-like pivot view with drill-down.</li>
+      <li><strong>Historical analytics</strong> (tool 59 — Year-over-Year): Time-series comparison. Needs a date-range picker + comparison period selector. Closest reference: Google Analytics YoY comparison view.</li>
+    </ul>
+    <div style="margin-top: 8px;"><span class="ref-chip">Metabase</span><span class="ref-chip">Looker</span><span class="ref-chip">Google Analytics</span><span class="ref-chip">Retool</span></div>
+  </div>
+
+  <div class="industry-block">
+    <h4>Editable data grids — column-typed tables</h4>
+    <p>The key distinction between a "form" and a "table" in this context: forms collect one record at a time; tables collect many records in parallel, with one row per entity. All 6 editable table tools use the same interaction model:</p>
+    <ul>
+      <li>Column types: text, number, dropdown, date, checkbox, multi-select</li>
+      <li>Row actions: add row, delete row, duplicate row</li>
+      <li>Bulk actions: import from CSV, export to CSV, clear all</li>
+      <li>The Meal Request Grid (Day × Meal) is just a table where column headers are days and row headers are meal types — the same table component with locked row/column headers</li>
+      <li>Reference: Airtable, Notion database, Google Sheets with structured schema</li>
+    </ul>
+    <div style="margin-top: 8px;"><span class="ref-chip">Airtable</span><span class="ref-chip">Notion</span><span class="ref-chip">AG Grid</span><span class="ref-chip">TanStack Table</span></div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4: CONSOLIDATION
+═══════════════════════════════════════════════ -->
+<div id="consolidation" class="section">
+
+  <h1>Consolidation Map</h1>
+  <p class="lead">How 63 named tools collapse into 22 distinct implementations. Left column: what the matrix calls out by name. Right column: the shared implementation that covers it, with configuration parameters instead of separate builds.</p>
+
+  <div class="callout">
+    The consolidation is not about removing features — every capability listed in the original matrix still exists. The change is architectural: instead of building N bespoke tools, you build K generic primitives and configure them. This is exactly how Jira handles projects, how Salesforce handles objects, and how Hubspot handles pipelines.
+  </div>
+
+  <div style="border: 1px solid var(--rule); margin: 20px 0;">
+
+    <div style="padding: 14px 16px; background: var(--paper3); display: grid; grid-template-columns: 1fr 40px 1fr; gap: 0;">
+      <div class="mono" style="color: var(--ink3); font-size: 10px; letter-spacing: 0.06em;">ORIGINAL TOOLS (63)</div>
+      <div></div>
+      <div class="mono" style="color: var(--ink3); font-size: 10px; letter-spacing: 0.06em;">CONSOLIDATED IMPLEMENTATION (22)</div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">ENTITY CONFIG TOOLS → 11 instances</div>
+        <ul class="col-items">
+          <li>Credential Type Manager</li>
+          <li>Meal Type Manager</li>
+          <li>Dietary Restriction Builder</li>
+          <li>Approver Settings Panel</li>
+          <li>Asset Catalog Manager</li>
+          <li>Inventory Ceiling Config</li>
+          <li>Pass Type Selector</li>
+          <li>Event Day Planner</li>
+          <li>Custom Group Creator</li>
+          <li>Item Block Builder ×3</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">01 — Settings Module</div>
+        <div style="font-size: 11px; color: var(--ink3);">Left nav with entity type sections. Detail panel with list + add/edit/delete. Config props: entity name, fields, constraints, relationships. Item Block Builder is a sub-section under each type.</div>
+        <div class="saving-badge">11 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">APPROVAL QUEUE TOOLS → 3 instances</div>
+        <ul class="col-items">
+          <li>Approval Queue (Credentials)</li>
+          <li>Approval Queue (Catering)</li>
+          <li>Approval Queue (Assets + partial qty)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">02 — Approval Queue</div>
+        <div style="font-size: 11px; color: var(--ink3);">Configurable queue with item type prop. Decision form extends with partial qty field when module = Assets. Same list shell, same detail panel pattern across all three modules.</div>
+        <div class="saving-badge">3 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">FORM / INPUT TOOLS → 7 instances</div>
+        <ul class="col-items">
+          <li>Count Request Form</li>
+          <li>Portal Request Form (custom fields)</li>
+          <li>Standalone Public Form</li>
+          <li>Custom Request Form</li>
+          <li>Dietary Field (per person)</li>
+          <li>Admin Manual Add Modal</li>
+          <li>Portal Asset Order Page</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">03 — Form Engine</div>
+        <div style="font-size: 11px; color: var(--ink3);">Config props: field schema (from entity type config), access level (public / portal / admin), display mode (full-page / modal / inline), branding theme. The "Asset Order Page" is a form with a catalog browse step prepended — same engine, different entry point.</div>
+        <div class="saving-badge">7 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">EDITABLE TABLE TOOLS → 6 instances</div>
+        <ul class="col-items">
+          <li>Personnel Roster Table</li>
+          <li>Meal Request Grid (Day × Meal)</li>
+          <li>Person-Meal Assignment Table</li>
+          <li>Guest Name Table</li>
+          <li>Group Quota Table</li>
+          <li>Quota Adjustment (inline edit)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">04 — Data Grid</div>
+        <div style="font-size: 11px; color: var(--ink3);">Config props: column schema, cell types, locked headers (for matrix view), row actions, bulk import/export toggle. The Meal Request Grid is a matrix variant — same grid with row/column header lock. Quota Adjustment is just the grid with immediate save-on-change.</div>
+        <div class="saving-badge">6 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">DASHBOARD / ANALYTICS → 7 instances</div>
+        <ul class="col-items">
+          <li>Status Reports Dashboard</li>
+          <li>Budget Tracking Panel</li>
+          <li>Allocation Dashboard</li>
+          <li>Completion Tracking Dashboard</li>
+          <li>Aggregate Guest Counter</li>
+          <li>Real-Time Usage Dashboard</li>
+          <li>Year-over-Year Historical</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">05 — Dashboard Canvas</div>
+        <div style="font-size: 11px; color: var(--ink3);">Widget-based canvas with configurable data queries. Widget types: stat card, bar chart, donut, gauge, progress bar. Real-time mode: websocket data source for live dashboards. Each dashboard above is a pre-configured layout of widgets.</div>
+        <div class="saving-badge">7 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">CATERING FORECAST (pivot)</div>
+        <ul class="col-items">
+          <li>Catering Forecast Dashboard (Day × Meal pivot)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">06 — Pivot Table View</div>
+        <div style="font-size: 11px; color: var(--ink3);">Cross-tab pivot with row/column grouping, drill-down, and export. Distinct from the Dashboard Canvas because it requires a different rendering model (spreadsheet-like grid, not chart widgets). Reuses the Data Grid (04) component as its base.</div>
+        <div class="saving-badge">Stays separate — different pattern</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">RULE BUILDER TOOLS → 3 instances</div>
+        <ul class="col-items">
+          <li>Approval Workflow Builder</li>
+          <li>Automated Reminder Rules</li>
+          <li>Deadline Banner + Lock</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">07 — Automation / Rule Builder</div>
+        <div style="font-size: 11px; color: var(--ink3);">Trigger → Condition → Action pattern. Trigger types: time-based, status-change, date threshold. Action types: send notification, lock form, route to approver, assign code. Deadline lock is a time-based trigger with "lock form" action. Lives inside Settings Module.</div>
+        <div class="saving-badge">3 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">PORTAL VIEW TOOLS → 4 instances</div>
+        <ul class="col-items">
+          <li>Request Status View (portal)</li>
+          <li>Portal Allocation Overview</li>
+          <li>Portal Status Visibility</li>
+          <li>Deadline Banner + Lock</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">08 — Portal Shell</div>
+        <div style="font-size: 11px; color: var(--ink3);">Stakeholder-facing portal with contextual panels: status timeline, allocation counter, deadline state. Panels rendered based on what's relevant to the stakeholder's module context. The "deadline lock" is a UI state (banner + disabled inputs) — not a separate tool.</div>
+        <div class="saving-badge">4 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">SCAN TERMINAL TOOLS → 3 instances</div>
+        <ul class="col-items">
+          <li>Check-in App (mobile scan)</li>
+          <li>RFID / Barcode Scan Station</li>
+          <li>Group-Level Check-in (fallback)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">09 — Scan Terminal (PWA)</div>
+        <div style="font-size: 11px; color: var(--ink3);">Offline-capable PWA with mode switch: QR/Barcode → RFID → Name search fallback. Context prop determines what's being validated (credentials / meals / assets). Group check-in is a mode within the same terminal, not a separate tool.</div>
+        <div class="saving-badge">3 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">OPS / TRACKER TOOLS → 6 instances</div>
+        <ul class="col-items">
+          <li>Badge Print Queue</li>
+          <li>Pickup Tracker (will-call)</li>
+          <li>Manager Override Modal</li>
+          <li>Onsite Dispute Resolution</li>
+          <li>Return Tracker</li>
+          <li>Will-Call / Pickup (shared)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">10 — Ops Manager</div>
+        <div style="font-size: 11px; color: var(--ink3);">Searchable list + item detail + contextual action buttons. Context prop changes what's in the list (print jobs / pickups / disputes / returns). Manager Override is a modal that can be invoked from any record — not a standalone tool. Lives as a floating action accessible from any ops surface.</div>
+        <div class="saving-badge">6 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">REPORT / EXPORT TOOLS → 3 instances</div>
+        <ul class="col-items">
+          <li>Group Asset Report (delivery manifest)</li>
+          <li>Box Office Export</li>
+          <li>No-Show Report</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">11 — Report Builder</div>
+        <div style="font-size: 11px; color: var(--ink3);">Template-based report generator: select data source + template + output format (PDF/CSV/Excel). Each report type above is a pre-configured template. Accessible from the relevant dashboard or list view.</div>
+        <div class="saving-badge">3 → 1 implementation</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">BACKGROUND AUTO TOOLS → 3 instances</div>
+        <ul class="col-items">
+          <li>Barcode Assignment (auto)</li>
+          <li>Credential Generation</li>
+          <li>Catering Sync (cross-module)</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">12 — Job Status Panel</div>
+        <div style="font-size: 11px; color: var(--ink3);">These are backend jobs, not UI tools. The only UI needed: a status panel in Settings showing job name / last run / status / manual trigger. Lives as a section inside Settings Module (01).</div>
+        <div class="saving-badge">3 background jobs → 1 status panel</div>
+      </div>
+    </div>
+
+    <div class="consolidation-row">
+      <div class="col-before">
+        <div class="col-label">GENUINELY UNIQUE TOOLS → 4 instances</div>
+        <ul class="col-items">
+          <li>Badge Design Template Editor</li>
+          <li>Barcode / RFID Pool Manager</li>
+          <li>Bulk CSV Import</li>
+          <li>Billback / Invoice Panel</li>
+        </ul>
+      </div>
+      <div class="col-arrow">→</div>
+      <div class="col-after">
+        <div class="new-tool-name">13–16 — Bespoke builds</div>
+        <div style="font-size: 11px; color: var(--ink3);">These four can't be parameterized from a generic pattern. Each requires custom domain logic. They should be built last, after the foundation layer is stable. Badge Editor can use a third-party canvas library (Fabric.js, Konva). CSV Import can use a library (Papa Parse + column mapper UI).</div>
+        <div class="saving-badge">4 unique builds remain</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stat-row" style="margin-top: 32px;">
+    <div class="stat">
+      <div class="stat-num">63</div>
+      <div class="stat-label">Original named tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Generic implementations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Bespoke builds</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">16</div>
+      <div class="stat-label">Total distinct codebases needed</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5: ARCHITECTURE
+═══════════════════════════════════════════════ -->
+<div id="architecture" class="section">
+
+  <h1>Proposed Tool Architecture</h1>
+  <p class="lead">22 total tools organized into 4 layers, plus 3 background service components. Built in dependency order — each layer depends on the layer below it. The categorization reflects build priority and coupling, not just tool type.</p>
+
+  <!-- LAYER 1 -->
+  <div class="arch-layer">
+    <div class="arch-layer-header">
+      <div class="arch-layer-num">LAYER 01</div>
+      <div class="arch-layer-name">Data Primitives</div>
+      <div class="arch-layer-desc">Build first. All other layers consume these.</div>
+    </div>
+    <div class="arch-tools-grid">
+
+      <div class="arch-tool foundation">
+        <div class="arch-tool-name">01 — Settings Module</div>
+        <div class="arch-tool-desc">Left nav + detail panel. Manages all entity types, item blocks, quotas, and pricing. Every admin configuration surface lives here. Think "object manager" in Salesforce.</div>
+        <div class="arch-tool-replaces">Replaces: <span>11 config tools (Credential Types, Meal Types, Dietary Options, Approver Settings, Asset Catalog, Inventory Limits, Pass Types, Event Day Planner, Group Creator, Item Block Builders ×3)</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">List + detail panel</span>
+          <span class="arch-badge">CRUD per entity</span>
+          <span class="arch-badge">Nested settings</span>
+        </div>
+      </div>
+
+      <div class="arch-tool foundation">
+        <div class="arch-tool-name">02 — Data Grid</div>
+        <div class="arch-tool-desc">Column-typed editable table with configurable schema, inline editing, bulk import/export, and matrix mode (locked row/col headers). The single table component for all tabular data entry in the platform.</div>
+        <div class="arch-tool-replaces">Replaces: <span>6 table tools (Personnel Roster, Meal Request Grid, Person-Meal Assignment, Guest Name Table, Group Quota Table, Quota Adjustment)</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Column types</span>
+          <span class="arch-badge">Inline edit</span>
+          <span class="arch-badge">Matrix mode</span>
+          <span class="arch-badge">Row actions</span>
+        </div>
+      </div>
+
+      <div class="arch-tool foundation">
+        <div class="arch-tool-name">03 — Form Engine</div>
+        <div class="arch-tool-desc">Field-schema-driven forms with conditional logic, multiple display modes (full-page / modal / inline), and access level control (public / portal / admin). Fields pull from entity type definitions in the Settings Module.</div>
+        <div class="arch-tool-replaces">Replaces: <span>7 form tools (Count Request Form, Portal Request Form, Standalone Public Form, Custom Request Form, Dietary Field, Admin Manual Add Modal, Asset Order Page)</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Field schema</span>
+          <span class="arch-badge">Conditional logic</span>
+          <span class="arch-badge">Access control</span>
+          <span class="arch-badge">Branding theme</span>
+        </div>
+      </div>
+
+      <div class="arch-tool foundation">
+        <div class="arch-tool-name">04 — Approval Queue</div>
+        <div class="arch-tool-desc">Filterable list + detail panel with bulk actions and per-item decision forms. Module context determines item fields and available decision types. Partial quantity approval is a field extension on the decision form, not a separate queue.</div>
+        <div class="arch-tool-replaces">Replaces: <span>3 queue tools (Credentials Queue, Catering Queue, Assets Queue + partial qty)</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Status filters</span>
+          <span class="arch-badge">Bulk actions</span>
+          <span class="arch-badge">Decision form</span>
+          <span class="arch-badge">Comment thread</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 2 -->
+  <div class="arch-layer">
+    <div class="arch-layer-header" style="background: #2a3050;">
+      <div class="arch-layer-num">LAYER 02</div>
+      <div class="arch-layer-name">Workflow Tools</div>
+      <div class="arch-layer-desc">Orchestrate data flow and process logic. Depend on Layer 01.</div>
+    </div>
+    <div class="arch-tools-grid">
+
+      <div class="arch-tool workflow">
+        <div class="arch-tool-name">05 — Automation / Rule Builder</div>
+        <div class="arch-tool-desc">Trigger → Condition → Action configuration. Handles approval routing, reminder schedules, deadline locks, and barcode auto-assignment. Lives inside Settings Module as an "Automations" section.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Approval Workflow Builder, Automated Reminder Rules, Deadline Banner logic</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Time triggers</span>
+          <span class="arch-badge">Status triggers</span>
+          <span class="arch-badge">Action library</span>
+        </div>
+      </div>
+
+      <div class="arch-tool workflow">
+        <div class="arch-tool-name">06 — Portal Shell</div>
+        <div class="arch-tool-desc">Stakeholder-facing portal with contextual panels: status timeline, allocation counter, deadline banner. Panels render based on the stakeholder's module and access level. The deadline "lock" is a UI state prop — no separate implementation needed.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Request Status View, Portal Allocation Overview, Portal Status Visibility, Deadline Banner + Lock</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Status timeline</span>
+          <span class="arch-badge">Contextual panels</span>
+          <span class="arch-badge">Lock state</span>
+        </div>
+      </div>
+
+      <div class="arch-tool workflow">
+        <div class="arch-tool-name">07 — Bulk Import Tool</div>
+        <div class="arch-tool-desc">CSV upload → column mapping → validation preview → import confirmation. A distinct interaction model that doesn't fit the Form Engine or Data Grid (it maps external columns to internal fields). Reusable across all modules.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Bulk CSV Import Modal</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">File upload</span>
+          <span class="arch-badge">Column mapper</span>
+          <span class="arch-badge">Validation preview</span>
+        </div>
+      </div>
+
+      <div class="arch-tool workflow">
+        <div class="arch-tool-name">08 — Report Builder</div>
+        <div class="arch-tool-desc">Template-based report and export generator. Templates: delivery manifest, box office export, no-show report. Output formats: PDF, CSV, Excel. Accessible from any list or dashboard view as an export action.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Group Asset Report, Box Office Export, No-Show Report, CSV Export</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Report templates</span>
+          <span class="arch-badge">Format selection</span>
+          <span class="arch-badge">Data filters</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 3 -->
+  <div class="arch-layer">
+    <div class="arch-layer-header" style="background: #2a4030;">
+      <div class="arch-layer-num">LAYER 03</div>
+      <div class="arch-layer-name">Intelligence Layer</div>
+      <div class="arch-layer-desc">Aggregation, monitoring, and analytics. Read-only surfaces that make sense of collected data.</div>
+    </div>
+    <div class="arch-tools-grid">
+
+      <div class="arch-tool" style="border-left-color: #1a6a1a;">
+        <div class="arch-tool-name">09 — Dashboard Canvas</div>
+        <div class="arch-tool-desc">Widget-based analytics canvas with pre-configured layouts per module. Widget types: stat card, bar chart, donut, progress bar, gauge. Static and real-time (websocket) data modes. Each module gets a default layout; layouts are customizable.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Status Reports Dashboard, Budget Tracking Panel, Allocation Dashboard, Completion Tracking Dashboard, Aggregate Guest Counter, Real-Time Usage Dashboard, Year-over-Year Historical</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Widget canvas</span>
+          <span class="arch-badge">Live mode</span>
+          <span class="arch-badge">Date ranges</span>
+          <span class="arch-badge">YoY comparison</span>
+        </div>
+      </div>
+
+      <div class="arch-tool" style="border-left-color: #1a6a1a;">
+        <div class="arch-tool-name">10 — Catering Pivot View</div>
+        <div class="arch-tool-desc">Cross-tab pivot table for catering forecasting: Day × Meal Type × Group. Drill-down by any dimension. Export to Excel. This is distinct from the Dashboard Canvas because it's a spreadsheet-like analysis surface, not a chart widget collection. Internally reuses the Data Grid (02).</div>
+        <div class="arch-tool-replaces">Replaces: <span>Catering Forecast Dashboard (Day × Meal pivot)</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Pivot matrix</span>
+          <span class="arch-badge">Drill-down</span>
+          <span class="arch-badge">Excel export</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 4 -->
+  <div class="arch-layer">
+    <div class="arch-layer-header" style="background: #503020;">
+      <div class="arch-layer-num">LAYER 04</div>
+      <div class="arch-layer-name">Operational Layer</div>
+      <div class="arch-layer-desc">Real-time, onsite execution surfaces. Build after all upstream data is reliable.</div>
+    </div>
+    <div class="arch-tools-grid">
+
+      <div class="arch-tool operational">
+        <div class="arch-tool-name">11 — Scan Terminal (PWA)</div>
+        <div class="arch-tool-desc">Offline-capable Progressive Web App for onsite scanning. Modes: QR/barcode scan → RFID → name search fallback. Context prop sets validation logic (credentials / meals / assets). Syncs check-in events to server queue when connectivity resumes. Audio + visual feedback required.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Check-in App, RFID / Barcode Scan Station, Group-Level Check-in fallback</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Offline-first</span>
+          <span class="arch-badge">Multi-mode scan</span>
+          <span class="arch-badge">Sync queue</span>
+          <span class="arch-badge">Group fallback</span>
+        </div>
+      </div>
+
+      <div class="arch-tool operational">
+        <div class="arch-tool-name">12 — Ops Manager</div>
+        <div class="arch-tool-desc">Searchable list + item detail + contextual action buttons for day-of operations. Context prop changes content: print queue / pickup tracker / return tracker / dispute resolution. Manager Override is a modal action available from any record — it's an action, not a separate surface.</div>
+        <div class="arch-tool-replaces">Replaces: <span>Badge Print Queue, Pickup Tracker, Manager Override Modal, Dispute Resolution View, Return Tracker, Will-Call / Pickup</span></div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Contextual list</span>
+          <span class="arch-badge">Item actions</span>
+          <span class="arch-badge">Override modal</span>
+          <span class="arch-badge">Search / filter</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 5 — BESPOKE -->
+  <div class="arch-layer">
+    <div class="arch-layer-header" style="background: #3a3020;">
+      <div class="arch-layer-num">LAYER 05</div>
+      <div class="arch-layer-name">Bespoke Builds</div>
+      <div class="arch-layer-desc">Unique domain tools with no generic equivalent. Build last.</div>
+    </div>
+    <div class="arch-tools-grid">
+
+      <div class="arch-tool" style="border-left-color: #c8a800;">
+        <div class="arch-tool-name">13 — Badge Design Template Editor</div>
+        <div class="arch-tool-desc">Canvas-based template editor for badge layouts. Drag-drop field placeholders (name, company, barcode, photo), set fonts, colors, and layout. Uses a canvas library (Fabric.js or Konva.js). Output: print-ready template that the Print Queue (11) renders per-attendee.</div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Canvas editor</span>
+          <span class="arch-badge">Field placeholders</span>
+          <span class="arch-badge">Print output</span>
+        </div>
+      </div>
+
+      <div class="arch-tool" style="border-left-color: #c8a800;">
+        <div class="arch-tool-name">14 — Barcode / RFID Pool Manager</div>
+        <div class="arch-tool-desc">Code generation, import, pool management, and assignment status tracking. Supports QR, Code128, EAN, and RFID chip encoding. Manages "reserved" vs "available" vs "assigned" states across the pool. Lives as a section in Settings Module.</div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Code generation</span>
+          <span class="arch-badge">Pool states</span>
+          <span class="arch-badge">Assignment tracking</span>
+        </div>
+      </div>
+
+      <div class="arch-tool" style="border-left-color: #c8a800;">
+        <div class="arch-tool-name">15 — Billback / Invoice Panel</div>
+        <div class="arch-tool-desc">Cost calculation engine + invoice display. Pulls asset orders, applies pricing config from Settings Module, calculates totals per group, generates invoice document. Unique because it involves business logic (cost calculation), not just data display.</div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Cost calc logic</span>
+          <span class="arch-badge">Line item view</span>
+          <span class="arch-badge">Invoice output</span>
+        </div>
+      </div>
+
+      <div class="arch-tool" style="border-left-color: #c8a800;">
+        <div class="arch-tool-name">16 — Background Job Status Panel</div>
+        <div class="arch-tool-desc">Not really a standalone tool — it's a panel inside Settings Module. Shows job status (Barcode Auto-Assignment, Credential Generation, Catering Sync) with last run time, success/error state, and a manual trigger button. These are backend jobs that need visibility, not dedicated UIs.</div>
+        <div class="arch-tool-patterns">
+          <span class="arch-badge">Job status</span>
+          <span class="arch-badge">Manual trigger</span>
+          <span class="arch-badge">Error log</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <h2>Build order and dependency map</h2>
+  <p>The layers define the build sequence. No tool in a layer should be started until all tools it depends on in lower layers are stable.</p>
+
+  <div style="border: 1px solid var(--rule); margin: 16px 0;">
+    <div class="priority-row header">
+      <div class="priority-cell hdr num">#</div>
+      <div class="priority-cell hdr">Tool</div>
+      <div class="priority-cell hdr">Layer</div>
+      <div class="priority-cell hdr">Depends on</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">01</div>
+      <div class="priority-cell"><strong>Settings Module</strong> — all entity config</div>
+      <div class="priority-cell"><span class="tag tag-config" style="font-size:10px;">Data Primitive</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">None — build first</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">02</div>
+      <div class="priority-cell"><strong>Data Grid</strong> — tabular editing</div>
+      <div class="priority-cell"><span class="tag tag-config" style="font-size:10px;">Data Primitive</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">None — build first</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">03</div>
+      <div class="priority-cell"><strong>Form Engine</strong> — all request forms</div>
+      <div class="priority-cell"><span class="tag tag-config" style="font-size:10px;">Data Primitive</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01 (field schema from entity types)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">04</div>
+      <div class="priority-cell"><strong>Approval Queue</strong> — all modules</div>
+      <div class="priority-cell"><span class="tag tag-config" style="font-size:10px;">Data Primitive</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">03 (request data from forms)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">05</div>
+      <div class="priority-cell"><strong>Automation / Rule Builder</strong></div>
+      <div class="priority-cell"><span class="tag tag-form" style="font-size:10px;">Workflow</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01, 03, 04</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">06</div>
+      <div class="priority-cell"><strong>Portal Shell</strong> — stakeholder view</div>
+      <div class="priority-cell"><span class="tag tag-form" style="font-size:10px;">Workflow</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">03, 04, 05 (deadline state)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">07</div>
+      <div class="priority-cell"><strong>Bulk Import Tool</strong></div>
+      <div class="priority-cell"><span class="tag tag-form" style="font-size:10px;">Workflow</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01 (entity schema for column mapping)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">08</div>
+      <div class="priority-cell"><strong>Report Builder</strong></div>
+      <div class="priority-cell"><span class="tag tag-form" style="font-size:10px;">Workflow</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01, 02, 03, 04 (needs data populated)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">09</div>
+      <div class="priority-cell"><strong>Dashboard Canvas</strong></div>
+      <div class="priority-cell"><span class="tag tag-dash" style="font-size:10px;">Intelligence</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">All of Layer 01 + 02 (needs real data)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">10</div>
+      <div class="priority-cell"><strong>Catering Pivot View</strong></div>
+      <div class="priority-cell"><span class="tag tag-dash" style="font-size:10px;">Intelligence</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">02 (Data Grid as base), 04 (approved requests)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">11</div>
+      <div class="priority-cell"><strong>Scan Terminal (PWA)</strong></div>
+      <div class="priority-cell"><span class="tag tag-ops" style="font-size:10px;">Operational</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">04 (approved credentials to validate against)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">12</div>
+      <div class="priority-cell"><strong>Ops Manager</strong></div>
+      <div class="priority-cell"><span class="tag tag-ops" style="font-size:10px;">Operational</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">11 (scan data), 04 (approved records), 13 (badge print)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">13</div>
+      <div class="priority-cell"><strong>Badge Design Template Editor</strong></div>
+      <div class="priority-cell"><span class="tag tag-unique" style="font-size:10px;">Bespoke</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01 (credential field schema)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">14</div>
+      <div class="priority-cell"><strong>Barcode / RFID Pool Manager</strong></div>
+      <div class="priority-cell"><span class="tag tag-unique" style="font-size:10px;">Bespoke</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01 (lives in Settings), 04 (auto-assignment trigger)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">15</div>
+      <div class="priority-cell"><strong>Billback / Invoice Panel</strong></div>
+      <div class="priority-cell"><span class="tag tag-unique" style="font-size:10px;">Bespoke</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">01 (pricing config), 04 (approved asset orders)</div>
+    </div>
+    <div class="priority-row">
+      <div class="priority-cell num mono">16</div>
+      <div class="priority-cell"><strong>Job Status Panel</strong></div>
+      <div class="priority-cell"><span class="tag tag-unique" style="font-size:10px;">Bespoke</span></div>
+      <div class="priority-cell" style="font-size:11px; color: var(--ink3);">Lives inside 01 (Settings Module)</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 32px;">
+    <strong>The critical decision:</strong> Tools 01–04 (Data Primitives) are the foundation everything else sits on. If you scope these correctly — genuinely configurable, not just flexible-looking — the remaining 12 tools follow at much lower cost. The risk is building tools 01–04 as "configurable" in name but bespoke in practice. Use well-established open-source primitives: TanStack Table for the Data Grid, React Hook Form for the Form Engine, a proven queue component for Approvals. Build the domain logic on top of tested primitives, not from scratch.
+  </div>
+
+</div>
+
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>

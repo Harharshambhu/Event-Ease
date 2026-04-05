@@ -1,0 +1,126 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:10px 14px;font-size:11px;line-height:1.6;border-radius:var(--border-radius-md);margin:8px 10px 10px}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#E1F5EE;color:#085041"><div class="dot" style="background:#0F6E56"></div>Module 4: Guest lists — allocation, self-management & fulfillment</div>
+
+<div class="note" style="background:var(--color-background-info);color:var(--color-text-info)">
+Guest lists work on an <strong>allocation model</strong> — fundamentally different from the other three modules. The admin doesn't collect requests and approve them. Instead, the admin pre-sets a quota ("Artist X gets 8 guest passes") and the stakeholder fills in the names within that limit. The control is the cap, not the approval.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Allocation setup (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Pass type definitions</span><span class="sub">Types available for guest lists</span></td>
+<td>Define which credential/pass types are available for guest list allocation: GA tickets, VIP passes, backstage, meet-and-greet, hospitality. Each type can have different access levels</td>
+<td>Differentiate between "8 general admission guest passes" and "2 VIP hospitality passes" — not all guest spots are equal</td>
+</tr>
+<tr>
+<td><span class="el">Meal allocations</span><span class="sub">Catering tied to guest list</span></td>
+<td>Optionally attach meal allocations to guest list spots — e.g., each VIP guest also gets a dinner meal. Meals auto-create in catering module when guest names are submitted</td>
+<td>Link guest access and catering in one allocation decision — no separate meal request needed per guest</td>
+</tr>
+<tr>
+<td><span class="el">Group-level quotas</span><span class="sub">How many spots each group gets</span></td>
+<td>Set allocation per group: "DJ Shadow gets 8 GA + 2 VIP." "RedBull Sponsor gets 50 GA + 10 VIP." Quotas are hard limits — the portal enforces the cap</td>
+<td>Budget control at the allocation level — the total guest list size is decided upfront, not negotiated name-by-name</td>
+</tr>
+<tr>
+<td><span class="el">Unique allocation groups</span><span class="sub">Custom segmentation</span></td>
+<td>Create named allocation groups beyond standard group types: "Headliner guests," "Sponsor VIP table," "Staff family," "Contest winners." Each with its own quota and pass types</td>
+<td>Handle non-standard guest list categories that don't map to vendor/artist/sponsor — every event has unique segments</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Name submission (stakeholders, self-service)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Portal guest list view</span><span class="sub">Stakeholder sees their allocation</span></td>
+<td>Stakeholder logs into portal and sees: "You have 8 GA passes — 5 names submitted, 3 remaining." Clear count with visual progress</td>
+<td>Stakeholder knows exactly how many spots they have and how many remain — no guessing, no over-requesting</td>
+</tr>
+<tr>
+<td><span class="el">Name entry</span><span class="sub">Add/edit/remove guest names</span></td>
+<td>Stakeholder enters guest names, plus-one info, contact details. Can edit or swap names until the deadline. Portal enforces the quantity cap — cannot add name #9 if allocation is 8</td>
+<td>Push the name-management burden to the person who actually knows the guests — the artist's manager, the sponsor's marketing lead</td>
+</tr>
+<tr>
+<td><span class="el">Deadline enforcement</span><span class="sub">Configurable close date</span></td>
+<td>Admin sets a submission deadline. Portal locks name entry after the deadline. Late changes require admin intervention</td>
+<td>Force timely submission so the box office has a finalized list before event day — no more last-minute chaos</td>
+</tr>
+<tr>
+<td><span class="el">Guest self-sufficiency</span><span class="sub">Reducing admin involvement</span></td>
+<td>Stakeholder manages their own list end-to-end: add, edit, remove, view status. Admin only intervenes for deadline extensions or quota changes</td>
+<td>Eliminate the "can you add one more name?" email chain — the stakeholder does it themselves within their cap</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Management & reporting (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Completion tracking</span><span class="sub">Who submitted, who hasn't</span></td>
+<td>Dashboard shows per-group: total allocated, names submitted, names remaining, submission status (complete / partial / empty). Flag overdue groups</td>
+<td>Know at a glance which groups haven't submitted names — proactive follow-up instead of day-of surprises</td>
+</tr>
+<tr>
+<td><span class="el">Aggregate guest count</span><span class="sub">Total across all groups</span></td>
+<td>View total guest list size: sum of all allocated spots, all submitted names, all pass types. Broken down by allocation group</td>
+<td>Give security and box office accurate total headcount for staffing, credential printing, and venue capacity planning</td>
+</tr>
+<tr>
+<td><span class="el">Export for box office</span><span class="sub">CSV/Excel for will-call</span></td>
+<td>Export finalized guest list with names, pass types, associated group, and barcode/ticket info. Formatted for box office will-call system</td>
+<td>Seamless handoff from the portal to the onsite pickup station — no reformatting, no manual list creation</td>
+</tr>
+<tr>
+<td><span class="el">Quota adjustment</span><span class="sub">Admin override on allocations</span></td>
+<td>Increase or decrease a group's allocation after initial setup. Handles "the headliner's manager needs 4 more passes" without rebuilding the whole list</td>
+<td>Flexibility within structure — accommodate changes without losing the data integrity of the allocation model</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Fulfillment & onsite</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Credential generation</span><span class="sub">Passes for submitted guests</span></td>
+<td>Submitted guest names flow into the credentials module. Passes/badges generated per guest with correct access level. Barcode assigned automatically</td>
+<td>Guest list names become scannable credentials — the system closes the loop from "name on a list" to "badge in hand"</td>
+</tr>
+<tr>
+<td><span class="el">Catering sync</span><span class="sub">Meals for allocated guests</span></td>
+<td>If meal allocations were attached to guest list spots, submitted guests automatically appear in the catering module with their assigned meals</td>
+<td>One allocation decision flows into two modules — guest pass + guest dinner created from a single name submission</td>
+</tr>
+<tr>
+<td><span class="el">Will-call / pickup</span><span class="sub">Onsite guest credential distribution</span></td>
+<td>Guest arrives at will-call, name is scanned or searched, credential is issued. Check-in app marks the guest as arrived</td>
+<td>Smooth guest arrival experience — no waiting, no "I'm not on the list" drama, no handwritten additions</td>
+</tr>
+<tr>
+<td><span class="el">No-show tracking</span><span class="sub">Unused allocations</span></td>
+<td>Post-event: see which allocated guest spots were unused (names never submitted or guests never picked up credentials)</td>
+<td>Year-over-year optimization — if an artist consistently uses only 4 of their 8 spots, allocate 5 next year and save passes for others</td>
+</tr>
+</table>
+</div>

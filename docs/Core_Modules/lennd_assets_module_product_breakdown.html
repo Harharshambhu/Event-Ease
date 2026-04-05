@@ -1,0 +1,111 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAEEDA;color:#633806"><div class="dot" style="background:#BA7517"></div>Module 3: Assets & inventory — equipment request, approval & billback</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Configuration (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Asset catalog</span><span class="sub">All requestable equipment</span></td>
+<td>Define available assets: golf carts, walkie talkies, radios, tables, chairs, tents, forklifts, storage units, vehicles, signage, power drops — any physical item. Set total inventory quantity per item</td>
+<td>Create a single source of truth for what's available to allocate — no more over-promising across departments</td>
+</tr>
+<tr>
+<td><span class="el">Pricing per item</span><span class="sub">For billback to vendors</span></td>
+<td>Set rental/usage price per asset item. Prices can vary by group type or be flat. Some items may be free (included) while others are charged</td>
+<td>Enable vendor billback — charge vendors for golf carts and radios they use, turning assets from cost center to revenue</td>
+</tr>
+<tr>
+<td><span class="el">Item blocks</span><span class="sub">Request packages per group type</span></td>
+<td>Bundle assets into requestable packages with quantity limits. Assign blocks to group type portals (e.g., vendors can request carts and radios; artists cannot)</td>
+<td>Control which stakeholders can request which equipment — prevent artists from ordering forklifts</td>
+</tr>
+<tr>
+<td><span class="el">Inventory limits</span><span class="sub">Per-item and per-block caps</span></td>
+<td>Set maximum requestable quantity per item per group, and enforce total inventory ceiling across all groups</td>
+<td>Prevent over-allocation — if you have 30 golf carts, the system won't approve 35 across all vendors</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Request & collection (stakeholders)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Portal asset request</span><span class="sub">Self-service ordering</span></td>
+<td>Stakeholder selects from available items in their portal, enters quantity needed, adds notes (e.g., "need cart delivered to Stage B by 6 AM")</td>
+<td>Push the ordering burden to the requester — they know what they need better than the admin does</td>
+</tr>
+<tr>
+<td><span class="el">Custom request forms</span><span class="sub">For complex or special needs</span></td>
+<td>For non-standard requests (custom signage, special equipment), stakeholder fills out a form describing the need</td>
+<td>Capture edge-case requests without forcing them into a rigid catalog — flexibility within structure</td>
+</tr>
+<tr>
+<td><span class="el">Request visibility</span><span class="sub">Real-time status in portal</span></td>
+<td>Stakeholder sees their request status: submitted, pending review, approved (with quantity), denied (with reason)</td>
+<td>Eliminate "did you get my golf cart request?" emails — self-service status kills the back-and-forth</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Review, approval & allocation (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Approval queue</span><span class="sub">All pending asset requests</span></td>
+<td>Review requests across all groups. Approve full quantity, partial quantity, or deny. Add notes to explain decisions</td>
+<td>Allocate limited resources fairly — when 5 vendors want 30 carts and you have 20, the admin decides who gets what</td>
+</tr>
+<tr>
+<td><span class="el">Allocation dashboard</span><span class="sub">Total inventory vs. committed</span></td>
+<td>View total inventory per asset type, how much is allocated (approved), how much is pending, and remaining available</td>
+<td>Real-time visibility into resource utilization — know at a glance if you're about to over-commit golf carts</td>
+</tr>
+<tr>
+<td><span class="el">Group-level asset report</span><span class="sub">What each group has been approved</span></td>
+<td>Export per-group asset allocation reports. Used for delivery logistics, onsite distribution, and post-event reconciliation</td>
+<td>Give operations team a clear delivery manifest — Acme AV gets 3 carts at Gate B, StageWorks gets 2 forklifts at Dock C</td>
+</tr>
+<tr>
+<td><span class="el">Billback / payment</span><span class="sub">Charge vendors for equipment</span></td>
+<td>Generate invoices based on approved asset orders. Process payment via Stripe integration. Track paid vs. outstanding</td>
+<td>Turn asset management from a cost center to a revenue stream — vendors pay for what they use</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Onsite & post-event</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Onsite dispute resolution</span><span class="sub">Single source of truth</span></td>
+<td>When a vendor says "I was approved for 5 radios" and operations says "we show 3," the dashboard settles it instantly</td>
+<td>End onsite arguments with data — the approved record is timestamped and visible to both parties</td>
+</tr>
+<tr>
+<td><span class="el">Return tracking</span><span class="sub">Post-event reconciliation</span></td>
+<td>Mark assets as returned. Identify missing or damaged equipment per group</td>
+<td>Hold groups accountable for equipment — know who didn't return the golf cart</td>
+</tr>
+<tr>
+<td><span class="el">Year-over-year data</span><span class="sub">Cross-event CRM persistence</span></td>
+<td>Historical asset request data carries forward. Admin can see "Acme AV ordered 3 carts last year — they'll probably need the same"</td>
+<td>Smarter forecasting and procurement based on actual usage patterns, not guesswork</td>
+</tr>
+</table>
+</div>

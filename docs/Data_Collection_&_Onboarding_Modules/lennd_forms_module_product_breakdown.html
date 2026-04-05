@@ -1,0 +1,110 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#E1F5EE;color:#085041"><div class="dot" style="background:#0F6E56"></div>Module 2: Forms — custom data collection engine</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Form building (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Field builder</span><span class="sub">Custom question types</span></td>
+<td>Build forms using Lennd's field types: text, number, dropdown, multi-select, date, file upload, phone, email, address, long text, checkbox. Each field is a reusable CRM "field" — create once, use across multiple forms</td>
+<td>Collect exactly the data you need in the format you need it — structured fields, not free-text emails that need manual parsing</td>
+</tr>
+<tr>
+<td><span class="el">Conditional logic</span><span class="sub">Show/hide fields based on answers</span></td>
+<td>Configure field visibility based on previous responses: if "Credential type = All-access" then show "Justification reason" field. Fields appear/disappear dynamically</td>
+<td>Keep forms short and relevant — vendors don't see questions meant for media, even on a shared form template</td>
+</tr>
+<tr>
+<td><span class="el">Required vs. optional fields</span><span class="sub">Submission validation</span></td>
+<td>Mark fields as required or optional. Form won't submit until all required fields are filled. Validation rules per field type (email format, phone format)</td>
+<td>Prevent incomplete submissions that require follow-up — get complete data on the first pass</td>
+</tr>
+<tr>
+<td><span class="el">Form assignment</span><span class="sub">To portals, group types, or individuals</span></td>
+<td>Assign form to a group type portal (all vendors get it), to a specific group (only Acme AV gets this custom form), or publish as standalone URL for public access</td>
+<td>Flexible distribution — same form engine serves portal-embedded and standalone use cases</td>
+</tr>
+<tr>
+<td><span class="el">Due dates</span><span class="sub">Per form, per assignment</span></td>
+<td>Set submission deadlines per form. Different deadlines possible per group. Overdue forms flagged in admin dashboard and stakeholder portal</td>
+<td>Enforce timeline without manual chasing — the system tracks who's late, not the admin's memory</td>
+</tr>
+<tr>
+<td><span class="el">Reusable field library</span><span class="sub">Fields persist across forms and events</span></td>
+<td>Fields created in one form are available to reuse in other forms and future events. "Company name," "Primary contact email," "T-shirt size" — define once, reuse everywhere</td>
+<td>Eliminate rebuilding the same questions each event — the field library grows over time and speeds up form creation</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Distribution & collection (stakeholders)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Portal-embedded forms</span><span class="sub">Within the stakeholder's portal</span></td>
+<td>Stakeholder sees assigned forms in their portal dashboard under "Forms" section. Incomplete forms show as action items with due dates. Clicks to open and fill</td>
+<td>Forms live alongside credentials, assets, catering — the stakeholder doesn't switch tools or URLs to complete different tasks</td>
+</tr>
+<tr>
+<td><span class="el">Standalone form links</span><span class="sub">Public URL, no portal needed</span></td>
+<td>Share a direct form URL for one-off respondents: ticket request forms, volunteer applications, media accreditation. Anyone can access — no account needed</td>
+<td>Lowest-friction collection path — for stakeholders who don't need an ongoing portal relationship, just a single form submission</td>
+</tr>
+<tr>
+<td><span class="el">Form editing after submission</span><span class="sub">Portal forms are dynamic</span></td>
+<td>Unlike standalone forms (submit once), portal forms can be revisited and edited by the stakeholder until the close date. Changes update the CRM in real time</td>
+<td>Accommodate evolving information — vendor's load-in time changes, artist's rider is updated, contact person swaps</td>
+</tr>
+<tr>
+<td><span class="el">File upload fields</span><span class="sub">Attach documents within forms</span></td>
+<td>Form fields that accept file uploads: logos, insurance certificates, signed contracts, tech riders. Uploaded files attach to the group's record in the CRM</td>
+<td>Collect structured data AND supporting documents in one submission — no separate email needed for the attachment</td>
+</tr>
+<tr>
+<td><span class="el">CRM auto-population</span><span class="sub">Data flows into central database</span></td>
+<td>Form responses automatically populate the group and person records in the event CRM. "Company name" from the form becomes the group name in the database. No manual data entry</td>
+<td>The form is the data entry interface for the CRM — stakeholders unknowingly populate the admin's operational database</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Review & management (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Submission tracking</span><span class="sub">Per-form, per-group status</span></td>
+<td>Dashboard shows which groups have submitted each form, which are incomplete, which haven't started. Filterable by form, group type, due date status</td>
+<td>At-a-glance compliance visibility — know that 38 of 47 vendors submitted their insurance form, 9 are outstanding</td>
+</tr>
+<tr>
+<td><span class="el">Response review</span><span class="sub">View individual submissions</span></td>
+<td>Open any group's form responses. Review answers, view uploaded files, check for completeness. Can leave internal notes on responses</td>
+<td>Quality check submitted data before it drives downstream decisions (credential printing, catering orders, asset allocation)</td>
+</tr>
+<tr>
+<td><span class="el">Bulk export</span><span class="sub">CSV/Excel of all responses</span></td>
+<td>Export all form responses for a given form across all groups. One row per group, one column per field. Ready for analysis or handoff to other departments</td>
+<td>Bridge the gap between Lennd and external systems — export data for the catering vendor, the print shop, the security team</td>
+</tr>
+<tr>
+<td><span class="el">Automated reminders</span><span class="sub">Nudge non-submitters</span></td>
+<td>System sends automatic email reminders to groups with incomplete or unsubmitted forms. Configurable message, frequency, and trigger conditions</td>
+<td>Reduce admin follow-up burden — the system nags consistently and tirelessly; the admin focuses on approvals, not chasing</td>
+</tr>
+</table>
+</div>

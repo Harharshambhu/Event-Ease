@@ -1,0 +1,121 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAECE7;color:#712B13"><div class="dot" style="background:#D85A30"></div>Module 2: Catering — meal request, approval & check-in</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Configuration (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Event days</span><span class="sub">Load-in, show days, load-out</span></td>
+<td>Define which days include catering — include load-in and load-out days, not just show days. Set start/end dates per day</td>
+<td>Ensure meal forecasting covers the full event lifecycle, not just performance days</td>
+</tr>
+<tr>
+<td><span class="el">Meal types</span><span class="sub">Custom names, per-day availability</span></td>
+<td>Create meal types: Breakfast, Lunch, Dinner, Snack Bar, Smoothie Station, Boxed Meal, Grab-and-Go — unlimited custom types. Set which meals are available on which days</td>
+<td>Match the actual catering operation — not every meal runs every day, and non-standard meals (snack bars, coffee stations) need tracking too</td>
+</tr>
+<tr>
+<td><span class="el">Dietary restrictions</span><span class="sub">Configurable options per event</span></td>
+<td>Set up restriction categories: vegetarian, vegan, gluten-free, halal, kosher, nut allergy — preset or custom. Recommend 4-10 options. Collect allergies as a separate field</td>
+<td>Give the catering vendor accurate dietary data so they can plan portions and prevent allergic reactions</td>
+</tr>
+<tr>
+<td><span class="el">Item blocks</span><span class="sub">Meal packages per group type</span></td>
+<td>Create catering item blocks: which meals each group type can request, quantity limits, pricing if applicable. Assign blocks to portals</td>
+<td>Control who can request what — volunteers get standard meals, VIPs get premium dining, artists get hospitality</td>
+</tr>
+<tr>
+<td><span class="el">Approver settings</span><span class="sub">Who can approve/deny meals</span></td>
+<td>Assign team members with approver privileges for catering. Configure manager override code for onsite exceptions</td>
+<td>Ensure meal approvals go through authorized staff — prevent unauthorized meal orders inflating the catering budget</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Request & collection (stakeholders)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Group-level meal requests</span><span class="sub">Via portal or form</span></td>
+<td>Group contact requests meals for their entire team: "12 lunches and 12 dinners on load-in day, 15 lunches on show day." Selects meal types from available options</td>
+<td>Get aggregate meal counts per group per day for catering vendor forecasting</td>
+</tr>
+<tr>
+<td><span class="el">Person-level meal assignment</span><span class="sub">Individual tracking</span></td>
+<td>Assign specific meals to specific people within a group — enables individual-level check-in rather than group-level only</td>
+<td>Know exactly who has a meal, not just "the vendor group has 12 lunches" — prevents sharing and overspend</td>
+</tr>
+<tr>
+<td><span class="el">Dietary info per person</span><span class="sub">Collected via form fields</span></td>
+<td>Each person's dietary restrictions are captured as part of their profile — persists across modules (catering, credentials, CRM)</td>
+<td>One-time collection of dietary info that flows automatically to every relevant report and catering order</td>
+</tr>
+<tr>
+<td><span class="el">Admin manual entry</span><span class="sub">For late additions</span></td>
+<td>Admin manually adds meal orders for walk-ins, last-minute crew, or executive additions</td>
+<td>Handle exceptions without breaking the self-service model</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Approval & forecasting (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Approval queue</span><span class="sub">Pending meal requests</span></td>
+<td>Review and approve/deny meal requests per group. Admin-created orders auto-approve. Portal/form submissions require manual approval</td>
+<td>Control the catering budget — every meal is an explicit cost; unauthorized meals inflate spend</td>
+</tr>
+<tr>
+<td><span class="el">Catering dashboard</span><span class="sub">Forecasting by day and meal</span></td>
+<td>View total approved/pending/denied/unused/used meals broken down by day and meal type. Export CSV/Excel for catering vendor</td>
+<td>Give the catering vendor exact numbers per meal per day — no more guessing or over-ordering</td>
+</tr>
+<tr>
+<td><span class="el">Budget tracking</span><span class="sub">Meals as cost items</span></td>
+<td>Track total meal cost by group, by day, by meal type. Identify over-requests and under-utilization patterns</td>
+<td>Treat catering as a controllable line item, not an untracked cost that balloons every year</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Onsite check-in (event day)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">RFID / barcode scanning</span><span class="sub">Wristband → meal match</span></td>
+<td>Scan person's wristband at catering station. System matches wristband to person record, finds their approved meals, and claims the meal</td>
+<td>Instant verification — only people with approved meals eat. No printed meal tickets to lose or forge</td>
+</tr>
+<tr>
+<td><span class="el">Group-level check-in</span><span class="sub">Search by group name</span></td>
+<td>If no individual wristband, search by group name and claim a meal from the group's pool</td>
+<td>Flexible fallback — handles groups that didn't assign meals to individuals</td>
+</tr>
+<tr>
+<td><span class="el">Manager override</span><span class="sub">Password-protected exception</span></td>
+<td>If a wristband has no meal order, manager enters override code to approve the meal and track it against the wristband ID</td>
+<td>Handle day-of exceptions without blocking the check-in line — log it, don't deny it</td>
+</tr>
+<tr>
+<td><span class="el">Real-time usage dashboard</span><span class="sub">Approved vs. used vs. unused</span></td>
+<td>Live dashboard shows how many meals have been checked in vs. how many remain. Broken down by day, meal type, group</td>
+<td>Spot waste in real time — if 40% of dinners go unused, adjust tomorrow's order and save budget</td>
+</tr>
+</table>
+</div>

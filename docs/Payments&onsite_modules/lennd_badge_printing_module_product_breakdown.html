@@ -1,0 +1,145 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5;border-radius:0}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FBEAF0;color:#72243E"><div class="dot" style="background:#D4537E"></div>Module: Badge printing — credential design, production & issuance</div>
+
+<div class="note" style="background:var(--color-background-warning);color:var(--color-text-warning)">
+Badge printing is the <strong>physical output layer</strong> of the Credentials module. While Credentials handles the data (who is approved for what), Badge Printing handles the artifact (the physical badge, pass, or credential that a person wears, carries, or scans). It only becomes relevant after credentials are approved.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Badge design & template setup (admin, pre-event)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Template per credential type</span><span class="sub">Unique design for each role</span></td>
+<td>Create distinct badge designs for each credential type: different background colors, layouts, and branding for Vendor, Media, VIP, Artist, Volunteer, Staff, All-Access. Each is visually distinguishable at a glance</td>
+<td>Security personnel can identify access level by badge appearance alone — a green vendor badge instantly reads different from a red all-access badge, no barcode scan needed for visual triage</td>
+</tr>
+<tr>
+<td><span class="el">Variable data fields</span><span class="sub">What prints per person</span></td>
+<td>Configure which data fields print on each badge type. Options: full name, company/group name, title/role, photo, credential type label, event name, barcode/QR code, access zones. Different types can show different fields (e.g., "Volunteer Committee" on volunteer badges, "Company Name" on vendor badges)</td>
+<td>Each badge carries exactly the information relevant to that role — security sees what they need, the person sees their identity, and the barcode enables digital verification</td>
+</tr>
+<tr>
+<td><span class="el">Barcode / QR code placement</span><span class="sub">Scannable identifier on badge</span></td>
+<td>Place barcode or QR code in a consistent position on the badge. Code links to the person's credential record in Lennd. Configure code format to match ticketing partner requirements (Eventbrite, Intellitix)</td>
+<td>Every printed badge is a scannable credential — bridges the physical badge to the digital record for instant verification at any check-in point</td>
+</tr>
+<tr>
+<td><span class="el">Event branding</span><span class="sub">Logo, colors, sponsor marks</span></td>
+<td>Add event logo, sponsor logos, year/edition, and event-specific design elements. Ensure brand consistency across all badge types while maintaining type differentiation</td>
+<td>Badges double as brand assets — the credential is also a professional, branded artifact that reinforces the event's identity</td>
+</tr>
+<tr>
+<td><span class="el">Badge stock / format specification</span><span class="sub">Physical medium selection</span></td>
+<td>Define badge format: laminated card, paper insert in lanyard pouch, adhesive label, wristband with printed insert. Specify dimensions, orientation (portrait/landscape), and material</td>
+<td>Match the physical format to the event's security and practical needs — a multi-day conference needs a durable laminated badge; a one-day festival can use paper in a pouch</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Pre-event batch printing (admin, days before event)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Print queue from approved credentials</span><span class="sub">Batch generation</span></td>
+<td>Generate print batch from all approved credentials. Filter by credential type, group, or alphabetical. System pulls name, company, photo, barcode from person records and merges with badge template</td>
+<td>Convert the approved credential list into a production-ready print queue with zero manual data entry — every approved person auto-populates a badge</td>
+</tr>
+<tr>
+<td><span class="el">Photo inclusion</span><span class="sub">Uploaded during credentialing</span></td>
+<td>If photos were collected during the credential request process (via portal form), they auto-populate onto the badge. Admin can review and crop/rotate photos before printing</td>
+<td>Photo badges increase security — gate staff can visually match face to badge, deterring credential sharing without needing to check ID</td>
+</tr>
+<tr>
+<td><span class="el">Batch print execution</span><span class="sub">Multi-badge print run</span></td>
+<td>Send batch to connected printer. Print hundreds of badges in sequence. System tracks which badges have been printed and which remain. Pauses for stock changes if needed</td>
+<td>Handle the heavy production lift before event day — 500 badges printed overnight, sorted, and ready for will-call by morning</td>
+</tr>
+<tr>
+<td><span class="el">Print verification</span><span class="sub">Quality check on output</span></td>
+<td>Review printed badges for quality: text legibility, barcode scannability, photo alignment, color accuracy. Reprint any failed badges. Mark batch as verified</td>
+<td>Catch print errors before they reach the person — a smudged barcode or wrong name is fixable now, not at the gate with 200 people in line</td>
+</tr>
+<tr>
+<td><span class="el">Sorting and packaging</span><span class="sub">Organized for will-call pickup</span></td>
+<td>Sort printed badges by pickup method: alphabetical for will-call, grouped by company for vendor check-in, bundled by credential type for VIP desk. Package with lanyards/pouches</td>
+<td>Smooth pickup experience — when a vendor arrives at will-call, their 12 badges are already bundled together, not scattered alphabetically across 500 badges</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Onsite printing (event day, real-time)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">On-demand single badge printing</span><span class="sub">Walk-ins and late approvals</span></td>
+<td>When a new credential is approved day-of (late addition, walk-in registration, day-of hire), staff prints a single badge immediately from the Lennd interface at the registration desk</td>
+<td>Handle the inevitable last-minute additions without delay — the person walks up, gets approved, and has a badge in hand within minutes</td>
+</tr>
+<tr>
+<td><span class="el">Onsite photo capture</span><span class="sub">Take photo at registration desk</span></td>
+<td>For walk-ins or people who didn't submit a photo pre-event, take their photo on the spot using a tablet/webcam. Photo attaches to their person record and prints on the badge</td>
+<td>Every badge has a photo regardless of when the person was added — maintains consistent security standard between pre-registered and day-of attendees</td>
+</tr>
+<tr>
+<td><span class="el">Badge reprint</span><span class="sub">Replacement for lost/damaged</span></td>
+<td>Look up person by name or barcode scan. Reprint their badge with all original data intact. Optionally void the old barcode and issue a new one to prevent duplicate badges in circulation</td>
+<td>Lost badge doesn't mean lost access — quick reprint maintains security (void old barcode) while keeping the person productive</td>
+</tr>
+<tr>
+<td><span class="el">Credential correction</span><span class="sub">Fix errors at the desk</span></td>
+<td>Person arrives and badge has wrong name spelling, wrong credential type, or wrong company. Staff corrects data in Lennd, reprints immediately. Correction logged in audit trail</td>
+<td>Fix human errors in real time without sending the person away or making them wait — correct it, reprint it, move on</td>
+</tr>
+<tr>
+<td><span class="el">Multiple print stations</span><span class="sub">Distributed printing across venue</span></td>
+<td>Set up print stations at multiple locations: main registration, VIP entrance, backstage, production office. Each station connected to the same Lennd data, any can print any badge</td>
+<td>Decentralize badge production to reduce bottlenecks — a vendor arriving at the backstage gate doesn't need to walk to the main registration to get a reprint</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Tracking & post-event (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Issuance tracking</span><span class="sub">Printed vs. picked up vs. outstanding</span></td>
+<td>Track per-badge status: printed (ready at will-call), picked up (person collected it), not printed (approved but badge not yet produced), reprinted (replacement issued). Dashboard shows gaps</td>
+<td>Know at any moment: how many badges are printed, how many are picked up, how many are still waiting — operational pulse check during event</td>
+</tr>
+<tr>
+<td><span class="el">Pickup confirmation</span><span class="sub">Will-call distribution log</span></td>
+<td>When a person collects their badge at will-call, staff marks it as "picked up" in the system. Optionally scans the badge to confirm. Timestamp recorded</td>
+<td>Close the chain from approval → print → pickup → check-in. The admin can track the full credential lifecycle from request to gate entry</td>
+</tr>
+<tr>
+<td><span class="el">Print volume report</span><span class="sub">Total badges produced</span></td>
+<td>Report total badges printed by type, station, day. Compare against approved credential count. Identify overprints (reprints, corrections) and underprints (no-shows never picked up)</td>
+<td>Procurement data for next year — if 300 badges were printed but only 240 picked up, order less badge stock next time</td>
+</tr>
+<tr>
+<td><span class="el">Void / deactivate badges</span><span class="sub">Security revocation</span></td>
+<td>If a credential is revoked (person fired, vendor removed, security incident), admin voids the badge in the system. Voided barcode returns "denied" on scan even if the physical badge still exists</td>
+<td>Revocation without retrieval — you don't need to physically collect the badge, just deactivate it digitally and it becomes a useless piece of plastic at any scan point</td>
+</tr>
+</table>
+</div>
+
+<div style="padding:10px 14px;border-radius:var(--border-radius-md);font-size:12px;line-height:1.6;background:var(--color-background-secondary);color:var(--color-text-secondary);margin-top:12px">
+<strong style="color:var(--color-text-primary)">How these three modules interconnect:</strong> Payments processes the financial transaction for a paid credential. Badge Printing produces the physical artifact for an approved credential. Check-in App verifies the scanned artifact against the digital record. The lifecycle is: request → approve → pay (if priced) → print → distribute → scan → verify. All three modules read from and write to the same person/credential record in the CRM — they're not separate systems, they're three views of the same data at different stages of the credential lifecycle.
+</div>

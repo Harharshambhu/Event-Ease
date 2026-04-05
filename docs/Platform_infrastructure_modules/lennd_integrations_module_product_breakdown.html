@@ -1,0 +1,140 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:8px 14px;font-size:11px;line-height:1.5}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#FAECE7;color:#712B13"><div class="dot" style="background:#D85A30"></div>Module: Integrations — ticketing, RFID, payments & data sync</div>
+
+<div class="note" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">
+Lennd's integration layer is <strong>narrow but deep</strong> — it doesn't integrate with hundreds of tools like Zapier would. Instead, it has purpose-built, bidirectional integrations with a small set of event-critical systems: ticketing platforms, RFID/access control providers, and the Stripe payment gateway. The design philosophy is: integrate deeply where data must flow automatically and in real time, rather than broadly with shallow link-outs.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Integration 1 — Ticketing platforms (Eventbrite, Front Gate Tickets)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Eventbrite connection</span><span class="sub">Lennd is listed in Eventbrite App Marketplace</span></td>
+<td>Connect Lennd to the event's Eventbrite account. Map Lennd credential types to Eventbrite ticket types. Once connected, approved credential orders in Lennd can sync to Eventbrite as ticket issuances</td>
+<td>Eliminate double data entry — admin approves a vendor's 12 backstage passes in Lennd, and 12 corresponding tickets are issued in Eventbrite automatically, without touching Eventbrite's interface</td>
+</tr>
+<tr>
+<td><span class="el">Front Gate Tickets connection</span><span class="sub">Festival-focused ticketing partner</span></td>
+<td>Integrate with Front Gate Tickets for festivals that use FGT as their primary ticketing platform. Sync approved credentials to FGT fulfillment. Import barcode pools from FGT into Lennd</td>
+<td>Same goal as Eventbrite integration but for the festival vertical — Front Gate is the dominant ticketing platform for US music festivals</td>
+</tr>
+<tr>
+<td><span class="el">Credential-to-ticket sync</span><span class="sub">Bidirectional data flow</span></td>
+<td>When a credential is approved in Lennd, the corresponding ticket is created/updated in the ticketing platform. When a ticket is scanned at the gate via the ticketing platform's system, the status can sync back to Lennd's check-in records. Changes on either platform auto-sync</td>
+<td>Single source of truth across both systems — the admin doesn't need to check two dashboards to know who's been issued credentials and who's checked in</td>
+</tr>
+<tr>
+<td><span class="el">Barcode import from ticketing</span><span class="sub">Connecting scan IDs to Lennd records</span></td>
+<td>Import barcode or ticket ID pools from the ticketing platform into Lennd. When Lennd approves a credential, the next available barcode from the imported pool is auto-assigned to that person's record</td>
+<td>Bridge the identifier gap — the ticketing platform generates barcodes, Lennd manages who gets them. The import ensures every Lennd credential maps to a scannable ticketing-platform barcode</td>
+</tr>
+<tr>
+<td><span class="el">Form-to-ticketing pipeline</span><span class="sub">Request forms feed ticket issuance</span></td>
+<td>Vendors or staff fill out Lennd request forms for credentials. Admin reviews and approves. Approved orders push to ticketing platform for fulfillment. The entire pipeline — form submission → admin review → approval → ticket issuance — runs without leaving Lennd until the final fulfillment step</td>
+<td>Give the admin a unified workflow — manage requests and approvals in Lennd's purpose-built interface, but leverage the ticketing platform's existing fulfillment infrastructure (email delivery, mobile tickets, box office lookup)</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Integration 2 — RFID & access control (Intellitix, Elevate)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Intellitix RFID sync</span><span class="sub">Primary RFID integration partner</span></td>
+<td>Connect Lennd to Intellitix access control system. Approved credentials in Lennd auto-sync to Intellitix so RFID wristbands are programmed with the correct access zones. Changes in either platform sync automatically — no manual re-programming needed</td>
+<td>Close the loop between digital approval and physical access — when Lennd approves a backstage credential, the Intellitix system knows that wristband can enter backstage without any manual handoff</td>
+</tr>
+<tr>
+<td><span class="el">Elevate integration</span><span class="sub">Alternative access control partner</span></td>
+<td>Same bidirectional sync as Intellitix but with the Elevate platform. Credential approvals push to Elevate; access control scan events push back to Lennd</td>
+<td>Serve events that use Elevate instead of Intellitix — the admin's Lennd workflow doesn't change regardless of which RFID vendor the event uses</td>
+</tr>
+<tr>
+<td><span class="el">Access zone mapping</span><span class="sub">Credential type → physical zone</span></td>
+<td>Map each Lennd credential type to the corresponding access zones in the RFID system. "All-Access" maps to all zones. "Vendor" maps to vendor areas + general. "VIP" maps to VIP lounge + general. This mapping is configured once and applies to all credentials of that type</td>
+<td>The access policy lives in one place (Lennd) and enforces in another (the RFID gates). The mapping ensures a vendor wristband won't open the VIP gate, even though both exist in the same RFID system</td>
+</tr>
+<tr>
+<td><span class="el">Wristband activation sync</span><span class="sub">From credential approval to live wristband</span></td>
+<td>When Lennd approves a credential and assigns a barcode/RFID tag, the RFID system activates that specific tag for the mapped access zones. Revoked credentials deactivate the tag. No manual intervention at the RFID provider level</td>
+<td>Real-time access control changes — if a vendor credential is revoked at 3 PM, the wristband stops working at 3:01 PM at every RFID gate across the venue. No "we'll update it overnight"</td>
+</tr>
+<tr>
+<td><span class="el">Catering RFID check-in</span><span class="sub">Meal scanning via RFID partner</span></td>
+<td>RFID wristbands scanned at catering stations can trigger meal claims in Lennd. The RFID system handles the physical scan, Lennd handles the meal logic (is this person approved for lunch? have they already claimed it?). Result syncs back to the RFID system for display</td>
+<td>Unified wristband experience — one tap at the gate for entry, one tap at the catering tent for lunch. The person uses one wristband for everything; two systems coordinate behind the scenes</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Integration 3 — Payments (Stripe)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Stripe account connection</span><span class="sub">Organization-level setup</span></td>
+<td>Connect the organization's Stripe account from the Organization settings → Billing page. One-time connection. All events under the organization use the same Stripe account for payment processing</td>
+<td>Enable all payment features (credential sales, asset billback, ticket sales, donations) with a single payment gateway connection — no per-event payment setup</td>
+</tr>
+<tr>
+<td><span class="el">PCI compliance delegation</span><span class="sub">Stripe handles card data</span></td>
+<td>All card data is processed directly by Stripe — Lennd never stores card numbers, CVVs, or sensitive payment data. Stripe's Level 1 PCI compliance covers the payment flow. SSL encryption on all data traffic</td>
+<td>The event organizer inherits Stripe's security posture without building or maintaining their own payment security infrastructure — massive compliance burden offloaded</td>
+</tr>
+<tr>
+<td><span class="el">Payment method support</span><span class="sub">Cards + digital wallets via Stripe</span></td>
+<td>Accept credit/debit cards and Stripe-supported digital wallets (Apple Pay, Google Pay). Payments work on desktop and mobile. Stripe handles currency conversion for supported currencies (USD, CAD, AUD)</td>
+<td>Meet payers where they are — a vendor can pay their golf cart rental invoice from their phone while standing at the loading dock, using Apple Pay. No checks, no wire transfers, no "I'll pay you later"</td>
+</tr>
+<tr>
+<td><span class="el">Transaction data flow</span><span class="sub">Stripe → Lennd record linkage</span></td>
+<td>Each Stripe transaction is linked to a Lennd order, which is linked to a group, which is linked to an event. Stripe transaction ID, timestamp, amount, and status are stored in Lennd. Admin can click through from the Lennd order to the Stripe dashboard for detailed transaction info</td>
+<td>Full audit trail from the event module (what was ordered) through to the payment system (what was paid). No reconciliation gap between "what the admin sees" and "what the bank received"</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Integration 4 — Data security & infrastructure</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">SSL/TLS encryption</span><span class="sub">2048/4096-bit SHA2 public key</span></td>
+<td>All data traffic between users, portals, and the Lennd platform is encrypted with industry-standard SSL/TLS. Enforced on all endpoints — admin dashboard, portal access, form submissions, API calls</td>
+<td>Protect sensitive data in transit — credential names, payment information, COI documents, and personal details are never exposed to interception</td>
+</tr>
+<tr>
+<td><span class="el">Automated backups</span><span class="sub">Every 5 hours</span></td>
+<td>Full database snapshots taken every 5 hours ("more than daily"). Backups stored in case of data loss or corruption. Admin does not need to trigger backups — fully automated</td>
+<td>Business continuity — even in a catastrophic data incident, the maximum data loss is 5 hours of changes. For event operations, where most data is entered days before the event, this is effectively zero risk</td>
+</tr>
+<tr>
+<td><span class="el">Data export capabilities</span><span class="sub">CSV/Excel from every module</span></td>
+<td>Every module supports CSV/Excel export with configurable field selection. Credentials, catering, assets, CRM, payments — all exportable. Filtered exports for targeted data subsets</td>
+<td>Integration escape hatch — if Lennd doesn't integrate with a specific external system, the admin can always export data and import it into that system manually. No vendor lock-in on data</td>
+</tr>
+<tr>
+<td><span class="el">Custom integration requests</span><span class="sub">For unlisted ticketing/RFID providers</span></td>
+<td>If an event uses a ticketing or access control provider not currently integrated (not Eventbrite, Front Gate, Intellitix, or Elevate), Lennd offers to explore custom integration development. Admin can reach out via support to discuss feasibility</td>
+<td>Expandable integration surface — the current 4 partners cover the majority of the festival/sports event market, but the platform isn't closed. New integrations are built based on customer demand</td>
+</tr>
+</table>
+</div>
+
+<div style="padding:10px 14px;border-radius:var(--border-radius-md);font-size:12px;line-height:1.6;background:#EEEDFE;color:#3C3489;margin-top:4px">
+<strong>How these three infrastructure modules connect to everything above:</strong> The Event CRM is the data layer every module reads from and writes to. Team Management controls which internal staff can access which modules and whether they can approve requests. Integrations extend the platform's reach to external systems so that Lennd data (credentials, payments, access control) flows seamlessly to the ticketing platform, RFID gates, and payment processor — without the admin manually copying data between systems. Together, these three form the foundation that makes the 16 user-facing modules work as a coherent platform rather than disconnected tools.
+</div>

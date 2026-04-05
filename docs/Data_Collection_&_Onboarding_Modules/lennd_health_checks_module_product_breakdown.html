@@ -1,0 +1,131 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:10px 14px;font-size:11px;line-height:1.6;border-radius:var(--border-radius-md);margin:8px 10px 10px}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#E6F1FB;color:#0C447C"><div class="dot" style="background:#378ADD"></div>Module 5: Health checks — compliance screening & clearance</div>
+
+<div class="note" style="background:#E6F1FB;color:#0C447C">
+Built during the pandemic when events like Dew Tour needed COVID-19 screening for all onsite personnel. While the acute COVID use case has faded, this module generalizes to <strong>any recurring compliance check</strong> — drug screening for sports events, security clearance verification, food handler certifications, safety training completion. The pattern is: <strong>require → collect → verify → clear/deny → enforce onsite</strong>.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Compliance configuration (admin)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Health check types</span><span class="sub">Define what needs to be screened</span></td>
+<td>Create screening categories: COVID test result, vaccination status, symptom questionnaire, drug screening, food handler certificate, safety training, background check. Each type has its own requirements and verification method</td>
+<td>Define the compliance requirements before any stakeholder is onboarded — the rules are set structurally, not communicated ad hoc</td>
+</tr>
+<tr>
+<td><span class="el">Questionnaire builder</span><span class="sub">Custom screening forms</span></td>
+<td>Build daily or one-time questionnaires: "Have you experienced any symptoms in the last 48 hours?" "Do you have a valid food handler certificate?" Custom fields, yes/no logic, file upload for proof documents</td>
+<td>Standardized screening — every person answers the same questions in the same format, creating auditable compliance records</td>
+</tr>
+<tr>
+<td><span class="el">Screening schedules</span><span class="sub">When checks occur</span></td>
+<td>Configure timing: one-time pre-event (vaccination proof), daily recurring (symptom check), specific dates (test result 48 hours before entry). Set which days and which personnel types require screening</td>
+<td>Match screening frequency to actual risk — volunteers onsite for 3 days get daily checks; speakers attending one session get a one-time screen</td>
+</tr>
+<tr>
+<td><span class="el">Assignment to group types</span><span class="sub">Who must complete health checks</span></td>
+<td>Assign health check requirements per group type: all vendors and staff must complete daily symptom check; athletes must upload drug screening results; food vendors must show food handler certification</td>
+<td>Role-appropriate compliance — don't ask a media photographer for a food handler certificate; don't skip drug screening for athletes</td>
+</tr>
+<tr>
+<td><span class="el">Clearance rules</span><span class="sub">Pass/fail logic</span></td>
+<td>Define what constitutes clearance: "All symptom questions answered No" = cleared. "Vaccination proof uploaded AND test result negative" = cleared. Failed check flags the person for manual review</td>
+<td>Automated pass/fail reduces the admin's judgment burden — the system clears 90% of people automatically, flagging only exceptions for human review</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Stakeholder compliance submission</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Portal health check section</span><span class="sub">Visible to required group types</span></td>
+<td>Stakeholder sees health check requirements in their portal: which screenings are needed, deadlines, upload buttons for documentation, questionnaire links</td>
+<td>Clear, non-negotiable compliance requirements surfaced alongside their other portal tasks — not a separate email or website</td>
+</tr>
+<tr>
+<td><span class="el">Questionnaire completion</span><span class="sub">Daily or one-time self-report</span></td>
+<td>Person completes the health questionnaire through portal or a mobile-friendly link. For daily checks, a new questionnaire is required each day with responses timestamped</td>
+<td>Timestamped, person-level compliance record — "Jake Martin completed symptom check at 6:42 AM on March 30" is stored and auditable</td>
+</tr>
+<tr>
+<td><span class="el">Proof document upload</span><span class="sub">Vaccination cards, test results, certificates</span></td>
+<td>Upload supporting documents: photo of vaccination card, PDF of test result, scanned food handler cert, safety training completion certificate</td>
+<td>Documentary evidence stored per person — if a health inspector asks "show me this vendor's food handler certification," it's one click away</td>
+</tr>
+<tr>
+<td><span class="el">Auto-clearance</span><span class="sub">Instant result for passing checks</span></td>
+<td>If questionnaire answers meet clearance rules, person is immediately marked as "cleared" — visible in their portal and in the admin dashboard. No admin action needed for passing results</td>
+<td>Speed and scale — when 300 people complete daily symptom checks at 6 AM, the system clears them all in seconds. Admin only sees the 5 flagged exceptions</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Admin review & management</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Compliance dashboard</span><span class="sub">Who's cleared, who's not</span></td>
+<td>Real-time dashboard: total cleared vs. pending vs. failed vs. not started. Filterable by group type, person, date, check type. Flagged exceptions highlighted</td>
+<td>Instant compliance posture visibility — at 7 AM on event day, know that 287 of 300 onsite personnel are cleared and 13 need attention</td>
+</tr>
+<tr>
+<td><span class="el">Exception review</span><span class="sub">Manual review of flagged cases</span></td>
+<td>Review flagged questionnaire responses or documents. Decide: override and clear (with note), deny access, or request re-submission. Each decision is timestamped and attributed to the reviewer</td>
+<td>Human judgment for edge cases — the system handles the clear passes, the admin handles "this test result looks ambiguous"</td>
+</tr>
+<tr>
+<td><span class="el">Automated reminders</span><span class="sub">For incomplete screenings</span></td>
+<td>System emails people who haven't completed their required screening by a configurable time (e.g., "daily symptom check due by 7 AM — you haven't submitted yet")</td>
+<td>Proactive compliance enforcement — don't discover at gate check-in that 20 volunteers never did their morning screening</td>
+</tr>
+<tr>
+<td><span class="el">Audit trail export</span><span class="sub">Compliance records for regulators</span></td>
+<td>Export complete screening records: who submitted what, when, what the result was, who reviewed it, what decision was made. CSV/PDF format for regulatory handoff</td>
+<td>Compliance documentation for health departments, insurers, or legal review — every screening action is logged with timestamp and identity</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Onsite enforcement</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Health pass integration</span><span class="sub">Linked to credential check-in</span></td>
+<td>Health clearance status ties to credential status: a person's wristband scan checks both credential approval AND health clearance. If not cleared, check-in flags it</td>
+<td>Enforcement at the gate — you can't enter the venue with an approved credential but a failed health check. The two systems are linked</td>
+</tr>
+<tr>
+<td><span class="el">Lennd Health Pass</span><span class="sub">Mobile clearance display</span></td>
+<td>Cleared individuals can view their Health Pass on their phone — a visual indicator (green/red) showing clearance status. Used at Dew Tour for rapid visual verification at entry points</td>
+<td>Speed up gate throughput — security glances at the phone screen color instead of looking up each person in a system</td>
+</tr>
+<tr>
+<td><span class="el">Daily reset</span><span class="sub">For recurring screenings</span></td>
+<td>Daily screenings reset at midnight (or configured time). Yesterday's clearance doesn't carry forward. Each new day requires a fresh submission</td>
+<td>Ensure ongoing compliance throughout multi-day events — clearance on Day 1 doesn't exempt someone from Day 2's screening</td>
+</tr>
+<tr>
+<td><span class="el">Real-time compliance view</span><span class="sub">Live monitoring during event</span></td>
+<td>During the event, admin monitors the compliance dashboard in real time. As people complete their daily checks, the clearance count updates live. Emerging issues (cluster of failed checks) are visible immediately</td>
+<td>Situational awareness for event-day health decisions — if 10 people in the same vendor group fail the symptom check, that's an emerging pattern worth acting on</td>
+</tr>
+</table>
+</div>

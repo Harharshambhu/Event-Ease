@@ -1,0 +1,136 @@
+<style>
+*{box-sizing:border-box;margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.tbl th{padding:8px 10px;text-align:left;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--color-border-secondary)}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5;color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.el{font-weight:500}
+.sub{color:var(--color-text-secondary);font-size:10px;display:block;margin-top:2px}
+.phase{padding:6px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.card-h{padding:10px 14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.note{padding:10px 14px;font-size:11px;line-height:1.6;border-radius:var(--border-radius-md);margin:8px 10px 10px}
+</style>
+
+<div class="card">
+<div class="card-h" style="background:#EEEDFE;color:#3C3489"><div class="dot" style="background:#534AB7"></div>Module 1: Portals — the personalized stakeholder micro-site</div>
+
+<div class="note" style="background:#EEEDFE;color:#3C3489">
+Portals are the <strong>container module</strong> — not a feature in themselves, but the surface through which stakeholders interact with every other module. A portal is a dynamically generated website unique to each group, assembled from whichever modules the admin has assigned to that group type. Think of it as each vendor/artist/sponsor getting their own branded event website.
+</div>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 1 — Portal architecture setup (admin, one-time per group type)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Group type selection</span><span class="sub">Which stakeholder type is this portal for</span></td>
+<td>Select the group type to configure (e.g., Vendors). All groups of this type will inherit this portal layout. Navigate to Portals in left-hand admin navigation</td>
+<td>Define the portal template once at the type level — not per vendor. 47 vendors all get the same portal structure automatically</td>
+</tr>
+<tr>
+<td><span class="el">Intake form setup</span><span class="sub">First thing stakeholders see</span></td>
+<td>Build the onboarding intake form: what fields appear when a new group first opens their portal. Company name, primary contact, description, category — configurable per type</td>
+<td>Capture baseline group data on first visit — the intake form is the front door that populates the CRM before anything else happens</td>
+</tr>
+<tr>
+<td><span class="el">Module assignment</span><span class="sub">Which modules appear in this portal</span></td>
+<td>Toggle on/off: credentials, catering, assets, guest lists, forms, documents, schedules, files, messages, event info, health checks. Each toggle adds a section to the portal</td>
+<td>Each group type sees only the modules relevant to their role — vendors get assets, artists get guest lists, volunteers get schedules</td>
+</tr>
+<tr>
+<td><span class="el">Item block assignment</span><span class="sub">What's requestable per module</span></td>
+<td>For each enabled module, assign or create item blocks: which credential types, meal types, asset types are available to request. Set quantities, limits, and pricing per block</td>
+<td>Fine-grained control over what each group type can request — vendors get vendor passes (not all-access), standard meals (not VIP dining)</td>
+</tr>
+<tr>
+<td><span class="el">Appearance customization</span><span class="sub">Welcome message and instructions</span></td>
+<td>Write a custom welcome message, add instructional text per section, list deadlines, include contact info for the admin. Customize what the stakeholder reads when they first land</td>
+<td>Make the portal feel intentional and guided — not a generic form dump, but a structured onboarding experience</td>
+</tr>
+<tr>
+<td><span class="el">Close date</span><span class="sub">Portal submission deadline</span></td>
+<td>Set a date after which the portal locks for new submissions. Existing data remains viewable but not editable. Admin can override to reopen</td>
+<td>Enforce deadlines structurally — the system locks the door, not an email saying "please submit by Friday"</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 2 — Portal generation & distribution (admin → stakeholders)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Auto-generation</span><span class="sub">Portal created per group</span></td>
+<td>When admin assigns forms and modules to a group type, portals auto-generate for each group of that type. No manual per-group setup needed. Each portal gets a unique URL</td>
+<td>Zero per-vendor portal creation effort — the system does it. Admin configures the template; the system stamps out 47 instances</td>
+</tr>
+<tr>
+<td><span class="el">Contact assignment</span><span class="sub">Who gets login access</span></td>
+<td>Add primary contact per group (auto from CRM if returning group). Grant login access checkbox per person. Additional contacts can be added with portal access</td>
+<td>Multiple people per vendor can access the same portal — the AV coordinator and the AV company owner can both log in and contribute</td>
+</tr>
+<tr>
+<td><span class="el">Invite email</span><span class="sub">Bulk or individual send</span></td>
+<td>Send portal invite emails to all groups of a type in one click, or individually. Email contains unique portal link + welcome message. Can resend invitations for non-responders</td>
+<td>One-click distribution to dozens or hundreds of stakeholders — the portal link is the only thing they need to start interacting</td>
+</tr>
+<tr>
+<td><span class="el">Group-specific additions</span><span class="sub">Override type-level config per group</span></td>
+<td>Add specific forms, document requests, or item blocks to an individual group's portal beyond the type-level defaults. E.g., headliner artist gets an additional hospitality form that opening acts don't</td>
+<td>Handle exceptions without creating a new group type — customize individual portals when the template doesn't cover edge cases</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 3 — Stakeholder portal experience (external users)</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Portal home / dashboard</span><span class="sub">Landing page per group</span></td>
+<td>Stakeholder logs in and sees: action items due, forms to complete, request statuses, upcoming deadlines, event info. All in one personalized page</td>
+<td>Immediate clarity on "what do I need to do?" — the portal answers this in 3 seconds without any email or phone call</td>
+</tr>
+<tr>
+<td><span class="el">Module navigation</span><span class="sub">Only assigned modules visible</span></td>
+<td>Navigation shows only enabled modules: Credentials, Catering, Assets, Forms, Files, Event Info, Messages — whatever the admin assigned. No locked or hidden items</td>
+<td>Structural simplicity — the stakeholder sees a focused, relevant interface, not a full platform with grayed-out features</td>
+</tr>
+<tr>
+<td><span class="el">Dynamic content</span><span class="sub">Portal updates as data changes</span></td>
+<td>Unlike a static form, the portal is a living workspace. Stakeholders return to check approval statuses, update personnel names, add new requests, view approved allocations</td>
+<td>Ongoing self-service relationship — not a one-time submission but a persistent communication and status surface</td>
+</tr>
+<tr>
+<td><span class="el">Completed vs. pending tracking</span><span class="sub">Visual progress per section</span></td>
+<td>Each portal section shows completion: forms submitted vs. outstanding, credentials approved vs. pending, documents uploaded vs. requested</td>
+<td>Stakeholder self-monitors their own compliance — they know they're behind without the admin telling them</td>
+</tr>
+<tr>
+<td><span class="el">Real-time approval visibility</span><span class="sub">Status without asking</span></td>
+<td>Every request (credentials, assets, catering, guest list) shows current status: submitted, pending review, approved, denied — with admin notes on denials</td>
+<td>Eliminate the #1 email from stakeholders: "What's the status of my request?" — the portal answers it live</td>
+</tr>
+</table>
+
+<div class="phase" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Phase 4 — Admin monitoring & portal management</div>
+<table class="tbl">
+<colgroup><col style="width:28%"><col style="width:38%"><col style="width:34%"></colgroup>
+<tr><th style="color:var(--color-text-info)">Elements</th><th style="color:var(--color-text-warning)">Tasks</th><th style="color:var(--color-text-success)">Objectives</th></tr>
+<tr>
+<td><span class="el">Onboarding completion dashboard</span><span class="sub">Cross-group progress</span></td>
+<td>Admin views completion % across all groups: who has finished their portal tasks, who is partial, who hasn't started. Filterable by group type, deadline status, module</td>
+<td>One screen answers "are we on track for onboarding?" — flag the 6 vendors who haven't started before it becomes a day-of crisis</td>
+</tr>
+<tr>
+<td><span class="el">Automated reminders</span><span class="sub">System-sent deadline nudges</span></td>
+<td>Configure automatic email reminders for groups with incomplete portal tasks. Set frequency, message content, and which actions trigger the reminder</td>
+<td>The system chases — not the human. Admin sets it once; the platform nudges non-compliant groups automatically</td>
+</tr>
+<tr>
+<td><span class="el">Portal reopen / extend</span><span class="sub">Post-deadline flexibility</span></td>
+<td>Reopen a closed portal for a specific group or extend the deadline for all groups. Handles late onboarding without rebuilding anything</td>
+<td>Accommodate real-world flexibility (vendors confirmed late, last-minute sponsor additions) without breaking the deadline-enforcement model</td>
+</tr>
+</table>
+</div>

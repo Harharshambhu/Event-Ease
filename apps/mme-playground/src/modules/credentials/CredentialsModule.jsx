@@ -32,9 +32,7 @@ export default function CredentialsModule({ onBack, initialView }) {
             <div className="cred-module">
                 <div className="cred-module__header">
                     {onBack && (
-                        <button className="cred-module__back" onClick={onBack}>
-                            ← Dashboard
-                        </button>
+                        <button className="evdash__back" onClick={onBack} title="Back to Dashboard">‹</button>
                     )}
                     <div className="cred-module__header-icon">⊡</div>
                     <div className="cred-module__header-text">

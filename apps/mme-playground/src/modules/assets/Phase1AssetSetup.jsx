@@ -1,199 +1,213 @@
-import React from 'react';
-import { ASSET_TYPES, CATEGORIES, VENDOR_REQUESTS } from './data';
+import React, { useState } from 'react';
+import { ASSETS, ASSET_CATEGORIES } from './data';
 
-const maxCat = Math.max(...CATEGORIES.map(c => c.count));
+const CAT_FILTERS    = ['All', 'AV', 'Staging', 'Registration', 'Catering', 'Branding'];
+const STATUS_FILTERS = ['All', 'Confirmed', 'Pending', 'Draft'];
+const STATUS_CYCLE   = { draft: 'pending', pending: 'confirmed', confirmed: 'draft' };
 
-const STATUS_LABEL = {
-    'approved':   'Approved',
-    'pending':    'Pending',
-    'over-limit': 'Over Limit',
-    'denied':     'Denied',
-};
+function groupByLoadIn(assets) {
+    const map = {};
+    assets.forEach(a => {
+        if (!map[a.loadIn]) map[a.loadIn] = [];
+        map[a.loadIn].push(a);
+    });
+    return Object.entries(map).sort((a, b) => {
+        // Sort by date string: "Apr 12, 2:00 PM" etc.
+        return new Date(a[0]) - new Date(b[0]) || a[0].localeCompare(b[0]);
+    });
+}
 
-export default function Phase1AssetSetup({ requestStatuses, onApprove, onDeny, showToast }) {
+export default function Phase1AssetSetup({ showToast }) {
+    const [assets,       setAssets]       = useState(ASSETS);
+    const [search,       setSearch]       = useState('');
+    const [catFilter,    setCatFilter]    = useState('All');
+    const [statusFilter, setStatusFilter] = useState('All');
+
+    const confirmed = assets.filter(a => a.status === 'confirmed').length;
+    const pending   = assets.filter(a => a.status === 'pending').length;
+    const draft     = assets.filter(a => a.status === 'draft').length;
+
+    const filtered = assets.filter(a => {
+        const matchCat    = catFilter === 'All' || a.category === catFilter;
+        const matchStatus = statusFilter === 'All' || a.status === statusFilter.toLowerCase();
+        const q           = search.toLowerCase();
+        const matchSearch = !q || a.name.toLowerCase().includes(q) || a.vendor.toLowerCase().includes(q) || a.zone.toLowerCase().includes(q);
+        return matchCat && matchStatus && matchSearch;
+    });
+
+    const timeline = groupByLoadIn(assets);
+
+    const cycleStatus = (id) => {
+        setAssets(prev => prev.map(a =>
+            a.id === id ? { ...a, status: STATUS_CYCLE[a.status] } : a
+        ));
+        showToast?.('Status updated');
+    };
+
     return (
         <div className="ast-layout--full">
 
-            {/* ── Asset Types Table ── */}
+            {/* ── Stat Cards ── */}
+            <div className="ast-stat-row ast-stat-row--4">
+                <div className="ast-stat-card">
+                    <div className="ast-stat-card__label">Total Assets</div>
+                    <div className="ast-stat-card__value">{assets.length}</div>
+                </div>
+                <div className="ast-stat-card">
+                    <div className="ast-stat-card__label">Confirmed</div>
+                    <div className="ast-stat-card__value ast-stat-card__value--green">{confirmed}</div>
+                </div>
+                <div className="ast-stat-card">
+                    <div className="ast-stat-card__label">Pending</div>
+                    <div className="ast-stat-card__value ast-stat-card__value--amber">{pending}</div>
+                </div>
+                <div className="ast-stat-card">
+                    <div className="ast-stat-card__label">Draft</div>
+                    <div className="ast-stat-card__value ast-stat-card__value--muted">{draft}</div>
+                </div>
+            </div>
+
+            {/* ── Load-In Schedule Summary ── */}
             <div className="ast-card">
                 <div className="ast-card__header">
-                    <span className="ast-card__title">Asset Types ({ASSET_TYPES.length})</span>
-                    <button className="ast-btn ast-btn--primary ast-btn--sm">+ Add Asset Type</button>
+                    <span className="ast-card__title">Load-In Schedule Summary</span>
                 </div>
+                <div className="ast-timeline">
+                    {timeline.map(([time, items], idx) => (
+                        <div key={time} className={`ast-timeline__row ${idx === timeline.length - 1 ? 'ast-timeline__row--last' : ''}`}>
+                            <div className="ast-timeline__time">{time}</div>
+                            <div className="ast-timeline__line-col">
+                                <div className="ast-timeline__dot" />
+                                {idx < timeline.length - 1 && <div className="ast-timeline__stem" />}
+                            </div>
+                            <div className="ast-timeline__tags">
+                                {items.map(a => {
+                                    const cat = ASSET_CATEGORIES.find(c => c.id === a.category);
+                                    return (
+                                        <span
+                                            key={a.id}
+                                            className="ast-tag"
+                                            style={{ background: cat?.bg, color: cat?.color, borderColor: cat?.color + '55' }}
+                                        >
+                                            {a.name}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── Filter Bar ── */}
+            <div className="ast-filter-bar">
+                <div className="ast-filter-bar__search-wrap">
+                    <span className="ast-filter-bar__search-icon">○</span>
+                    <input
+                        className="ast-filter-bar__input"
+                        type="text"
+                        placeholder="Search assets..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                    />
+                </div>
+
+                <div className="ast-filter-bar__chips">
+                    {CAT_FILTERS.map(f => (
+                        <button
+                            key={f}
+                            className={`ast-chip ${catFilter === f ? 'ast-chip--active' : ''}`}
+                            onClick={() => setCatFilter(f)}
+                        >
+                            {f}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="ast-filter-bar__divider" />
+
+                <div className="ast-filter-bar__chips">
+                    {STATUS_FILTERS.map(f => (
+                        <button
+                            key={f}
+                            className={`ast-chip ${statusFilter === f ? 'ast-chip--active' : ''}`}
+                            onClick={() => setStatusFilter(f)}
+                        >
+                            {f}
+                        </button>
+                    ))}
+                </div>
+
+                <button className="ast-btn ast-btn--primary ast-btn--sm ast-filter-bar__add">
+                    + Add asset
+                </button>
+            </div>
+
+            {/* ── Asset Table ── */}
+            <div className="ast-card">
                 <table className="ast-table">
                     <thead>
                         <tr>
-                            <th>Asset Name</th>
+                            <th>Asset</th>
                             <th>Category</th>
-                            <th>Unit</th>
-                            <th>Price / Day</th>
-                            <th>Total Stock</th>
-                            <th>Actions</th>
+                            <th>Zone</th>
+                            <th>Vendor</th>
+                            <th>Load-In</th>
+                            <th>Load-Out</th>
+                            <th style={{ textAlign: 'center' }}>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {ASSET_TYPES.map(a => (
-                            <tr key={a.id}>
-                                <td style={{ fontWeight: 600 }}>{a.name}</td>
-                                <td style={{ color: '#666' }}>{a.category}</td>
-                                <td style={{ color: '#888' }}>{a.unit}</td>
-                                <td style={{ fontWeight: 600 }}>₹{a.pricePerDay.toLocaleString('en-IN')}</td>
-                                <td style={{ fontWeight: 600 }}>{a.totalStock}</td>
-                                <td>
-                                    <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                                        <button className="ast-btn ast-btn--secondary ast-btn--sm">Edit</button>
-                                        <button className="ast-btn ast-btn--secondary ast-btn--sm" style={{ color: '#c62828' }}>Delete</button>
-                                    </div>
+                        {filtered.map(a => {
+                            const cat = ASSET_CATEGORIES.find(c => c.id === a.category);
+                            return (
+                                <tr key={a.id}>
+                                    <td>
+                                        <div className="ast-asset-name-cell">
+                                            <span className="ast-asset-icon">◈</span>
+                                            <span className="ast-asset-name">{a.name}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            className="ast-pill"
+                                            style={{ background: cat?.bg, color: cat?.color }}
+                                        >
+                                            {a.category}
+                                        </span>
+                                    </td>
+                                    <td className="ast-table-muted">{a.zone}</td>
+                                    <td className="ast-table-muted">{a.vendor}</td>
+                                    <td className="ast-table-mono">{a.loadIn}</td>
+                                    <td className="ast-table-mono">{a.loadOut}</td>
+                                    <td style={{ textAlign: 'center' }}>
+                                        <button
+                                            className={`ast-status-btn ast-status-btn--${a.status}`}
+                                            onClick={() => cycleStatus(a.id)}
+                                            title="Click to cycle status"
+                                        >
+                                            {a.status === 'confirmed' && <><span>✓</span> Confirmed</>}
+                                            {a.status === 'pending'   && <><span>◷</span> Pending</>}
+                                            {a.status === 'draft'     && <><span>○</span> Draft</>}
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                        {filtered.length === 0 && (
+                            <tr>
+                                <td
+                                    colSpan={7}
+                                    style={{ textAlign: 'center', color: 'hsl(var(--muted-foreground))', padding: '28px', fontSize: 'var(--text-sm)' }}
+                                >
+                                    No assets match your filters
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
 
-            {/* ── Vendor Requests + Category Breakdown ── */}
-            <div className="ast-layout--split">
-
-                {/* LEFT: Vendor Requests */}
-                <div>
-                    <div className="ast-card" style={{ marginBottom: 0 }}>
-                        <div className="ast-card__header">
-                            <span className="ast-card__title">Vendor Requests</span>
-                            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                                <span style={{ fontSize: 11, color: '#888' }}>
-                                    {VENDOR_REQUESTS.filter(r => {
-                                        const s = requestStatuses[r.id] || r.status;
-                                        return s === 'pending' || s === 'over-limit';
-                                    }).length} pending review
-                                </span>
-                            </div>
-                        </div>
-                        <table className="ast-table">
-                            <thead>
-                                <tr>
-                                    <th>Vendor</th>
-                                    <th>Asset</th>
-                                    <th>Allocated</th>
-                                    <th>Requested</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {VENDOR_REQUESTS.map(r => {
-                                    const status = requestStatuses[r.id] || r.status;
-                                    const isActionable = status === 'pending' || status === 'over-limit';
-                                    return (
-                                        <tr key={r.id}>
-                                            <td style={{ fontWeight: 600 }}>{r.vendorName}</td>
-                                            <td style={{ color: '#555' }}>{r.assetName}</td>
-                                            <td style={{ fontWeight: 600 }}>{r.allocated}</td>
-                                            <td style={{ fontWeight: 600, color: r.requested > r.allocated ? '#c62828' : '#111' }}>
-                                                {r.requested}
-                                                {r.requested > r.allocated && (
-                                                    <span style={{ fontSize: 10, color: '#c62828', marginLeft: 4 }}>
-                                                        (+{r.requested - r.allocated})
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td>
-                                                <span className={`ast-pill ast-pill--${status}`}>
-                                                    {STATUS_LABEL[status]}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {isActionable ? (
-                                                    <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                                                        <button
-                                                            className="ast-btn ast-btn--approve ast-btn--sm"
-                                                            onClick={() => onApprove(r.id)}
-                                                        >
-                                                            Approve
-                                                        </button>
-                                                        <button
-                                                            className="ast-btn ast-btn--deny ast-btn--sm"
-                                                            onClick={() => onDeny(r.id)}
-                                                        >
-                                                            Deny
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <span style={{ fontSize: 11, color: '#bbb', display: 'block', textAlign: 'right' }}>—</span>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {/* RIGHT: Category Breakdown + Allocation Stats */}
-                <div>
-                    <div className="ast-card">
-                        <div className="ast-card__header">
-                            <span className="ast-card__title">Category Breakdown</span>
-                        </div>
-                        <div className="ast-card__body">
-                            {CATEGORIES.map(c => (
-                                <div key={c.label} className="ast-cat-bar-row">
-                                    <span className="ast-cat-bar-label">{c.label}</span>
-                                    <div className="ast-cat-bar-bg">
-                                        <div
-                                            className="ast-cat-bar-fill"
-                                            style={{ width: `${(c.count / maxCat) * 100}%`, background: c.color }}
-                                        />
-                                    </div>
-                                    <span className="ast-cat-bar-count">{c.count}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="ast-card" style={{ marginBottom: 0 }}>
-                        <div className="ast-card__header">
-                            <span className="ast-card__title">Allocation Summary</span>
-                        </div>
-                        <div className="ast-card__body">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: '#888' }}>Total Requests</span>
-                                    <span style={{ fontWeight: 600 }}>{VENDOR_REQUESTS.length}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: '#888' }}>Approved</span>
-                                    <span style={{ fontWeight: 600, color: '#27AE60' }}>
-                                        {VENDOR_REQUESTS.filter(r => (requestStatuses[r.id] || r.status) === 'approved').length}
-                                    </span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: '#888' }}>Pending Review</span>
-                                    <span style={{ fontWeight: 600, color: '#F39C12' }}>
-                                        {VENDOR_REQUESTS.filter(r => {
-                                            const s = requestStatuses[r.id] || r.status;
-                                            return s === 'pending' || s === 'over-limit';
-                                        }).length}
-                                    </span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: '#888' }}>Denied</span>
-                                    <span style={{ fontWeight: 600, color: '#999' }}>
-                                        {VENDOR_REQUESTS.filter(r => (requestStatuses[r.id] || r.status) === 'denied').length}
-                                    </span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 8, borderTop: '1px solid #eee' }}>
-                                    <span style={{ color: '#888' }}>Vendors</span>
-                                    <span style={{ fontWeight: 600 }}>
-                                        {[...new Set(VENDOR_REQUESTS.map(r => r.vendorName))].length}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     );
 }

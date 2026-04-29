@@ -24,13 +24,11 @@ export default function SettingsDropdown({ isOpen, onClose, theme, setTheme }) {
         return () => document.removeEventListener('mousedown', handler);
     }, [isOpen, onClose]);
 
-    if (!isOpen) return null;
-
     const toggleNotif = (key) =>
         setNotifToggles(prev => ({ ...prev, [key]: !prev[key] }));
 
     return (
-        <div className="settings-dropdown" ref={ref}>
+        <div className={`settings-dropdown${isOpen ? ' settings-dropdown--open' : ''}`} ref={ref}>
             {/* Tab bar */}
             <div className="settings-dropdown__tabs">
                 {TABS.map(tab => (
@@ -120,7 +118,7 @@ export default function SettingsDropdown({ isOpen, onClose, theme, setTheme }) {
                             { label: 'Name',         val: 'Jane Doe' },
                             { label: 'Role',         val: 'Ops Coordinator' },
                             { label: 'Email',        val: 'jane@mmeagency.com' },
-                            { label: 'Workspace',    val: 'MmE Agency' },
+                            { label: 'Workspace',    val: 'Luminary Events' },
                             { label: 'Member since', val: 'Jan 2025' },
                         ].map(({ label, val }) => (
                             <div key={label} className="settings-dropdown__row">
@@ -134,11 +132,11 @@ export default function SettingsDropdown({ isOpen, onClose, theme, setTheme }) {
                 {activeTab === 'About' && (
                     <>
                         {[
-                            { label: 'App',       val: 'MmE Workspace' },
+                            { label: 'App',       val: 'EventEase' },
                             { label: 'Version',   val: '1.0.0-prototype' },
                             { label: 'Build',     val: 'Apr 2026' },
                             { label: 'Platform',  val: 'Web' },
-                            { label: 'Design',    val: 'MmE Agency' },
+                            { label: 'Design',    val: 'Luminary Events' },
                         ].map(({ label, val }) => (
                             <div key={label} className="settings-dropdown__row">
                                 <div className="settings-dropdown__row-label">{label}</div>

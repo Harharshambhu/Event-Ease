@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SidebarSection, ChannelRow, EventStageBadge } from '@mme/ui-components';
 import { sidebarCompany, sidebarEvents, stageColors, dmContacts } from '../data';
 
-export default function Sidebar({ activePage, setActivePage, activeChannel, setActiveChannel }) {
+export default function Sidebar({ activePage, setActivePage, activeChannel, setActiveChannel, onSelectDm }) {
     const [expandedEvents, setExpandedEvents] = useState(
         Object.fromEntries(sidebarEvents.map((e, i) => [e.name, i === 0]))
     );
@@ -22,7 +22,7 @@ export default function Sidebar({ activePage, setActivePage, activeChannel, setA
                 <div className="sidebar__workspace">
                     <div className="sidebar__workspace-icon">M</div>
                     <div>
-                        <div className="sidebar__workspace-name">MmE Agency</div>
+                        <div className="sidebar__workspace-name">Luminary Events</div>
                         <div className="sidebar__workspace-sub">Employee Workspace</div>
                     </div>
                 </div>
@@ -88,24 +88,22 @@ export default function Sidebar({ activePage, setActivePage, activeChannel, setA
                                 <span className="sidebar__event-notif">⊡ {event.notifications}</span>
                             )}
                         </div>
-                        {expandedEvents[event.name] && (
-                            <div className="sidebar__event-channels">
-                                {event.channels.map((ch) => (
-                                    <ChannelRow
-                                        key={ch.name}
-                                        className="sidebar__channel"
-                                        elementModifier="-"
-                                        prefixIcon={ch.isAlert ? '△' : '#'}
-                                        name={ch.name}
-                                        locked={ch.locked}
-                                        isActive={activeChannel === ch.name && activePage === 'channel'}
-                                        onClick={() => handleChannelClick(ch.name)}
-                                    >
-                                        {ch.unread > 0 && <span className="sidebar__channel-badge">{ch.unread}</span>}
-                                    </ChannelRow>
-                                ))}
-                            </div>
-                        )}
+                        <div className={`sidebar__event-channels${expandedEvents[event.name] ? ' sidebar__event-channels--open' : ''}`}>
+                            {event.channels.map((ch) => (
+                                <ChannelRow
+                                    key={ch.name}
+                                    className="sidebar__channel"
+                                    elementModifier="-"
+                                    prefixIcon={ch.isAlert ? '△' : '#'}
+                                    name={ch.name}
+                                    locked={ch.locked}
+                                    isActive={activeChannel === ch.name && activePage === 'channel'}
+                                    onClick={() => handleChannelClick(ch.name)}
+                                >
+                                    {ch.unread > 0 && <span className="sidebar__channel-badge">{ch.unread}</span>}
+                                </ChannelRow>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </SidebarSection>
@@ -113,7 +111,7 @@ export default function Sidebar({ activePage, setActivePage, activeChannel, setA
             {/* DMs Section */}
             <SidebarSection title="⊕ DMs">
                 {dmContacts.slice(0, 6).map((dm) => (
-                    <div key={dm.name} className="vendor-dm-item">
+                    <div key={dm.name} className="vendor-dm-item" onClick={() => onSelectDm?.(dm)} style={{ cursor: 'pointer' }}>
                         <div className="vendor-dm-avatar">{dm.initials}</div>
                         <div className="vendor-dm-info">
                             <div className="vendor-dm-name-row">

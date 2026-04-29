@@ -41,7 +41,7 @@ export default function ChannelRightSidebar({ channelId, isOpen, onClose }) {
                 </div>
 
                 {/* Tab Content */}
-                <div className="rsb-content">
+                <div className="rsb-content" key={activeTab}>
                     {activeTab === 'overview' && <OverviewTab meta={meta} />}
                     {activeTab === 'tasks'    && <TasksTab channelId={channelId} />}
                     {activeTab === 'forms'    && <FormsTab channelId={channelId} />}

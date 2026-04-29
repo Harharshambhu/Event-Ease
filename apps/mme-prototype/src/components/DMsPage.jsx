@@ -3,7 +3,7 @@ import { dmContacts } from '../data';
 
 const filterTabs = ['All', 'Internal', 'External', 'Clients', 'Vendors'];
 
-export default function DMsPage() {
+export default function DMsPage({ onSelectContact }) {
     const [activeFilter, setActiveFilter] = useState('All');
 
     const filtered = activeFilter === 'All'
@@ -48,7 +48,7 @@ export default function DMsPage() {
             {/* Contact List */}
             <div className="card">
                 {filtered.map((contact, i) => (
-                    <div key={i} className="dm-row">
+                    <div key={i} className="dm-row" onClick={() => onSelectContact?.(contact)} style={{ cursor: 'pointer' }}>
                         <div className={`dm-row__avatar ${contact.isGroup ? 'dm-row__avatar--group' : ''}`}>
                             {contact.initials}
                             {contact.hasUnreadDot && <span className="dm-row__unread-dot" />}

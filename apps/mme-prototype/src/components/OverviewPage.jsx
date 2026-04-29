@@ -18,10 +18,10 @@ export default function OverviewPage() {
         <div className="main-content">
             {/* Header */}
             <div className="overview__header">
-                <div className="overview__avatar">M</div>
+                <div className="overview__avatar">L</div>
                 <div>
-                    <div className="overview__title">MmE Agency Workspace</div>
-                    <div className="overview__subtitle">Employee Workspace — Low Fidelity Wireframe</div>
+                    <div className="overview__title">Luminary Events</div>
+                    <div className="overview__subtitle">Employee Workspace</div>
                 </div>
             </div>
 
@@ -122,17 +122,7 @@ export default function OverviewPage() {
                 ))}
             </Card>
 
-            {/* Stage Colour System */}
-            <Card headerTitle="STAGE COLOUR SYSTEM" className="stage-legend">
-                <div className="stage-legend__items">
-                    {Object.entries(stageColors).map(([key, s]) => (
-                        <div key={key} className="stage-legend__item">
-                            <span className="stage-legend__dot" style={{ background: s.color }} />
-                            {s.label} — {getColorName(key)}
-                        </div>
-                    ))}
-                </div>
-            </Card>
+
 
             <div className="footer-label">
                 LOW FIDELITY WIREFRAME — MmE EMPLOYEE WORKSPACE — OVERVIEW
@@ -141,15 +131,3 @@ export default function OverviewPage() {
     );
 }
 
-function getColorName(key) {
-    const map = {
-        lead: 'Grey',
-        confirmed: 'Blue',
-        planning: 'Yellow',
-        'build-up': 'Orange',
-        live: 'Red',
-        'wrap-up': 'Purple',
-        closed: 'Green',
-    };
-    return map[key] || '';
-}

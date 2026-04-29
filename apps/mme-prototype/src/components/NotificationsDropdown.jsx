@@ -24,12 +24,10 @@ export default function NotificationsDropdown({ isOpen, onClose }) {
         return () => document.removeEventListener('mousedown', handler);
     }, [isOpen, onClose]);
 
-    if (!isOpen) return null;
-
     const unreadCount = sampleNotifications.filter((n) => n.unread).length;
 
     return (
-        <div className="notif-dropdown" ref={ref}>
+        <div className={`notif-dropdown${isOpen ? ' notif-dropdown--open' : ''}`} ref={ref}>
             <div className="notif-dropdown__header">
                 <span className="notif-dropdown__title">Notifications</span>
                 {unreadCount > 0 && (

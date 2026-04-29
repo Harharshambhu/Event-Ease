@@ -54,7 +54,7 @@ export default function AssetsModule({ initialTab, onBack }) {
             {/* Topbar */}
             <div className="ast-topbar">
                 {onBack && (
-                    <button className="ast-topbar__back" onClick={onBack}>← Dashboard</button>
+                    <button className="evdash__back" onClick={onBack} title="Back to Dashboard">‹</button>
                 )}
                 <div className="ast-topbar__title-block">
                     <span className="ast-topbar__icon">▣</span>

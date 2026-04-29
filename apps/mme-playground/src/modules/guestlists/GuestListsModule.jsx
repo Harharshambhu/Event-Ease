@@ -580,9 +580,7 @@ export default function GuestListsModule({ eventName, onBack }) {
     <div className="gl-module">
       <div className="gl-module-topbar">
         {onBack && (
-          <button className="gl-btn gl-btn--secondary gl-module-back" onClick={onBack}>
-            ← Dashboard
-          </button>
+          <button className="evdash__back" onClick={onBack} title="Back to Dashboard">‹</button>
         )}
         <div className="gl-module-event-title">
           <span className="gl-module-event-icon">☐</span>

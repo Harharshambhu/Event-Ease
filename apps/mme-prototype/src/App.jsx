@@ -6,6 +6,7 @@ import EventsPage from './components/EventsPage';
 import EventDashboard from './components/EventDashboard';
 import EventCreator from './components/EventCreator';
 import DMsPage from './components/DMsPage';
+import DMChatPage from './components/DMChatPage';
 import ChannelChatPage from './components/ChannelChatPage';
 import { AppLayout } from '@mme/ui-components';
 import CredentialsModule from '../../mme-playground/src/modules/credentials/CredentialsModule';
@@ -22,6 +23,7 @@ export default function App() {
   const [activeModuleEventName, setActiveModuleEventName] = useState(null);
   const [showEventCreator, setShowEventCreator] = useState(false);
   const [theme, setTheme] = useState('light');
+  const [activeDmContact, setActiveDmContact] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -80,14 +82,29 @@ export default function App() {
       case 'forms':
         return (
           <div className="main-content" style={{ padding: 0 }}>
-            <FormsModule initialTab={activeModuleTab} onBack={backToDashboard} />
+            <FormsModule initialTab={activeModuleTab} eventName={activeModuleEventName} onBack={backToDashboard} />
           </div>
         );
       case 'dms':
-        return <DMsPage />;
+        return (
+          <DMsPage
+            onSelectContact={(contact) => {
+              setActiveDmContact(contact);
+              setActivePage('dm-chat');
+            }}
+          />
+        );
+      case 'dm-chat':
+        return (
+          <DMChatPage
+            contact={activeDmContact}
+            onBack={() => setActivePage('dms')}
+          />
+        );
       case 'channel':
         return (
           <ChannelChatPage
+            key={activeChannel}
             channelName={activeChannel || 'inf25-general'}
             onBack={() => setActivePage('overview')}
           />
@@ -114,10 +131,16 @@ export default function App() {
             setActivePage={setActivePage}
             activeChannel={activeChannel}
             setActiveChannel={setActiveChannel}
+            onSelectDm={(contact) => {
+              setActiveDmContact(contact);
+              setActivePage('dm-chat');
+            }}
           />
         }
       >
-        {renderPage()}
+        <div key={activePage} className="page-enter">
+          {renderPage()}
+        </div>
       </AppLayout>
 
       {showEventCreator && (

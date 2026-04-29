@@ -50,13 +50,6 @@ export default function EventDashboard({ eventId, onBack, onNavigate }) {
                     />
                 </div>
 
-                {/* Catering */}
-                <div className="pg-widget-wrap">
-                    <CateringDashboardWidget
-                        onNavigate={(tab) => onNavigate('catering', { tab })}
-                    />
-                </div>
-
                 {/* Assets + Forms side by side */}
                 <div className="pg-widget-row">
                     <div className="pg-widget-row__assets">
@@ -69,6 +62,13 @@ export default function EventDashboard({ eventId, onBack, onNavigate }) {
                             onNavigate={(tab) => onNavigate('forms', { tab })}
                         />
                     </div>
+                </div>
+
+                {/* Catering */}
+                <div className="pg-widget-wrap">
+                    <CateringDashboardWidget
+                        onNavigate={(tab) => onNavigate('catering', { tab })}
+                    />
                 </div>
 
             </div>

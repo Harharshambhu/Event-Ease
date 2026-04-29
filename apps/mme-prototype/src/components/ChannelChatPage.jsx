@@ -226,37 +226,54 @@ export default function ChannelChatPage({ channelName, onBack }) {
                             }
                             if (msg.type === 'poll') {
                                 const { poll } = msg;
-                                const maxVotes = Math.max(...poll.options.map(o => o.votes), 1);
+                                const total     = poll.totalVotes || poll.options.reduce((s, o) => s + o.votes, 0);
+                                const maxVotes  = Math.max(...poll.options.map(o => o.votes), 1);
+                                const leadIdx   = poll.options.reduce((best, o, i, arr) => o.votes > arr[best].votes ? i : best, 0);
                                 return (
                                     <div className="chat-poll-card">
                                         <div className="chat-poll-card__header">
-                                            <div className="chat-poll-card__question">{poll.question}</div>
-                                            <div className="chat-poll-card__meta">
-                                                <span>◉</span>
-                                                {poll.multiSelect ? 'Select one or more' : 'Select one'}
+                                            <span className="chat-poll-card__icon">◆</span>
+                                            <div>
+                                                <div className="chat-poll-card__question">{poll.question}</div>
+                                                <div className="chat-poll-card__meta">
+                                                    {poll.multiSelect ? 'Select one or more' : 'Select one'} · {total} votes
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="chat-poll-card__options">
-                                            {poll.options.map((opt, i) => (
-                                                <div key={i} className="chat-poll-card__option">
-                                                    <div className="chat-poll-card__option-row">
-                                                        <div className="chat-poll-card__option-label">
+                                            {poll.options.map((opt, i) => {
+                                                const pct     = total > 0 ? Math.round((opt.votes / total) * 100) : 0;
+                                                const fillPct = Math.round((opt.votes / maxVotes) * 100);
+                                                const isLead  = i === leadIdx && opt.votes > 0;
+                                                return (
+                                                    <div
+                                                        key={i}
+                                                        className={`chat-poll-card__option${opt.voted ? ' chat-poll-card__option--voted' : ''}${isLead ? ' chat-poll-card__option--lead' : ''}`}
+                                                    >
+                                                        {/* background fill bar */}
+                                                        <div
+                                                            className="chat-poll-card__option-fill"
+                                                            style={{ width: `${fillPct}%` }}
+                                                        />
+                                                        {/* content row on top of fill */}
+                                                        <div className="chat-poll-card__option-content">
                                                             <span className={`chat-poll-card__check${opt.voted ? ' chat-poll-card__check--voted' : ''}`}>
                                                                 {opt.voted ? '✓' : ''}
                                                             </span>
-                                                            {opt.label}
+                                                            <span className="chat-poll-card__option-text">{opt.label}</span>
+                                                            {isLead && <span className="chat-poll-card__lead-dot" title="Leading" />}
                                                         </div>
-                                                        <span className="chat-poll-card__votes">{opt.votes}</span>
+                                                        <div className="chat-poll-card__option-stats">
+                                                            <span className="chat-poll-card__pct">{pct}%</span>
+                                                            <span className="chat-poll-card__votes">{opt.votes}</span>
+                                                        </div>
                                                     </div>
-                                                    <div className="chat-poll-card__bar-bg">
-                                                        <div className="chat-poll-card__bar-fill" style={{ width: `${(opt.votes / maxVotes) * 100}%` }} />
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                         <div className="chat-poll-card__footer">
-                                            <span>{poll.totalVotes} votes</span>
-                                            <button className="chat-poll-card__view-btn">View votes</button>
+                                            <span className="chat-poll-card__total">{total} votes total</span>
+                                            <button className="chat-poll-card__view-btn">View votes →</button>
                                         </div>
                                     </div>
                                 );

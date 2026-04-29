@@ -38,7 +38,7 @@ export default function CateringModule({ initialTab, eventName, onBack }) {
             {/* Topbar */}
             <div className="cat-topbar">
                 {onBack && (
-                    <button className="cat-topbar__back" onClick={onBack}>← Dashboard</button>
+                    <button className="evdash__back" onClick={onBack} title="Back to Dashboard">‹</button>
                 )}
                 <div className="cat-topbar__title-block">
                     <span className="cat-topbar__icon">◇</span>

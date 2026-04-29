@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { TopNav as TopNavContainer } from '@mme/ui-components';
 import NotificationsDropdown from './NotificationsDropdown';
 import SettingsDropdown from './SettingsDropdown';
+import BroadcastPanel from './BroadcastPanel';
 
 export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
-    const [notifOpen,    setNotifOpen]    = useState(false);
-    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [notifOpen,      setNotifOpen]      = useState(false);
+    const [settingsOpen,   setSettingsOpen]   = useState(false);
+    const [broadcastOpen,  setBroadcastOpen]  = useState(false);
 
     const navItems = [
         { id: 'overview', label: 'Overview' },
@@ -16,10 +18,18 @@ export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
     const toggleSettings = () => {
         setSettingsOpen(v => !v);
         setNotifOpen(false);
+        setBroadcastOpen(false);
     };
 
     const toggleNotif = () => {
         setNotifOpen(v => !v);
+        setSettingsOpen(false);
+        setBroadcastOpen(false);
+    };
+
+    const toggleBroadcast = () => {
+        setBroadcastOpen(v => !v);
+        setNotifOpen(false);
         setSettingsOpen(false);
     };
 
@@ -28,8 +38,8 @@ export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
             className="topnav"
             logoBox={
                 <div className="topnav__logo">
-                    <div className="topnav__logo-icon">M</div>
-                    <span>MmE WORKSPACE</span>
+                    <div className="topnav__logo-icon">E</div>
+                    <span>EventEase</span>
                 </div>
             }
             searchBox={
@@ -51,6 +61,23 @@ export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
                             {item.label}
                         </button>
                     ))}
+
+                    {/* Broadcast */}
+                    <div className="topnav__broadcast-wrap">
+                        <button
+                            className={`topnav__broadcast-btn ${broadcastOpen ? 'topnav__broadcast-btn--active' : ''}`}
+                            onClick={toggleBroadcast}
+                            title="Broadcast"
+                        >
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                                <path d="M18 11v2H6l-3.5 3.5L1 15V9l1.5-1.5L6 11h12zM20 3v18l-4-4H6v-2h10.17L20 18.83V5.17L16.17 9H6V7h10l4-4z"/>
+                            </svg>
+                        </button>
+                        <BroadcastPanel
+                            isOpen={broadcastOpen}
+                            onClose={() => setBroadcastOpen(false)}
+                        />
+                    </div>
 
                     {/* Bell */}
                     <div className="topnav__bell-wrap">

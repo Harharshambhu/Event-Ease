@@ -82,7 +82,6 @@ export default function Sidebar({ activePage, setActivePage, activeChannel, setA
                                 className="sidebar__event"
                                 color={stageColors[event.stage]?.color}
                                 name={event.name}
-                                stageLabel={event.stageLabel}
                             />
                             {event.notifications > 0 && (
                                 <span className="sidebar__event-notif">⊡ {event.notifications}</span>

@@ -1973,6 +1973,7 @@ p {
   font-weight: 700;
   color: hsl(var(--foreground));
   letter-spacing: -0.01em;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .chat-message__time {
@@ -2681,6 +2682,7 @@ p {
   background: #c7c7cc;
   color: #1c1c1e;
   margin-top: var(--space-1);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .chat-message__bubble--sent {
@@ -2694,6 +2696,7 @@ p {
   line-height: 1.5;
   margin: 0;
   word-break: break-word;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .chat-message__time--sent {

@@ -105,6 +105,12 @@
   --font:         'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif:   'Merriweather', Georgia, 'Times New Roman', serif;
+
+  /* Font weights — Superlight / Regular / Bold / Black */
+  --fw-superlight: 200;   /* Plus Jakarta Sans 200, Space Grotesk 300, Merriweather 300 */
+  --fw-regular:    400;
+  --fw-bold:       700;
+  --fw-black:      900;   /* Plus Jakarta Sans 800, Merriweather 900 */
 }
 
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }

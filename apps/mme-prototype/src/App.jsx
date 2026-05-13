@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TopNav from './components/TopNav';
 import Sidebar from './components/Sidebar';
-import OverviewPage from './components/OverviewPage';
 import EventsPage from './components/EventsPage';
 import EventDashboard from './components/EventDashboard';
 import EventCreator from './components/EventCreator';
@@ -16,7 +15,7 @@ import AssetsModule from '../../mme-playground/src/modules/assets/AssetsModule';
 import FormsModule from '../../mme-playground/src/modules/forms/FormsModule';
 
 export default function App() {
-  const [activePage, setActivePage] = useState('overview');
+  const [activePage, setActivePage] = useState('events');
   const [activeChannel, setActiveChannel] = useState(null);
   const [activeEventId, setActiveEventId] = useState(null);
   const [activeModuleTab, setActiveModuleTab] = useState(null);
@@ -44,8 +43,6 @@ export default function App() {
 
   const renderPage = () => {
     switch (activePage) {
-      case 'overview':
-        return <OverviewPage />;
       case 'events':
         return <EventsPage onNavigate={navigate} onCreateEvent={() => setShowEventCreator(true)} />;
       case 'event-dashboard':
@@ -105,11 +102,11 @@ export default function App() {
           <ChannelChatPage
             key={activeChannel}
             channelName={activeChannel || 'inf25-general'}
-            onBack={() => setActivePage('overview')}
+            onBack={() => setActivePage('events')}
           />
         );
       default:
-        return <OverviewPage />;
+        return <EventsPage onNavigate={navigate} onCreateEvent={() => setShowEventCreator(true)} />;
     }
   };
 

@@ -10,9 +10,8 @@ export default function TopNav({ activePage, setActivePage }) {
     const [broadcastOpen,  setBroadcastOpen]  = useState(false);
 
     const navItems = [
-        { id: 'overview', label: 'Overview' },
-        { id: 'events',   label: 'Events' },
-        { id: 'dms',      label: 'DMs' },
+        { id: 'events', label: 'Events' },
+        { id: 'dms',    label: 'DMs' },
     ];
 
     const toggleSettings = () => {

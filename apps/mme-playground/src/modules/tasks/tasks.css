@@ -4,7 +4,7 @@
    ============================================================ */
 
 .tasks-module {
-  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font);
   color: hsl(var(--foreground));
   background: hsl(var(--page-bg));
   min-height: 100vh;

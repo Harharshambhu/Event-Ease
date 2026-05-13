@@ -59,7 +59,7 @@ export default function Phase4Exports({ showToast }) {
                         <select
                             value={selectedForm}
                             onChange={e => setSelectedForm(e.target.value)}
-                            style={{ fontSize: 12, padding: '5px 10px', border: '1px solid #ccc', borderRadius: 4, background: '#fff', fontFamily: 'Inter, sans-serif' }}
+                            style={{ fontSize: 12, padding: '5px 10px', border: '1px solid #ccc', borderRadius: 4, background: '#fff', fontFamily: 'inherit' }}
                         >
                             {FORMS.map(f => (
                                 <option key={f.id}>{f.title}</option>

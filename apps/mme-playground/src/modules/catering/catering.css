@@ -6,7 +6,7 @@
 
 /* ── Module Shell ────────────────────────────────────────────── */
 .cat-module {
-  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font);
   color: hsl(var(--foreground));
   padding: var(--space-6);
   background: hsl(var(--page-bg));
@@ -661,7 +661,7 @@
    Dashboard Widget — cat-widget- prefix
    ============================================================ */
 .cat-widget {
-  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font);
   color: hsl(var(--foreground));
   padding: var(--space-3);
   background: hsl(var(--page-bg));

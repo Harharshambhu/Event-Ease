@@ -6,7 +6,7 @@
 
 /* ── Module Shell ────────────────────────────────────────────── */
 .gl-module {
-  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font);
   color: hsl(var(--foreground));
   padding: var(--space-6);
   background: hsl(var(--page-bg));
@@ -519,7 +519,7 @@
 }
 
 .gl-link-text {
-  font-family: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
+  font-family: ui-monospace, 'Courier New', monospace;
   font-size: var(--text-xs);
   color: hsl(var(--muted-foreground));
 }

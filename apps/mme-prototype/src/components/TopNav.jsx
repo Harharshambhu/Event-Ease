@@ -4,7 +4,7 @@ import NotificationsDropdown from './NotificationsDropdown';
 import SettingsDropdown from './SettingsDropdown';
 import BroadcastPanel from './BroadcastPanel';
 
-export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
+export default function TopNav({ activePage, setActivePage }) {
     const [notifOpen,      setNotifOpen]      = useState(false);
     const [settingsOpen,   setSettingsOpen]   = useState(false);
     const [broadcastOpen,  setBroadcastOpen]  = useState(false);
@@ -108,8 +108,6 @@ export default function TopNav({ activePage, setActivePage, theme, setTheme }) {
                         <SettingsDropdown
                             isOpen={settingsOpen}
                             onClose={() => setSettingsOpen(false)}
-                            theme={theme}
-                            setTheme={setTheme}
                         />
                     </div>
                 </>

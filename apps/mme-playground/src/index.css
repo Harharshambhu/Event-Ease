@@ -9,34 +9,34 @@
 }
 
 :root {
-  /* ── Core Palette ────────────────────────────────────────── */
-  --background:            0 0% 100%;
-  --foreground:            240 10% 3.9%;
+  /* ── Core Palette — dark mode ───────────────────────────── */
+  --background:            240 10% 3.9%;
+  --foreground:            0 0% 98%;
 
-  --card:                  0 0% 100%;
-  --card-foreground:       240 10% 3.9%;
+  --card:                  240 8% 8%;
+  --card-foreground:       0 0% 98%;
 
-  --popover:               0 0% 100%;
-  --popover-foreground:    240 10% 3.9%;
+  --popover:               240 8% 8%;
+  --popover-foreground:    0 0% 98%;
 
-  --primary:               240 5.9% 10%;
-  --primary-foreground:    0 0% 98%;
+  --primary:               0 0% 98%;
+  --primary-foreground:    240 5.9% 10%;
 
-  --secondary:             240 4.8% 95.9%;
-  --secondary-foreground:  240 5.9% 10%;
+  --secondary:             240 4% 14%;
+  --secondary-foreground:  0 0% 98%;
 
-  --muted:                 240 4.8% 95.9%;
-  --muted-foreground:      240 3.8% 46.1%;
+  --muted:                 240 4% 14%;
+  --muted-foreground:      240 5% 58%;
 
-  --accent:                240 4.8% 95.9%;
-  --accent-foreground:     240 5.9% 10%;
+  --accent:                240 4% 18%;
+  --accent-foreground:     0 0% 98%;
 
-  --destructive:           0 84.2% 60.2%;
+  --destructive:           0 62% 50%;
   --destructive-foreground:0 0% 98%;
 
-  --border:                240 5.9% 90%;
-  --input:                 240 5.9% 90%;
-  --ring:                  240 5.9% 10%;
+  --border:                240 4% 18%;
+  --input:                 240 4% 18%;
+  --ring:                  240 5% 84%;
 
   /* ── Radius ──────────────────────────────────────────────── */
   --radius:                0.5rem;   /* 8px */
@@ -45,34 +45,34 @@
   --radius-xl:             calc(var(--radius) + 8px);  /* 16px */
   --radius-full:           9999px;
 
-  /* ── Page Background (slightly off‑white, behind cards) ─── */
-  --page-bg:               240 6% 97%;
+  /* ── Page Background ─────────────────────────────────────── */
+  --page-bg:               240 10% 5%;
 
-  /* ── Semantic Status ─────────────────────────────────────── */
+  /* ── Semantic Status — dark mode ─────────────────────────── */
   /* Success / Approved / Confirmed */
-  --success-bg:            142 76% 96%;
-  --success-fg:            142 72% 26%;
-  --success-border:        142 70% 82%;
+  --success-bg:            142 40% 8%;
+  --success-fg:            142 72% 55%;
+  --success-border:        142 40% 18%;
 
   /* Warning / Pending / Partial */
-  --warning-bg:            48 100% 95%;
-  --warning-fg:            32 95% 30%;
-  --warning-border:        45 93% 78%;
+  --warning-bg:            48 60% 8%;
+  --warning-fg:            48 90% 55%;
+  --warning-border:        45 60% 18%;
 
   /* Danger / Denied / Overdue */
-  --danger-bg:             0 86% 97%;
-  --danger-fg:             0 72% 38%;
-  --danger-border:         0 90% 87%;
+  --danger-bg:             0 50% 8%;
+  --danger-fg:             0 72% 62%;
+  --danger-border:         0 50% 18%;
 
   /* Info / Submitted / Processed */
-  --info-bg:               213 100% 97%;
-  --info-fg:               213 93% 38%;
-  --info-border:           213 100% 86%;
+  --info-bg:               213 60% 8%;
+  --info-fg:               213 80% 62%;
+  --info-border:           213 60% 18%;
 
   /* Neutral / Empty / Gray */
-  --neutral-bg:            240 5% 96%;
-  --neutral-fg:            240 5% 40%;
-  --neutral-border:        240 5% 86%;
+  --neutral-bg:            240 5% 12%;
+  --neutral-fg:            240 5% 65%;
+  --neutral-border:        240 5% 22%;
 
   /* ── Typography Scale (Tailwind / Geist) ─────────────────── */
   --text-xs:   0.75rem;   /* 12px / 16px */

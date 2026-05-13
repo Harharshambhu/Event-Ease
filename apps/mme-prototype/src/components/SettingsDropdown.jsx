@@ -5,7 +5,7 @@ const TABS = ['Appearance', 'Notifications', 'Account', 'About'];
 const FONT_SIZES = ['Default', 'Compact', 'Large'];
 const LANGUAGES  = ['English', 'Hindi', 'French', 'German', 'Spanish'];
 
-export default function SettingsDropdown({ isOpen, onClose, theme, setTheme }) {
+export default function SettingsDropdown({ isOpen, onClose }) {
     const [activeTab, setActiveTab] = useState('Appearance');
     const [notifToggles, setNotifToggles] = useState({
         mentions:  true,
@@ -47,20 +47,6 @@ export default function SettingsDropdown({ isOpen, onClose, theme, setTheme }) {
 
                 {activeTab === 'Appearance' && (
                     <>
-                        <div className="settings-dropdown__row">
-                            <div>
-                                <div className="settings-dropdown__row-label">Theme</div>
-                                <div className="settings-dropdown__row-sub">Choose interface color</div>
-                            </div>
-                            <select
-                                className="settings-dropdown__select"
-                                value={theme}
-                                onChange={e => setTheme(e.target.value)}
-                            >
-                                <option value="light">Light</option>
-                                <option value="dark">Dark</option>
-                            </select>
-                        </div>
                         <div className="settings-dropdown__row">
                             <div>
                                 <div className="settings-dropdown__row-label">Font Size</div>

@@ -22,12 +22,11 @@ export default function App() {
   const [activeModuleTab, setActiveModuleTab] = useState(null);
   const [activeModuleEventName, setActiveModuleEventName] = useState(null);
   const [showEventCreator, setShowEventCreator] = useState(false);
-  const [theme, setTheme] = useState('light');
   const [activeDmContact, setActiveDmContact] = useState(null);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
   const navigate = (page, opts = {}) => {
     if (opts.eventId !== undefined) setActiveEventId(opts.eventId);
@@ -121,8 +120,6 @@ export default function App() {
           <TopNav
             activePage={activePage}
             setActivePage={setActivePage}
-            theme={theme}
-            setTheme={setTheme}
           />
         }
         sidebar={
